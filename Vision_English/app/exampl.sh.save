@@ -1,0 +1,11 @@
+#!/bin/bash
+pkill screesudo screen -d -m -S actions
+sudo screen -S actions -X stuff 'source /home/./venv/bin/activate\n'
+sudo screen -S actions -X stuff 'cd /home/chatbot\n'
+sudo screen -S actions -X stuff 'rasa run actions\n'
+sudo screen -d -m -S rasaserver
+sudo screen -S rasaserver -X stuff 'source /home/./venv/bin/activate\n'
+sudo screen -S rasaserver -X stuff 'cd /home/chatbot\n'
+sudo screen -S rasaserver -X stuff 'python3 webtorasa/main.py\n'
+sudo screen -S rasaserver -X stuff 'rasa train\n'
+sudo screen -S rasaserver -X stuff 'rasa run\n'

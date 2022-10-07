@@ -1,0 +1,29 @@
+
+<body>
+  <h1>Visionary Webchat</h1>
+
+  <div id="webchat"></div>
+  <script>!(function () {
+    let e = document.createElement("script"),
+        t = document.head || document.getElementsByTagName("head")[0];
+    (e.src =
+        "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"),
+        (e.async = !0),
+        (e.onload = () => {
+            window.WebChat.default(
+                {
+                    socketUrl: "https://bot.visionproject.site",
+                    socketPath: "/socket.io",
+                    title: "College Bot",
+                    subtitle: "Fun-on-Go",
+                    params: {"storage" :"session"},
+                    inputTextFieldHint: "Type a message...",
+                    connectingText: "Waiting for server..."
+                },
+                null
+            );
+        }),
+        t.insertBefore(e, t.firstChild);
+    })();
+  </script>
+</body>
