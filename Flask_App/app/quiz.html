@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('show_course') }}">Course</a></li>
+          <li><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li class="selected"><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+<div id="site_content">
+    <div class="form__title">Select answer on follow question:</div>
+    <br/>
+    <div class="form__question_title">{{ selected_question['question_text'] }}</div>
+    
+    <form class="form" action="" method="POST">
+        <input type="hidden" name="question_id" value="{{ selected_question['question_id'] }}"/>
+        <div>        
+            {% for row in answers %}            
+                <input type="radio" id="choose_answer_{{ row['answer_id'] }}" name="answer" value="{{ row['answer_id'] }}" onclick="$('#submit_button').removeAttr('disabled');"></input>
+                <label for="choose_answer_{{ row['answer_id'] }}" class="form__label">{{ row['answer_text'] }}</label>                
+                <br/>
+            {% endfor %}
+        </div>
+	<div class="form__item">
+          <button class="form__btn" type="submit" id="submit_button" disabled>Submit answer</button>
+        </div>    
+    </form>
+</div>
+
+
+{% endblock %}

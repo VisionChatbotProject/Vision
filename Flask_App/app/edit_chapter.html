@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>         
+          <li><a href="{{ url_for('show_course') }}">Course</a></li>
+          <li class="selected"><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+  <div id="site_content">
+    <div class="form__title">Edit Chapter</div>
+    <br><br>
+    <p class="form__desc">
+        Use this formular to update the information about the chapters
+    </p>
+    
+    <br>
+    <form class="form" action="" method="POST">
+    <input type="hidden" value="{{ chapter['id_chapter'] }}" name="id" >
+        <div class="form__item">
+          <label for="cname" class="form__label">Name</label>
+          <input type="text" class="form__input"  id="cname" name="name_chapter" value="{{ chapter['name_chapter'] }}"  placeholder="Enter the Name" required>
+        </div>
+
+	 <div class="form__item">
+          <label for="cdescription" class="form__label">Description</label>
+          <textarea maxlength="500" class="form__input" id="cdescription" name="short_description" placeholder="Description">{{ chapter['short_description'] }}</textarea>
+        </div>
+	 <div class="form__item">
+          <label for="ccontent" class="form__label">Content</label>
+          <textarea maxlength="500" class="form__input" id="ccontent" name="content" placeholder="Please insert the content (Subtitles)(Submodules)">{{ chapter['content'] }}</textarea>
+        </div>
+	 <div class="form__item">
+         <label for="ckey_concepts" class="form__label">Key concepts / Key words</label>
+          <textarea maxlength="500" class="form__input" id="akey_concepts" name="key_concepts" placeholder="Please insert the key concepts, key words for the chapter">{{ chapter['key_concepts'] }}</textarea>
+        </div>	
+	<div class="form__item">
+         <label for="cressources" class="form__label">Ressources and Materials / Key words</label>
+          <textarea maxlength="500" class="form__input" id="cressources" name="ressources" placeholder="Please insert the materials and ressources needed for the chapter">{{ chapter['ressources'] }}</textarea>
+        </div>	
+
+	<div class="form__item">
+         <label for="cobservations" class="form__label">Observations / Extra Information of the teacher for the students </label>
+          <textarea maxlength="500" class="form__input" id="cressources" name="observations" placeholder="Please insert extra information needed to be provided">{{ chapter['observations'] }}</textarea>
+        </div>	
+	<div class="form__item">
+          <button class="form__btn" type="submit">Save</button>
+        </div>
+      </div>
+        
+      </form>
+</div>
+
+{% endblock %}

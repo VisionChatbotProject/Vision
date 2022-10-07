@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>         
+          <li class="selected"><a href="{{ url_for('show_course') }}">Course</a></li>
+          <li><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+  <div id="site_content">
+    <div class="form__title">Update Course</div>
+    <br><br>
+    <p class="form__desc">
+        User this formular to update the information of the course
+    </p>
+      <br>
+     
+      <form class="form" action="" method="POST">
+    <input type="hidden" value="{{ course['id_course'] }}" name="id" >
+
+        <div class="form__item">
+          <label for="aname" class="form__label">Name</label>
+          <input type="text" class="form__input"  id="aname" name="name" value="{{ course['name'] }}" placeholder="Enter the titel of the assigment" required>
+          <span class="form__error">A sample error message</span>
+        </div>
+        <div class="form__item">
+          <label for="adescription" class="form__label">Teacher</label>
+          <input type="text" class="form__input"  id="ateacher" name="teacher" value="{{ course['teacher'] }}" placeholder="Enter the titel of the assigment" required>
+        </div>
+        <div class="form__item">
+          <label for="aemailteacher" class="form__label">E-Mail Teacher</label>
+          <input type="text" class="form__input"  id="aemailteacher" name="email_teacher" value="{{ course['email_teacher'] }}" placeholder="Enter the titel of the assigment" required>
+        </div>
+        <div class="form__item">
+          <label for="achapters" class="form__label">Chapters</label>
+          <textarea maxlength="500" class="form__input" id="achapters" name="chapters" placeholder="List of chapters">{{ course['chapters'] }}</textarea>
+        </div>
+
+        <div class="form__item">
+          <label for="adescription" class="form__label">Description</label>
+          <textarea maxlength="500" class="form__input" id="adescription" name="description" placeholder="Description of the course">{{ course['description'] }}</textarea>
+        </div>
+        <div class="form__item">
+          <label for="amaterials" class="form__label">Materials</label>
+          <textarea maxlength="500" class="form__input" id="amaterials" name="materials" placeholder="Books, Literature, Materials needed for the course">{{ course['materials'] }}</textarea>
+        </div>
+        <div class="form__item">
+          <label for="aextressources" class="form__label">Extern Ressourcers</label>
+          <textarea maxlength="500" class="form__input" id="aextressources" name="externressources" placeholder="Extern Ressources">{{ course['externressources'] }}</textarea>
+        </div>
+       <div class="form__item">
+          <button class="form__btn" type="submit">Save</button>
+        </div>
+      </div>
+
+    </form>
+
+{% endblock %}

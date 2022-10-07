@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+</div>
+
+    <div class="form__title">Edit quiz</div>
+    <br/><br/>
+    <p class="form__desc">
+        Use this formular to edit quiz
+    </p>
+    
+    <br/>
+    <form class="form" action="" method="POST">
+        <div class="form__item">
+          <label for="question_text" class="form__label">Quiz Name: </label>
+          <input type="text" class="form__input"  id="quiz_name" name="quiz_name" value="{{ selected_quiz['quiz_name'] }}" placeholder="Enter a quiz name" require>
+          <span class="form__error">A sample error message</span>
+        </div>
+	<div class="form__item">
+          <button class="form__btn" type="submit">Edit quiz</button>
+        </div>    
+    </form>
+{% endblock %}
