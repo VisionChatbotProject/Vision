@@ -203,7 +203,7 @@ def show_intents():
         try:
             # dont change this line 
             stdout = subprocess.check_output(["./exampl.sh"]).decode("utf-8")
-            msg = "Training Executed Successfully" + str(stdout)
+            msg = "Training Executed Successfully. Please wait at least five minutes until next training." + str(stdout)
         except Exception as e:
             msg = "Failed to train" + str(e)
             pass
@@ -258,21 +258,24 @@ def add_course():
 def api_add_chapter():
     try:
         json_body = request.json
-        required_fields = ["name_chapter","short_description","content","key_concepts","resources","observations"]
+        required_fields = ["name_chapter", "short_description", "content", "key_concepts", "resources", "observations", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO chapter('name_chapter','short_description','content', 'key_concepts', 'ressources','observations') VALUES (?, ?, ?, ?, ?, ?)",
-                             (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["key_concepts"], json_body["resources"], json_body["observations"]))
+            cursor.execute(
+                "INSERT INTO chapter('name_chapter','short_description','content', 'key_concepts', 'ressources','observations', 'id_course') VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (json_body["name_chapter"], json_body["short_description"], json_body["content"],
+                 json_body["key_concepts"], json_body["resources"], json_body["observations"], json_body["id_course"]))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New chapter has been added"})
+            return jsonify({"success": True, "id": new_id, "description": "New chapter has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
+
 
 @app.route('/chapter/add', methods=('GET', 'POST'))
 @login_required
@@ -299,21 +302,24 @@ def add_chapter():
 def api_add_task():
     try:
         json_body = request.json
-        required_fields = ["title","description","resources","deadline","active"]
+        required_fields = ["title", "description", "resources", "deadline", "active", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO task('title','description','ressources', 'deadline','active') VALUES (?, ?, ?, ?, ?)",
-                             (json_body["title"], json_body["description"], json_body["resources"], json_body["deadline"], json_body["active"]))
+            cursor.execute(
+                "INSERT INTO task('title','description','ressources', 'deadline','active', 'id_course', 'id_chapter') VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (json_body["title"], json_body["description"], json_body["resources"], json_body["deadline"],
+                 json_body["active"], json_body["id_course"], json_body["id_chapter"]))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New task has been added"})
+            return jsonify({"success": True, "id": new_id, "description": "New task has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
+
 
 
 @app.route('/task/add', methods=('GET', 'POST'))
@@ -382,21 +388,39 @@ def add_topic():
 def api_add_intent():
     try:
         json_body = request.json
-        required_fields = ["intent_name","intent_list","response"]
+        required_fields = ["intent_name", "intent_list", "response", "is_quiz", "id_chapter", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        # execute insert process
+        else:
+            # insert intent
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO intent('intent_name','intent_list','response') VALUES (?, ?, ?)",
-                              (json_body["intent_name"], json_body["intent_list"], json_body["response"]))
-            new_id = cursor.lastrowid
+            cursor.execute("INSERT INTO intent('intent_name','intent_list','response', 'is_quiz', 'id_course', 'id_chapter') VALUES (?, ?, ?, ?, ?, ?)",
+                           (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["is_quiz"], json_body["id_course"], json_body["id_chapter"]))
+            intent_id = cursor.lastrowid
+
+            # creat quiz and insert question to question table if is_quiz is true
+            if json_body["is_quiz"]:
+
+                cursor.execute("INSERT INTO quizs(quiz_name) VALUES (?)",
+                               [json_body["intent_name"]])
+                quiz_id = cursor.lastrowid
+
+                cursor.execute("INSERT INTO questions(quiz_id, question_text) VALUES (?, ?)",
+                               [str(quiz_id), json_body["intent_list"]])
+                question_id = cursor.lastrowid
+
+                cursor.execute("INSERT INTO answers(question_id, answer_text, is_correct) VALUES (?, ?, ?)",
+                               [str(question_id), json_body["response"], str(1)])
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New topic has been added"})
+
+            return jsonify({"success": True, "id": intent_id, "description": "New topic has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
+
 
 @app.route('/intent/add', methods=('GET', 'POST'))
 @login_required
@@ -404,7 +428,7 @@ def add_intent():
     if request.method == 'POST':
 
         intent_name = request.form["intent_name"].strip()
-        intent_list = request.form["intent_list"].strip()
+        intent_list = request.form.getlist("intent_list[]")
         response = request.form["response"].strip()
                               
         conn = get_db_connection()
@@ -1143,21 +1167,21 @@ def edit_quiz(quiz_id):
 def api_add_quiz():
     try:
         json_body = request.json
-        required_fields = ["quiz_name"]
+        required_fields = ["quiz_name", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO quizs(quiz_name) VALUES (?)",
-                         [json_body["quiz_name"]])
+            cursor.execute("INSERT INTO quizs('quiz_name', 'id_course', 'id_chapter') VALUES (?, ?, ?)",
+                           [json_body["quiz_name"], json_body["id_course"], json_body["id_chapter"]])
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description": "New quiz has been added"})
+            return jsonify({"success": True, "id": new_id, "description": "New quiz has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
 
 @app.route('/quizs/add', methods=('GET', 'POST'))
 def add_quiz():

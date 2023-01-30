@@ -41,11 +41,11 @@
             {% endfor %}
     </table>
     <form action="" method="post">
-        <button type="submit" name="submit" value="trainbot">Train ChatBot</button>
+            <button type="submit" name="submit" value="trainbot">Train ChatBot</button>
     </form>
     <br><h4>{{ msg }}</h4>
 </div>
-
+<script type="text/javascript" src="{{url_for('static', filename='scripts/button_control.js')}}"></script>
 </div>
 
 {% endblock %}
