@@ -35,6 +35,52 @@ p
   flex-direction: column;
 }
 
+.field{
+  margin-bottom: 10px;
+  display: flex;
+  width: 50%;
+}
+.field input{
+  padding: 5px 10px;
+  width: 100%;
+  font-size: 0.9em;
+  color: #888;
+  font-family: "Source Sans Pro", sans-serif;
+  outline: none;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+.field input:focus{
+  background: #ffffff;
+}
+
+.field span{
+  display: inline-block;
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #f4f4f4;
+  padding: 10px;
+  font-size: 20px;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.field span:hover{
+  background-color: #aee2ae;
+}
+
+.field span:last-child{
+  display: none;
+  padding: 12px
+}
+
+.field span:last-child:hover{
+  background-color: pink;
+}
+
+
 .form__item > * {
   align-self: flex-start;
 }
@@ -384,3 +430,7 @@ table tr td
   color: #47433F;
   border-top: 1px solid #FFF;}
 
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
