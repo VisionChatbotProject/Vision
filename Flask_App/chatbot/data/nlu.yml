@@ -211,6 +211,12 @@ nlu:
     - What is the content of the chapter [1](chapter)?
     - Content of [1] chapter
 
+- intent: content_chapter_from_course
+  examples: |
+    - Please show me the content of the chapter [1](chapter)[1](course) 
+    - What is the content of the chapter [1](chapter)[1](course)?
+
+
 - intent: key_concepts_chapter
   examples: |
     - What are the key concepts of chapter [1](chapter)

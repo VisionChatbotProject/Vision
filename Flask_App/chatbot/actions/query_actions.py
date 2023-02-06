@@ -89,6 +89,25 @@ class Query_ListChapter(Action):
         dispatcher.utter_message(final_response)
         return []
 
+
+
+
+
+## New
+class Query_Content_Chapter_From_Course(Action):
+     def name(self) -> Text:
+         return "query_content_chapter_from_course"
+     def run(self, dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        chapt=tracker.get_slot("chapter")
+        cours=tracker.get_slot("course")
+        answer="The content of this chapter is \n"
+        query=f"""SELECT content from chapter where id_course='{chapt}'"""
+        get_query_results = select_from_database(query,answer)
+        dispatcher.utter_message(text= get_query_results)
+        return []
+
 ## Chapter queries
 class Query_Description_Chapter(Action):
      def name(self) -> Text:

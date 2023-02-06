@@ -39,6 +39,7 @@ intents:
 - list_chapter
 - description_chapter
 - content_chapter
+- content_chapter_from_course 
 - key_concepts_chapter
 - ressources_chapter
 - observations_chapter
@@ -183,6 +184,7 @@ actions:
 - query_list_chapter
 - query_description_chapter
 - query_content_chapter
+- query_content_chapter_from_course
 - query_key_concepts_chapter
 - query_ressources_chapter
 - query_observations_chapter
