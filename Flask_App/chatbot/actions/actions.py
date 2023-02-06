@@ -17,31 +17,6 @@ from utils.helper import *
 import utils.SQL_DB_utils as DB
 
 
-# class AskCourse(Action):
-#
-#     def name(self) -> Text:
-#         return "action_ask_course"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         # name, phone = get_name_phone(tracker)
-#         sender = tracker.sender_id
-#         logger.info(f"[{sender}] {__file__} :  Inside action_ask_course  ")
-#         log_tracker_event(tracker, logger)
-#
-#         course_list = DB.getListofCourses()
-#         if course_list is not None:
-#             ask = "Below are the courses that we have."
-#             buttons = _subject_buttons(course_list)
-#             buttons = button_it(buttons)
-#             dispatcher.utter_message(text=ask, buttons=buttons)
-#         else:
-#             dispatcher.utter_message(text="Some issue is display list of courses, Please try again after some time")
-#         return []
-
-
 class ShowTopic(Action):
     def name(self) -> Text:
         return "action_show_topic"
@@ -64,28 +39,6 @@ class ShowTopic(Action):
         return []
 
 
-# class ShowCourse(Action):
-#     def name(self) -> Text:
-#         return "action_show_course"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         sender = tracker.sender_id
-#         course = tracker.get_slot('course')
-#         name, phone = get_name_phone(tracker)
-#         log_tracker_event(tracker, logger)
-#
-#         logger.info(f"[{sender}] {__file__} :  Inside action_show_course : name = {name} | subject = {course} ")
-#         entry = DB.findOne(tbl="course", name=course)
-#         if entry is not None:
-#             tell = f"Details of {course} is as follows : \n {entry}"
-#         else:
-#             tell = f"We do not offer {course}."
-#         dispatcher.utter_message(text=tell)
-#         return []
-
-
 class ActionEndOfFlow(Action):
     def name(self) -> Text:
         return "action_restart"
@@ -102,116 +55,6 @@ class ActionEndOfFlow(Action):
         dispatcher.utter_message(text="EOC")
         return [Restarted(), AllSlotsReset()]
         # return []
-
-#
-# class ActionSessionStart(Action):
-#     def name(self) -> Text:
-#         return "action_session_start"
-#
-#     @staticmethod
-#     def fetch_slots(tracker: Tracker) -> List[EventType]:
-#         """Collect slots that contain the user's name and phone number."""
-#
-#         slots = []
-#         for key in ("name", "phone"):
-#             value = tracker.get_slot(key)
-#             if value is not None:
-#                 slots.append(SlotSet(key=key, value=value))
-#         return slots
-#
-#     async def run(
-#       self, dispatcher, tracker: Tracker, domain: Dict[Text, Any]
-#     ) -> List[Dict[Text, Any]]:
-#
-#         name, phone = get_name_phone(tracker)
-#         logger.info(f"[{tracker.sender_id}] {__file__} | Start Of Flow  |  name : {name} | phone : {phone}")
-#
-#         # the session should begin with a `session_started` event
-#         events = [SessionStarted()]
-#
-#         # any slots that should be carried over should come after the
-#         # `session_started` event
-#         events.extend(self.fetch_slots(tracker))
-#
-#         # an `action_listen` should be added at the end as a user message follows
-#         events.append(ActionExecuted("action_listen"))
-#
-#         return events
-
-
-class ActionUnlikelyIntent(Action):
-    def name(self) -> Text:
-        return "action_unlikely_intent"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        # name, phone = get_name_phone(tracker)
-        logger.info(f"[{tracker.sender_id}] {__file__} | action_unlikely_intent  ")
-        log_tracker_event(tracker, logger)
-        # save_conversation(tracker, logger)
-        # save_convo(tracker, logger)
-        text = "Some unlikely input was given, Please start again."
-        dispatcher.utter_message(text=text)
-        return []
-
-
-class TriggerHumanHandoff(Action):
-    def name(self) -> Text:
-        return "trigger_human_handoff"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        text = "Calling a teacher to help you. Please wait !!"
-        dispatcher.utter_message(text=text)
-        return []
-
-#
-# class CourseForm(Action):
-#     def name(self) -> Text:
-#         return "course_details_form"
-#
-#     def run(
-#         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-#     ) -> List[EventType]:
-#         required_slots = ["course"]
-#
-#         for slot_name in required_slots:
-#             if tracker.slots.get(slot_name) is None:
-#                 # The slot is not filled yet. Request the user to fill this slot next.
-#                 return [SlotSet("requested_slot", slot_name)]
-#
-#         # All slots are filled.
-#         return [SlotSet("requested_slot", None)]
-#
-#
-# class ActionSubmit(Action):
-#     def name(self) -> Text:
-#         return "action_course_detail_submit"
-#
-#     def run(
-#         self,
-#         dispatcher,
-#         tracker: Tracker,
-#         domain: "DomainDict",
-#     ) -> List[Dict[Text, Any]]:
-#         course = tracker.get_slot('course')
-#
-#         logger.info(f"[{tracker.sender_id}] {__file__} :  Inside action_course_detail_submit : course = {course} ")
-#         log_tracker_event(tracker, logger)
-#         entry = DB.findOne(tbl="course", name=course)
-#         if entry is not None:
-#             tell = f"Details of {course} is as follows : \n {entry}"
-#             dispatcher.utter_message(text=tell)
-#         else:
-#             tell = f"We do not offer {course}."
-#             dispatcher.utter_message(text=tell)
-#
-#         return [SlotSet("course", None)]
-
 
 class ActionMyFallback(Action):
     """Executes the fallback action and goes back to the previous state
@@ -264,26 +107,6 @@ class MyUnlikelyIntent(ActionMyFallback):
 
     def name(self) -> Text:
         return "action_unlikely_intent"
-
-
-# class ActionLaunchQuiz(Action):
-#     """Executes the fallback action and goes back to the previous state
-#     of the dialogue"""
-#
-#     def name(self) -> Text:
-#         return "action_launch_quiz"
-#
-#     async def run(
-#         self,
-#         dispatcher: CollectingDispatcher,
-#         tracker: Tracker,
-#         domain: Dict[Text, Any],
-#     ) -> List[Dict[Text, Any]]:
-#
-#         # log_tracker_event(tracker, logger)
-#         logger.info(f"[{tracker.sender_id}] {__file__} :  Inside action_launch_quiz ")
-#         dispatcher.utter_message(text="Link to quiz is : http://127.0.0.1:5000/quiz_show")
-#         return []
 
 
 class StartOfConversation(Action):
