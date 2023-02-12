@@ -83,7 +83,7 @@ def login_post():
 def index():
     return render_template('index.html')
 
-@app.route('/api/course/get', methods=['POST'])
+@app.route('/api/course/get', methods=['GET'])
 def api_get_course():
     try:
         json_body = request.json 
@@ -106,7 +106,7 @@ def show_course():
     conn.close()
     return render_template('course.html', course=course)
 
-@app.route('/api/chapter/get', methods=['POST'])
+@app.route('/api/chapter/get', methods=['GET'])
 def api_get_chapter():
     try:
         json_body = request.json 
@@ -129,7 +129,7 @@ def show_chapters():
     conn.close()
     return render_template('chapters.html', chapters=chapters)
 
-@app.route('/api/task/get', methods=['POST'])
+@app.route('/api/task/get', methods=['GET'])
 def api_get_task():
     try:
         json_body = request.json 
@@ -152,7 +152,7 @@ def show_tasks():
     conn.close()
     return render_template('tasks.html', tasks=tasks)
 
-@app.route('/api/topic/get', methods=['POST'])
+@app.route('/api/topic/get', methods=['GET'])
 def api_get_topic():
     try:
         json_body = request.json 
@@ -176,7 +176,7 @@ def show_topics():
     conn.close()
     return render_template('topics.html', topics=topics)
 
-@app.route('/api/intent/get', methods=['POST'])
+@app.route('/api/intent/get', methods=['GET'])
 def api_get_intent():
     try:
         json_body = request.json 
@@ -487,19 +487,19 @@ def edit_course(id):
         conn.close()
         return render_template('edit_course.html', course=course)
 
-@app.route('/api/chapter/edit', methods=['POST'])
+@app.route('/api/chapter/edit', methods=['PUT'])
 def api_edit_chapter():
     try:
         json_body = request.json
-        required_fields = ["id_chapter", "name_chapter","short_description","content","key_concepts","resources","observations"]
+        required_fields = ["id_chapter", "name_chapter","short_description","content","key_concepts","resources","observations", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, key_concepts = ?, ressources = ?, observations = ? where id_chapter=?",
-                             (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["key_concepts"], json_body["resources"], json_body["observations"], str(json_body["id_chapter"])))
+            cursor.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, key_concepts = ?, ressources = ?, observations = ?, id_course=? where id_chapter=?",
+                             (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["key_concepts"], json_body["resources"], json_body["observations"], json_body["id_course"], str(json_body["id_chapter"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -532,7 +532,7 @@ def edit_chapter(id):
         conn.close()
         return render_template('edit_chapter.html', chapter=chapter)
 
-@app.route('/api/intent/edit', methods=['POST'])
+@app.route('/api/intent/edit', methods=['PUT'])
 def api_edit_intent():
     try:
         json_body = request.json
@@ -543,8 +543,8 @@ def api_edit_intent():
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ? where id_intent=?",
-                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], str(json_body["id_intent"])))
+            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ?, id_course=?, id_chapter=? where id_intent=?",
+                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_intent"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -573,7 +573,7 @@ def edit_indent(id):
         conn.close()
         return render_template('edit_intent.html', intent=intent)
 
-@app.route('/api/task/edit', methods=['POST'])
+@app.route('/api/task/edit', methods=['PUT'])
 def api_edit_task():
     try:
         json_body = request.json
@@ -584,8 +584,8 @@ def api_edit_task():
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update task set title=?, description=?, ressources=?, deadline=?, active=? where id_task=?",
-                           (json_body["title"], json_body["description"], json_body["resources"], json_body["deadline"], str(json_body["active"]), str(json_body["id_task"])))
+            cursor.execute("update task set title=?, description=?, ressources=?, deadline=?, active=?, id_course=?, id_chapter=? where id_task=?",
+                           (json_body["title"], json_body["description"], json_body["resources"], json_body["deadline"], str(json_body["active"]), json_body["id_course"], json_body["id_chapter"], str(json_body["id_task"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -621,7 +621,7 @@ def edit_task(id):
         conn.close()
         return render_template('edit_task.html', task=task)
 
-@app.route('/api/topic/edit', methods=['POST'])
+@app.route('/api/topic/edit', methods=['PUT'])
 def api_edit_topic():
     try:
         json_body = request.json
@@ -664,7 +664,7 @@ def edit_topic(id):
         conn.close()
         return render_template('edit_topic.html', topic=topic)
 
-@app.route('/api/course/delete', methods=['POST'])
+@app.route('/api/course/delete', methods=['DELETE'])
 def api_delete_course():
     try:
         json_body = request.json
@@ -692,7 +692,7 @@ def delete_course(id):
     conn.close()
     return redirect(url_for('show_courses'))
 
-@app.route('/api/chapter/delete', methods=['POST'])
+@app.route('/api/chapter/delete', methods=['DELETE'])
 def api_delete_chapter():
     try:
         json_body = request.json
@@ -720,7 +720,7 @@ def delete_chapter(id):
     conn.close()
     return redirect(url_for('show_chapters'))
 
-@app.route('/api/intent/delete', methods=['POST'])
+@app.route('/api/intent/delete', methods=['DELETE'])
 def api_delete_intent():
     try:
         json_body = request.json
@@ -748,7 +748,7 @@ def delete_intent(id):
     conn.close()
     return redirect(url_for('show_intents'))
 
-@app.route('/api/task/delete', methods=['POST'])
+@app.route('/api/task/delete', methods=['DELETE'])
 def api_delete_task():
     try:
         json_body = request.json
@@ -776,7 +776,7 @@ def delete_task(id):
     conn.close()
     return redirect(url_for('show_tasks'))
 
-@app.route('/api/topic/delete', methods=['POST'])
+@app.route('/api/topic/delete', methods=['DELETE'])
 def api_delete_topic():
     try:
         json_body = request.json
@@ -804,7 +804,7 @@ def delete_topic(id):
     conn.close()
     return redirect(url_for('show_topics'))
 
-@app.route('/api/answer/add', methods=['POST'])
+@app.route('/api/answer/add', methods=['DELETE'])
 def api_add_answer():
     try:
         json_body = request.json
@@ -875,7 +875,7 @@ def add_question(quiz_id):
     else:
         return render_template('add_question.html', quiz_id=quiz_id)
 
-@app.route('/api/answers/get', methods=['POST'])
+@app.route('/api/answers/get', methods=['GET'])
 def api_get_answers():
     try:
         json_body = request.json
@@ -904,7 +904,7 @@ def show_answers(question_id):
     conn.close()
     return render_template('answers.html', answers=answers, selected_question=selected_question, question_id=question_id)
 
-@app.route('/api/question/edit', methods=['POST'])
+@app.route('/api/question/edit', methods=['PUT'])
 def api_edit_question():
     try:
         json_body = request.json
@@ -940,7 +940,7 @@ def edit_question(question_id):
         conn.close()
         return render_template('edit_question.html', selected_question=selected_question)
 
-@app.route('/api/answer/edit', methods=['POST'])
+@app.route('/api/answer/edit', methods=['PUT'])
 def api_edit_answer():
     try:
         json_body = request.json
@@ -982,7 +982,7 @@ def edit_answer(answer_id):
         return render_template('edit_answer.html', selected_answer=selected_answer)
 
 
-@app.route('/api/question/delete', methods=['POST'])
+@app.route('/api/question/delete', methods=['DELETE'])
 def api_delete_question():
     try:
         json_body = request.json
@@ -1017,7 +1017,7 @@ def delete_question(question_id):
     return redirect(url_for('list_questions', quiz_id=selected_question["quiz_id"]))
 
 
-@app.route('/api/answer/delete', methods=['POST'])
+@app.route('/api/answer/delete', methods=['DELETE'])
 def api_delete_answer():
     try:
         json_body = request.json
@@ -1047,7 +1047,7 @@ def delete_answer(answer_id):
     conn.close()
     return redirect(url_for('show_answers', question_id=selected_answer['question_id']))
 
-@app.route('/api/questions/get', methods=['POST'])
+@app.route('/api/questions/get', methods=['GET])
 def api_get_questions():
     try:
         json_body = request.json
@@ -1094,7 +1094,7 @@ def list_questions(quiz_id):
     return render_template('questions.html', questions=question_rows, quiz_id=quiz_id)
 
 
-@app.route('/api/quiz/delete', methods=['POST'])
+@app.route('/api/quiz/delete', methods=['DELETE'])
 def api_delete_quiz():
     try:
         json_body = request.json
@@ -1126,7 +1126,7 @@ def delete_quiz(quiz_id):
     conn.close()
     return redirect(url_for('show_quizs'))
 
-@app.route('/api/quiz/edit', methods=['POST'])
+@app.route('/api/quiz/edit', methods=['PUT'])
 def api_edit_quiz():
     try:
         json_body = request.json
@@ -1163,7 +1163,7 @@ def edit_quiz(quiz_id):
         conn.close()
         return render_template('edit_quiz.html', selected_quiz=selected_quiz)
 
-@app.route('/api/quiz/add', methods=['POST'])
+@app.route('/api/quiz/add', methods=['PUT'])
 def api_add_quiz():
     try:
         json_body = request.json
@@ -1198,7 +1198,7 @@ def add_quiz():
         return render_template('add_quiz.html')
 
 
-@app.route('/api/quizs/get', methods=['POST'])
+@app.route('/api/quizs/get', methods=['GET'])
 def api_get_quizs():
     try:
         json_body = request.json 
