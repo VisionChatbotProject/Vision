@@ -21,7 +21,6 @@ class IntentsQuery:
 
     def __init__(self, database_name: str = ''):
         database = os.environ.get('DATABASE')
-        print("###### database": database)
         self.db = database
 
     def __enter__(self):
