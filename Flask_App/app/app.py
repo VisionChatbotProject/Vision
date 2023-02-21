@@ -38,7 +38,7 @@ class User(UserMixin):
         return "User, name=" + self.name + ",id=" + self.id
 
 def get_db_connection():
-    conn = sqlite3.connect('/home/chatbot/chatbot.db')
+    conn = sqlite3.connect(os.environ.get('DATABASE'))
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -1047,7 +1047,7 @@ def delete_answer(answer_id):
     conn.close()
     return redirect(url_for('show_answers', question_id=selected_answer['question_id']))
 
-@app.route('/api/questions/get', methods=['GET])
+@app.route('/api/questions/get', methods=['GET'])
 def api_get_questions():
     try:
         json_body = request.json

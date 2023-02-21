@@ -11,6 +11,7 @@ from ruamel.yaml.comments import \
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 from models import Topic, Rule, Steps, Domain
+import os
 
 
 class IntentsQuery:
@@ -18,8 +19,9 @@ class IntentsQuery:
     context manager Sqlite class to commit everything and exit safely
     """
 
-    def __init__(self, database_name: str = 'chatbot.db'):
-        self.db = database_name
+    def __init__(self, database_name: str = ''):
+        database = os.environ.get('DATABASE')
+        self.db = database
 
     def __enter__(self):
         self.con = sqlite3.connect(self.db)
