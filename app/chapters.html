@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="index.html">Home</a></li>
+          <li><a href="course">Course</a></li>
+          <li  class="selected"><a href="chapters">Chapters</a></li>
+          <li><a href="tasks">Tasks</a></li>
+          <li><a href="quizs">Quizs</a></li>
+          <li><a href="topics">Topics</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form__title">Chapters</div>
+    <a href="chapter/add" class="btn-add">Add new Chapter</a>  
+    
+    <table width="100%">
+        <tr>
+            <th>ID Chapter</th>
+            <th>Name</th>
+            <th>Short description</th>
+            <th>Content</th>
+            <th>Key concepts</th>
+            <th>Ressources</th>
+            <th>Observations</th>
+            <th>Actions</th>
+        </tr>
+        {% for row in chapters %}
+                 <tr>
+                    <td>{{ row['id_chapter'] }}</td>
+                    <td>{{ row['name_chapter'] }}</td>
+                    <td>{{ row['short_description'] }}</td>
+                    <td>{{ row['content'] }}</td>
+                    <td>{{ row['key_concepts'] }}</td>
+                    <td>{{ row['ressources'] }}</td>
+                    <td>{{ row['observations'] }}</td>
+                    <td>
+                        <a href="chapter/edit/{{ row['id_chapter'] }}" class="btn-edit">Edit</a>
+                        | 
+                        <a href="chapter/delete/{{ row['id_chapter'] }}" class="btn-edit">Delete</a>
+                    </td>
+                </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
