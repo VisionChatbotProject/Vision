@@ -38,7 +38,7 @@ class User(UserMixin):
         return "User, name=" + self.name + ",id=" + self.id
 
 def get_db_connection():
-    conn = sqlite3.connect(os.environ.get('DATABASE'))
+    conn = sqlite3.connect('/home/chatbot/chatbot.db')
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -86,8 +86,9 @@ def index():
 @app.route('/api/course/get', methods=['GET'])
 def api_get_course():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_course=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
+        where_clause = (' where ' + ' or '.join(map(lambda i: 'id_course=' + str(i), "1")))
         result_courses = []
         conn = get_db_connection()
         courses = conn.execute('SELECT * FROM course' + where_clause).fetchall()
@@ -109,7 +110,7 @@ def show_course():
 @app.route('/api/chapter/get', methods=['GET'])
 def api_get_chapter():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_chapter=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
         result_chapters = []
         conn = get_db_connection()
@@ -132,7 +133,7 @@ def show_chapters():
 @app.route('/api/task/get', methods=['GET'])
 def api_get_task():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_task=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
         result_tasks = []
         conn = get_db_connection()
@@ -155,7 +156,7 @@ def show_tasks():
 @app.route('/api/topic/get', methods=['GET'])
 def api_get_topic():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_topic=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
         result_topics = []
         conn = get_db_connection()
@@ -179,7 +180,7 @@ def show_topics():
 @app.route('/api/intent/get', methods=['GET'])
 def api_get_intent():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_intent=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
         result_intents = []
         conn = get_db_connection()
@@ -212,7 +213,7 @@ def show_intents():
 @app.route('/api/course/add', methods=['POST'])
 def api_add_course():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources", 'email_teacher']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -257,7 +258,7 @@ def add_course():
 @app.route('/api/chapter/add', methods=['POST'])
 def api_add_chapter():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["name_chapter", "short_description", "content", "key_concepts", "resources", "observations", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -301,7 +302,7 @@ def add_chapter():
 @app.route('/api/task/add', methods=['POST'])
 def api_add_task():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["title", "description", "resources", "deadline", "active", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -349,7 +350,7 @@ def add_task():
 @app.route('/api/topic/add', methods=['POST'])
 def api_add_topic():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["topic","meaning","information"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -387,7 +388,7 @@ def add_topic():
 @app.route('/api/intent/add', methods=['POST'])
 def api_add_intent():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["intent_name", "intent_list", "response", "is_quiz", "id_chapter", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -444,7 +445,7 @@ def add_intent():
 @app.route('/api/course/edit', methods=['POST'])
 def api_edit_course():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -490,7 +491,7 @@ def edit_course(id):
 @app.route('/api/chapter/edit', methods=['PUT'])
 def api_edit_chapter():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_chapter", "name_chapter","short_description","content","key_concepts","resources","observations", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -535,7 +536,7 @@ def edit_chapter(id):
 @app.route('/api/intent/edit', methods=['PUT'])
 def api_edit_intent():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_intent", "intent_name","intent_list","response"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -576,7 +577,7 @@ def edit_indent(id):
 @app.route('/api/task/edit', methods=['PUT'])
 def api_edit_task():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_task", "title", "description", "resources", "deadline", "active"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -624,7 +625,7 @@ def edit_task(id):
 @app.route('/api/topic/edit', methods=['PUT'])
 def api_edit_topic():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_topic", "topic", "meaning", "information"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -667,7 +668,7 @@ def edit_topic(id):
 @app.route('/api/course/delete', methods=['DELETE'])
 def api_delete_course():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -695,7 +696,7 @@ def delete_course(id):
 @app.route('/api/chapter/delete', methods=['DELETE'])
 def api_delete_chapter():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -723,7 +724,7 @@ def delete_chapter(id):
 @app.route('/api/intent/delete', methods=['DELETE'])
 def api_delete_intent():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_intent"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -751,7 +752,7 @@ def delete_intent(id):
 @app.route('/api/task/delete', methods=['DELETE'])
 def api_delete_task():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_task"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -779,7 +780,7 @@ def delete_task(id):
 @app.route('/api/topic/delete', methods=['DELETE'])
 def api_delete_topic():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["id_topic"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -807,7 +808,7 @@ def delete_topic(id):
 @app.route('/api/answer/add', methods=['DELETE'])
 def api_add_answer():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["question_id", "answer_text", "is_correct"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -843,7 +844,7 @@ def add_answer(question_id):
 @app.route('/api/question/add', methods=['POST'])
 def api_add_question():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["quiz_id", "question_text"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -878,7 +879,7 @@ def add_question(quiz_id):
 @app.route('/api/answers/get', methods=['GET'])
 def api_get_answers():
     try:
-        json_body = request.json
+        json_body = request.form
         question_clause = ""
         where_clause = ""
         if "question_id" in json_body:
@@ -907,7 +908,7 @@ def show_answers(question_id):
 @app.route('/api/question/edit', methods=['PUT'])
 def api_edit_question():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["question_id", "question_text"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -943,7 +944,7 @@ def edit_question(question_id):
 @app.route('/api/answer/edit', methods=['PUT'])
 def api_edit_answer():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["answer_id", "answer_text", "is_correct"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -985,7 +986,7 @@ def edit_answer(answer_id):
 @app.route('/api/question/delete', methods=['DELETE'])
 def api_delete_question():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["question_id"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -1020,7 +1021,7 @@ def delete_question(question_id):
 @app.route('/api/answer/delete', methods=['DELETE'])
 def api_delete_answer():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["answer_id"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -1050,7 +1051,7 @@ def delete_answer(answer_id):
 @app.route('/api/questions/get', methods=['GET'])
 def api_get_questions():
     try:
-        json_body = request.json
+        json_body = request.form
         quiz_clause = ""
         where_clause = ""
         if "quiz_id" in json_body:
@@ -1097,7 +1098,7 @@ def list_questions(quiz_id):
 @app.route('/api/quiz/delete', methods=['DELETE'])
 def api_delete_quiz():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["quiz_id"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -1129,7 +1130,7 @@ def delete_quiz(quiz_id):
 @app.route('/api/quiz/edit', methods=['PUT'])
 def api_edit_quiz():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["quiz_id", "quiz_name"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -1166,7 +1167,7 @@ def edit_quiz(quiz_id):
 @app.route('/api/quiz/add', methods=['PUT'])
 def api_add_quiz():
     try:
-        json_body = request.json
+        json_body = request.form
         required_fields = ["quiz_name", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
@@ -1201,7 +1202,7 @@ def add_quiz():
 @app.route('/api/quizs/get', methods=['GET'])
 def api_get_quizs():
     try:
-        json_body = request.json 
+        json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'quiz_id=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
         result_quizs = []
         conn = get_db_connection()
