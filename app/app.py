@@ -805,7 +805,7 @@ def delete_topic(id):
     conn.close()
     return redirect(url_for('show_topics'))
 
-@app.route('/api/answer/add', methods=['DELETE'])
+@app.route('/api/answer/add', methods=['POST'])
 def api_add_answer():
     try:
         json_body = request.form
