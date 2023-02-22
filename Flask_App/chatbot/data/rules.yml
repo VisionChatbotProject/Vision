@@ -101,7 +101,7 @@ rules:
 - rule: show content of chapter from course
   steps:
   - intent: content_chapter_from_course
-  - action: query_content_chapter_from_course  
+  - action: query_content_chapter_from_course
 
 - rule: answer key concept from chapter
   steps:

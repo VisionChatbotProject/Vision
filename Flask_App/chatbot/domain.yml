@@ -39,7 +39,7 @@ intents:
 - list_chapter
 - description_chapter
 - content_chapter
-- content_chapter_from_course 
+- content_chapter_from_course
 - key_concepts_chapter
 - ressources_chapter
 - observations_chapter

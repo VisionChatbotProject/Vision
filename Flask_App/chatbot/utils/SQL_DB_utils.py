@@ -14,7 +14,7 @@ import utils.helper
 from collections import defaultdict
 
 client = None
-db_name = "/home/chatbot/chatbot.db"
+db_name = os.environ.get('DATABASE')
 logger = getLogger()
 
 

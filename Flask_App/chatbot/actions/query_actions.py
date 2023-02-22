@@ -8,7 +8,8 @@ from datetime import datetime
 from rasa_sdk.events import AllSlotsReset
 from re import search
 import string
-database = "chatbot.db"
+import os
+database = os.environ.get('DATABASE')
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
