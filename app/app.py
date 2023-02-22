@@ -23,6 +23,7 @@ class User(UserMixin):
     def get_id(self):
         return self.id
 
+
     def is_active(self):
         # Here you should write whatever the code is
         # that checks the database if your user is active
@@ -38,7 +39,7 @@ class User(UserMixin):
         return "User, name=" + self.name + ",id=" + self.id
 
 def get_db_connection():
-    conn = sqlite3.connect('/home/chatbot/chatbot.db')
+    conn = sqlite3.connect(os.environ.get('DATABASE'))
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -88,7 +89,6 @@ def api_get_course():
     try:
         json_body = request.form
         where_clause = (' where ' + ' or '.join(map(lambda i: 'id_course=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
-        where_clause = (' where ' + ' or '.join(map(lambda i: 'id_course=' + str(i), "1")))
         result_courses = []
         conn = get_db_connection()
         courses = conn.execute('SELECT * FROM course' + where_clause).fetchall()
@@ -99,13 +99,13 @@ def api_get_course():
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
-@app.route('/course')
+@app.route('/courses')
 @login_required
-def show_course():
+def show_courses():
     conn = get_db_connection()
-    course = conn.execute('SELECT * FROM course').fetchall()
+    courses = conn.execute('SELECT * FROM course').fetchall()
     conn.close()
-    return render_template('course.html', course=course)
+    return render_template('courses.html', courses=courses)
 
 @app.route('/api/chapter/get', methods=['GET'])
 def api_get_chapter():
@@ -250,7 +250,7 @@ def add_course():
         conn.commit()
         conn.close()
 
-        return redirect(url_for('show_course'))
+        return redirect(url_for('show_courses'))
     else:
         return render_template('add_course.html')
 
@@ -442,7 +442,7 @@ def add_intent():
     else:
         return render_template('add_intent.html')
 
-@app.route('/api/course/edit', methods=['POST'])
+@app.route('/api/course/edit', methods=['PUT'])
 def api_edit_course():
     try:
         json_body = request.form
@@ -481,7 +481,7 @@ def edit_course(id):
         conn.commit()
         conn.close()
 
-        return redirect(url_for('show_course'))
+        return redirect(url_for('show_courses'))
     else:
         conn = get_db_connection()
         course = conn.execute('select * from course where id_course=?', [str(id)]).fetchone()

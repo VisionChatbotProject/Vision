@@ -2,19 +2,19 @@
 
 {% block content %}
 
-        <ul id="menu">
-          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-          <li><a href="index.html">Home</a></li>
-          <li><a href="course">Course</a></li>
-          <li  class="selected"><a href="chapters">Chapters</a></li>
-          <li><a href="tasks">Tasks</a></li>
-          <li><a href="quizs">Quizs</a></li>
-          <li><a href="topics">Topics</a></li>
-        </ul>
-      </div>
-    </div>
+<div id="menubar">
+  <ul id="menu">
+    <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('show_courses') }}">Courses</a></li>
+    <li class="selected"><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+    <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+    <li><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+    <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+  </ul>
+</div>
 
-    <div class="form__title">Chapters</div>
+  <div class="form__title">Chapters</div>
     <a href="chapter/add" class="btn-add">Add new Chapter</a>  
     
     <table width="100%">
