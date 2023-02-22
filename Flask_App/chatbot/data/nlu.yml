@@ -22,24 +22,24 @@ nlu:
     - good afternoon
     - hi hi 
 
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+#- intent: affirm
+#  examples: |
+#    - yes
+#    - y
+#    - indeed
+#    - of course
+#    - that sounds good
+#    - correct
 
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+#- intent: deny
+#  examples: |
+#    - no
+#    - n
+#    - never
+#    - I don't think so
+#    - don't like that
+#    - no way
+#    - not really
 
 - intent: mood_great
   examples: |
@@ -204,18 +204,24 @@ nlu:
     - Chapter number [1](chapter)
     - Chapter [1](chapter)
 
-- intent: content_chapter
-  examples: |
-    - Show me the content of chapter [1](chapter)
-    - Content chapter [1](chapter)
-    - What is the content of the chapter [1](chapter)?
-    - Content of [1] chapter
+#- intent: content_chapter
+#  examples: |
+#    - Show me the content of chapter [1](chapter)
+#    - Content chapter [1](chapter)
+#    - What is the content of the chapter [1](chapter)?
+#    - Content of [1]chapter
 
 - intent: content_chapter_from_course
   examples: |
-    - Please show me the content of the chapter [1](chapter)[1](course) 
-    - What is the content of the chapter [1](chapter)[1](course)?
-
+    - Please show me the content of the chapter [1](chapter)?
+    - What is the content of the chapter [1](chapter)?
+    - Could you please content [1](chapter)?
+#    - Content of [1](chapter)?  
+- intent: list_of_courses
+  examples: |
+    - I want to see courses
+    - Please show me all courses
+    - List of courses
 
 - intent: key_concepts_chapter
   examples: |
@@ -265,12 +271,23 @@ nlu:
 - intent: show_quiz_info
   examples: |
     - i want to take a quiz
+    - yes
+    - ok
+    - I am ready
+    - of course
+    - sure  
     - launch a quiz
     - run a quiz
     - run [Language](quiz_course) quiz
     - quiz for
     - quiz for [Mathmatics](quiz_course)
     - quiz
+
+- intent: no_make_quiz
+  examples: |
+    - no,I do not
+    - I am not ready now
+    - no
 
 - intent: out_of_scope
   examples: |
@@ -353,3 +370,6 @@ nlu:
   examples: |
     - Who is boxuan? 
     - Where is Boxuan?
+- intent: New_Intent_Name
+  examples: |
+    - New Intent List

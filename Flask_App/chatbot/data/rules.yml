@@ -38,6 +38,8 @@ rules:
   steps:
   - intent: show_quiz_info
   - action: quiz_info_form
+  - slot_was_set:
+    - answer: true  
   - active_loop: quiz_info_form
   - active_loop:
   - action: action_quiz_info_submit
@@ -47,6 +49,12 @@ rules:
   steps:
   - intent: faq
   - action: utter_faq
+
+- rule : Say ok thank you for no answer
+  steps:
+  - intent: no_make_quiz
+  - action: utter_quiz_answer_no
+
 
 - rule: Say i dont understand when fallback
   steps:
@@ -93,10 +101,14 @@ rules:
   - intent: description_chapter
   - action: query_description_chapter
 
-- rule: show content of chapter
+#- rule: show content of chapter
+#  steps:
+#  - intent: content_chapter
+#  - action: query_content_chapter
+- rule: show the list of courses
   steps:
-  - intent: content_chapter
-  - action: query_content_chapter
+  - intent: list_of_courses
+  - action: query_list_course
 
 - rule: show content of chapter from course
   steps:
@@ -151,3 +163,7 @@ rules:
   steps:
   - intent: boxuan_liu_student
   - action: utter_boxuan_liu_student
+- rule: rule for New_Intent_Name
+  steps:
+  - intent: New_Intent_Name
+  - action: utter_New_Intent_Name

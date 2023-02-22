@@ -2,6 +2,17 @@ version: "2.0"
 
 stories:
 
+#- story: Activate form to fetch info which quiz to launch
+#  steps:
+#  - intent: show_quiz_info
+#  - action: quiz_info_form
+#  - slot_was_set:
+#    - answer: True  
+#  - active_loop: quiz_info_form
+#  - active_loop:
+#  - action: action_quiz_info_submit
+#  - action: action_deactivate_loop  
+
 - story: happy path
   steps:
   - intent: greet
@@ -16,8 +27,8 @@ stories:
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+#  - intent: affirm
+#  - action: utter_happy
 
 - story: sad path 2
   steps:
@@ -26,8 +37,8 @@ stories:
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+#  - intent: deny
+#  - action: utter_goodbye
 
 #- story: Launch a quiz
 #  steps:

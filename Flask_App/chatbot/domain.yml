@@ -13,8 +13,8 @@ intents:
 - faq:
     is_retrieval_intent: true
 - greet
-- affirm
-- deny
+#- affirm
+#- deny
 - choose_topic
 - launch_quiz
 - quiz_ans
@@ -27,6 +27,7 @@ intents:
 - bot_challenge
 - thanks
 - help
+- no_make_quiz  
 - teacher
 - course_chapters
 - course_description
@@ -37,8 +38,8 @@ intents:
 - email_coordinator
 - course_extressources
 - list_chapter
+- list_of_courses
 - description_chapter
-- content_chapter
 - content_chapter_from_course
 - key_concepts_chapter
 - ressources_chapter
@@ -50,6 +51,7 @@ intents:
 - music_concept
 - concept_of_programming
 - boxuan_liu_student
+- New_Intent_Name
 entities:
 - course
 - chapter
@@ -64,6 +66,9 @@ entities:
 - user_confirmation
 
 slots:
+  answer:
+    type: bool
+    influence_conversation: false
   chapter:
     type: text
     influence_conversation: false
@@ -119,6 +124,9 @@ responses:
   utter_happy:
   - text: "Great, carry on!"
 
+  utter_quiz_answer_no:
+  - text: "Ok, thank you"  
+
   utter_iamabot:
   - text: "I am Visionbot. I am your learning assistant"
   utter_please_rephrase:
@@ -153,6 +161,8 @@ responses:
   - text: "Porgramming is the process or activity of writing computer programs"
   utter_boxuan_liu_student:
   - text: "Boxuan is a developer of vision"
+  utter_New_Intent_Name:
+  - text: "New Intent Response"
 actions:
 - action_ask_quiz_course
 - action_ask_quiz_number
@@ -177,13 +187,14 @@ actions:
 - action_show_score
 - action_session_start
 - query_course_teacher
+- query_list_course
 - query_course_chapters
 - query_course_description
 - query_course_materials
 - query_course_extressources
 - query_list_chapter
 - query_description_chapter
-- query_content_chapter
+#- query_content_chapter
 - query_content_chapter_from_course
 - query_key_concepts_chapter
 - query_ressources_chapter
@@ -198,6 +209,10 @@ forms:
     ignored_intents:
     - faq
     required_slots:
+      answer:
+      - type: from_intent
+        intent: show_quiz_info
+        value: true  
       quiz_course:
       - type: from_text
       quiz_number:

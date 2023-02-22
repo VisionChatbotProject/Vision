@@ -47,8 +47,9 @@ class QuizInfoForm(Action):
             quiz_course = tracker.get_slot('quiz_course')
             quiz_number = tracker.get_slot('quiz_number')
             quiz_over = tracker.get_slot('quiz_over')
+            answer = tracher.get_slot('answer')
             logger.info(f"[{tracker.sender_id}] {__file__} :  Inside quiz_info_form submit function called ")
-            logger.info(f"[{tracker.sender_id}] {__file__} :  {quiz_course} {quiz_number} {quiz_over} ")
+            logger.info(f"[{tracker.sender_id}] {__file__} :  {quiz_course} {quiz_number} {quiz_over} {answer}")
 
             return []
 
@@ -268,6 +269,7 @@ class AskQuizNumber(Action):
             dispatcher.utter_message(text=ask)
         else:
             ask = f"Please enter the quiz number from {listofQuiz}"
+            ask = f"Please note that your answers must be separated by a coma"
             buttons = _quiz_buttons(listofQuiz)
             buttons = button_it(buttons)
             dispatcher.utter_message(text=ask, buttons=buttons)

@@ -8,8 +8,10 @@ from datetime import datetime
 from rasa_sdk.events import AllSlotsReset
 from re import search
 import string
-import os
-database = os.environ.get('DATABASE')
+import colorama
+from colorama import Fore
+
+database = "chatbot.db"
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
@@ -23,17 +25,40 @@ class Query_Lecturer_Course(Action):
         dispatcher.utter_message(text= get_query_results)
         return []
 
+class Query_List_Course(Action):
+     def name(self) -> Text:
+         return "query_list_course"
+     def run(self, dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        conn = create_connection(database)
+        cur = conn.cursor()
+        query="SELECT name FROM course"
+        cur.execute (query)
+        results=cur.fetchall()
+        response="We have the following courses: \n"
+        course_resp=""
+        for cours in results:
+            course_resp+= str(cours[0])+ "\n"
+             
+        text1 = response+course_resp
+        text2 ="Do you want to make a quiz?"
+        dispatcher.utter_message(text1)
+        dispatcher.utter_message(text2)
+        return []
+
 class Query_Chapters_Course(Action):
      def name(self) -> Text:
          return "query_course_chapters"
      def run(self, dispatcher: CollectingDispatcher,
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        answer="This course contents following chapters \n"
-        query="SELECT chapters FROM course"
-        get_query_results = select_from_database(query,answer)
-        dispatcher.utter_message(text= get_query_results)
-        return []
+             answer="This course contents following chapters \n"
+             query="SELECT chapters FROM course"
+             get_query_results = select_from_database(query,answer)
+             dispatcher.utter_message(text= get_query_results)
+             return []
 
 class Query_Description_Course(Action):
      def name(self) -> Text:
@@ -103,8 +128,8 @@ class Query_Content_Chapter_From_Course(Action):
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         chapt=tracker.get_slot("chapter")
         cours=tracker.get_slot("course")
-        answer="The content of this chapter is \n"
-        query=f"""SELECT content from chapter where id_course='{chapt}'"""
+        answer="The content of this chapter are \n"
+        query=f"""SELECT content from chapter where id_course='{chapt}'and chapter.id_course=id_course"""
         get_query_results = select_from_database(query,answer)
         dispatcher.utter_message(text= get_query_results)
         return []
@@ -123,18 +148,18 @@ class Query_Description_Chapter(Action):
         dispatcher.utter_message(text= get_query_results)
         return []
 
-class Query_Content_Chapter(Action):
-     def name(self) -> Text:
-         return "query_content_chapter"
-     def run(self, dispatcher: CollectingDispatcher,
-             tracker: Tracker,
-             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        chapt=tracker.get_slot("chapter")
-        answer="The content of this chapter is \n"
-        query=f"""SELECT content from chapter where id_chapter='{chapt}'"""
-        get_query_results = select_from_database(query,answer)
-        dispatcher.utter_message(text= get_query_results)
-        return []
+#class Query_Content_Chapter(Action):
+#     def name(self) -> Text:
+#         return "query_content_chapter"
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#        chapt=tracker.get_slot("chapter")
+#        answer="The content of this chapter are \n"
+#        query=f"""SELECT content from chapter where id_chapter='{chapt}'"""
+#        get_query_results = select_from_database(query,answer)
+#        dispatcher.utter_message(text= get_query_results)
+#        return []
 
 class Query_Key_Concepts_Chapter(Action):
      def name(self) -> Text:
@@ -143,7 +168,7 @@ class Query_Key_Concepts_Chapter(Action):
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         chapt=tracker.get_slot("chapter")
-        answer="The key concepts for this chapters are\n"
+        answer="The key concepts for this chapters is\n"
         query=f"""SELECT key_concepts from chapter where id_chapter='{chapt}'"""
         get_query_results = select_from_database(query,answer)
         dispatcher.utter_message(text= get_query_results)
