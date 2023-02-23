@@ -1164,7 +1164,7 @@ def edit_quiz(quiz_id):
         conn.close()
         return render_template('edit_quiz.html', selected_quiz=selected_quiz)
 
-@app.route('/api/quiz/add', methods=['PUT'])
+@app.route('/api/quiz/add', methods=['POST'])
 def api_add_quiz():
     try:
         json_body = request.form
