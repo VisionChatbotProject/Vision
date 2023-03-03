@@ -1,26 +1,3 @@
-# FROM matthewfeickert/docker-python3-ubuntu:3.8.7 as rasa-compiler
-# ENV PYTHONUNBUFFERED 1
-
-# WORKDIR /app/
-
-# RUN python -m venv ./venv
-# # Enable venv
-# ENV PATH="/app/venv/bin:$PATH"
-
-# COPY ../requirements.txt /app/requirements.txt
-# RUN pip3 install -r requirements.txt
-
-# FROM matthewfeickert/docker-python3-ubuntu:3.8.7 as rasa-runner
-# WORKDIR /app/
-# COPY --from=rasa-compiler /app/venv /app/venv
-
-# # Enable venv
-# ENV PATH="/app/venv/bin:$PATH"
-# # COPY . /app/
-
-# # CMD ["rasa", "run --cors '*'"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
-
 # Builder stage:
 FROM python:3.8 AS builder
 
@@ -37,18 +14,10 @@ ENV PATH=/venv/bin:$PATH
 # Install Python dependencies
 WORKDIR /app
 COPY chatbot/requirements.txt .
-# COPY develop/startup_backend.sh .
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
 RUN pip3 install -r requirements.txt
-
-# If your setup.py/setup.cfg has a console script entry point,
-# install the application too
-# COPY . .
-# RUN pip3 install .
 
 # Final stage:
 FROM python:3.8 
-# must be _exactly_ the same image as the builder
 
 # Install OS-level dependencies if needed (libmysqlclient, not ...-dev)
 RUN apt-get update \
@@ -62,12 +31,4 @@ ENV PATH=/venv/bin:$PATH
 
 # Copy in the application (if it wasn't `pip install`ed into the venv)
 WORKDIR /
-# COPY . .
-
-# Say how to run it
-# EXPOSE 8000
-# RUN ["cd webchat && npx http-server ."]
-# CMD ["rasa run actions"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
-# ENTRYPOINT ["/app/develop/startup_backend.sh"]
 CMD ["sh", "/develop/startup_backend.sh"]
