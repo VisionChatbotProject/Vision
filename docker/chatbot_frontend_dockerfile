@@ -36,7 +36,7 @@ ENV PATH=/venv/bin:$PATH
 
 # Install Python dependencies
 WORKDIR /app
-COPY Flask_App/app/requirements.txt requirements.txt
+COPY app/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 # If your setup.py/setup.cfg has a console script entry point,
