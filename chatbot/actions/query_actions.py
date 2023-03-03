@@ -10,8 +10,9 @@ from re import search
 import string
 import colorama
 from colorama import Fore
+import os
 
-database = "chatbot.db"
+database = os.environ.get('DATABASE')
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:

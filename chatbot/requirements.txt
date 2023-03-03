@@ -5,3 +5,4 @@ rasa==2.8.0
 rasa_nlu==0.13.3
 rasa_sdk==2.8.1
 protobuf==3.20.*
+colorama==0.4.6

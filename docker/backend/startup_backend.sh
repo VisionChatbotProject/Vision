@@ -3,7 +3,11 @@
 cd /app
 export DATABASE='/config/chatbot.db'
 export DATA=''
-# rasa train # generate model in models/ folder
+
+if [ -z "$(ls -A /models)" ]; then
+   rasa train # generate model in models/ folder
+fi
+
 rasa run --enable-api --cors "*" --debug & #
 python3 webtorasa/main.py & # frontend endpoint
 rasa run actions --cors "*" --debug --verbose &
