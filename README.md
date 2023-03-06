@@ -11,3 +11,9 @@ python -m venv env
 pip install -r requirements.txt
 flask run
 Login at http://localhost:5000/
+
+# How to run Docker servers
+docker-compose [build|up]
+
+# More
+Detailed infos are in the doc/ folder

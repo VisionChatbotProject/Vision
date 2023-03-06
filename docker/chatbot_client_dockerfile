@@ -1,0 +1,12 @@
+FROM python:3.8 
+
+# Install OS-level dependencies if needed (libmysqlclient, not ...-dev)
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
+      build-essential nodejs npm 
+
+
+# Copy in the application (if it wasn't `pip install`ed into the venv)
+WORKDIR /
+CMD ["sh", "/develop/startup_client.sh"]
