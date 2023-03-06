@@ -40,11 +40,11 @@ services:
     networks: 
       - my-custom-network
 
-  vison-client:
+  vision-client:
     build:
       context: ./
       dockerfile: docker/chatbot_client_dockerfile
-    container_name: vison-client
+    container_name: vision-client
     volumes:
       - ./client:/app
       - ./docker/client:/develop
