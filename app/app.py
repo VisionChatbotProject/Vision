@@ -10,7 +10,7 @@ from urllib.parse import urlsplit, parse_qs
 from flask import Flask, session, render_template, request, url_for, flash, redirect, jsonify
 from flask_login import LoginManager, login_user, current_user, login_required, UserMixin
 #from flask.ext.login import LoginManager,login_user
-
+from asgiref.wsgi import WsgiToAsgi
 
 #users =  { "user1": "1", "user2": "2", "user3": "psw123" }
 
@@ -47,6 +47,7 @@ app = Flask(__name__, template_folder='.', static_folder="./style")
 app.config['SECRET_KEY'] = 'fxdPZGTdTpo7AmwKFywZ-R1jUDh3yRgx1jUwpVjIp-Z4sjt6axsVlkGv78fKak-secret-key-goes-here'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "memcached"
+asgi_app = WsgiToAsgi(app)
 
 login_manager = LoginManager(app)
 login_manager.session_protection = "strong"

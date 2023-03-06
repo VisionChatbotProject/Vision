@@ -4,7 +4,7 @@ cd /app
 export DATABASE='/config/chatbot.db'
 export DATA=''
 
-if [ -z "$(ls -A /models)" ]; then
+if [ -z "$(ls -A ./models)" ]; then
    rasa train # generate model in models/ folder
 fi
 
