@@ -1,6 +1,7 @@
 #!/bin/bash
 pkill screen
 sleep 3
+# TODO copy flask.db to bot.db
 screen -dm -S actions
 screen -S actions -X stuff '. /home/./venv/bin/activate\n'
 screen -S actions -X stuff 'cd /home/chatbot\n'
