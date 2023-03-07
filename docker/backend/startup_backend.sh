@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /app
-export DATABASE='/config/chatbot.db'
+export DATABASE='/config/bot.db'
 export DATA=''
 
 if [ -z "$(ls -A ./models)" ]; then
