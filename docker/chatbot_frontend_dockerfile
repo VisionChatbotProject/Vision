@@ -32,5 +32,5 @@ ENV PATH=/venv/bin:$PATH
 # Copy in the application (if it wasn't `pip install`ed into the venv)
 WORKDIR /app
 # CMD ["sh", "/develop/startup_frontend.sh"]
-ENV DATABASE='../config/bot.db'
+ENV DATABASE='../config/flask.db'
 CMD daphne -b 0.0.0.0 -p 5000 app:asgi_app
