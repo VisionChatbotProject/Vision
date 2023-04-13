@@ -9,7 +9,7 @@ cd app
 python -m venv env
 .\env\Scripts\activate
 pip install -r requirements.txt
-flask run
+python -m flask run
 Login at http://localhost:5000/
 
 # How to run Docker servers
