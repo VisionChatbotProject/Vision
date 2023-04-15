@@ -30,7 +30,7 @@ pipeline:
      threshold: 0.7
      ambiguity_threshold: 0.2
    - name: DucklingEntityExtractor
-     url: http://authoring-duckling:8000
+     url: http://vision-duckling:8000
      dimensions:
         - email
 

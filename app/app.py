@@ -877,7 +877,7 @@ def add_question(quiz_id):
     else:
         return render_template('add_question.html', quiz_id=quiz_id)
 
-@app.route('/api/answers/get', methods=['GET'])
+@app.route('/api/answer/get', methods=['GET'])
 def api_get_answers():
     try:
         json_body = request.form
@@ -892,7 +892,7 @@ def api_get_answers():
         conn = get_db_connection()
         answers = conn.execute('SELECT answer_id, answer_text, is_correct FROM answers ' + where_clause).fetchall()
         for answer in answers:
-            result_answers.append({'answer_id': answer["answer_id"], 'answer_text': answer["answer_text"], 'is_correct': answer["is_correct"] })
+            result_answers.append({'id_answer': answer["answer_id"], 'answer_text': answer["answer_text"], 'is_correct': answer["is_correct"] })
         conn.close()
         return jsonify({"success":True, "answers": result_answers})
     except Exception as e:
@@ -910,7 +910,7 @@ def show_answers(question_id):
 def api_edit_question():
     try:
         json_body = request.form
-        required_fields = ["question_id", "question_text"]
+        required_fields = ["id_question", "question_text"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -918,7 +918,7 @@ def api_edit_question():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute("UPDATE questions SET question_text=? WHERE question_id=?",
-                         (json_body["question_text"], json_body["question_id"]))
+                         (json_body["question_text"], json_body["id_question"]))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -946,7 +946,7 @@ def edit_question(question_id):
 def api_edit_answer():
     try:
         json_body = request.form
-        required_fields = ["answer_id", "answer_text", "is_correct"]
+        required_fields = ["id_answer", "answer_text", "is_correct"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -954,7 +954,7 @@ def api_edit_answer():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute("UPDATE answers SET answer_text = ?, is_correct = ? WHERE answer_id = ?",
-                         (json_body["answer_text"], json_body["is_correct"], json_body["answer_id"]))
+                         (json_body["answer_text"], json_body["is_correct"], json_body["id_answer"]))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -1023,7 +1023,7 @@ def delete_question(question_id):
 def api_delete_answer():
     try:
         json_body = request.form
-        required_fields = ["answer_id"]
+        required_fields = ["id_answer"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -1031,7 +1031,7 @@ def api_delete_answer():
             conn = get_db_connection()
             
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM answers WHERE answer_id=?", [str(json_body["answer_id"])])
+            cursor.execute("DELETE FROM answers WHERE answer_id=?", [str(json_body["id_answer"])])
             num_affected = cursor.rowcount
 
             conn.commit()
@@ -1049,7 +1049,7 @@ def delete_answer(answer_id):
     conn.close()
     return redirect(url_for('show_answers', question_id=selected_answer['question_id']))
 
-@app.route('/api/questions/get', methods=['GET'])
+@app.route('/api/question/get', methods=['GET'])
 def api_get_questions():
     try:
         json_body = request.form
@@ -1064,7 +1064,7 @@ def api_get_questions():
         conn = get_db_connection()
         questions = conn.execute('SELECT questions.question_id, questions.quiz_id, questions.question_text FROM questions ' + where_clause).fetchall()
         for question in questions:
-            result_questions.append({'question_id': question["question_id"], 'question_text': question["question_text"] })
+            result_questions.append({'id_question': question["question_id"], 'question_text': question["question_text"] })
         conn.close()
         return jsonify({"success":True, "questions": result_questions})
     except Exception as e:
@@ -1132,7 +1132,7 @@ def delete_quiz(quiz_id):
 def api_edit_quiz():
     try:
         json_body = request.form
-        required_fields = ["quiz_id", "quiz_name"]
+        required_fields = ["id_quiz", "quiz_name"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -1140,7 +1140,7 @@ def api_edit_quiz():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute("UPDATE quizs SET quiz_name=? WHERE quiz_id=?",
-                         (json_body["quiz_name"], json_body["quiz_id"]))
+                         (json_body["quiz_name"], json_body["id_quiz"]))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -1200,7 +1200,7 @@ def add_quiz():
         return render_template('add_quiz.html')
 
 
-@app.route('/api/quizs/get', methods=['GET'])
+@app.route('/api/quiz/get', methods=['GET'])
 def api_get_quizs():
     try:
         json_body = request.form
@@ -1209,7 +1209,7 @@ def api_get_quizs():
         conn = get_db_connection()
         quizs = conn.execute('SELECT quiz_id, quiz_name FROM quizs' + where_clause).fetchall()
         for quiz in quizs:
-            result_quizs.append({"quiz_id": quiz["quiz_id"], "quiz_name": quiz["quiz_name"]})
+            result_quizs.append({"id_quiz": quiz["quiz_id"], "quiz_name": quiz["quiz_name"]})
         conn.close()
         return jsonify({"success":True, "quizs": result_quizs})
     except Exception as e:
