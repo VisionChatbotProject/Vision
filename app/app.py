@@ -1329,6 +1329,23 @@ def generate_quiz(user_id):
     return ",".join(str(x) for x in selected_question_ids)
 
 
+@app.route('/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=('GET', 'POST'))
+def get_quiz_performance(course_id, chapter_id):
+    conn = get_db_connection()
+    c = conn.cursor()
+
+    # check the total of right attempts and wrong attemps
+    c.execute('''SELECT SUM(user_right_answer), SUM(user_wrong_answer) FROM questions
+                   WHERE course_id=? AND chapter_id=?''', (course_id, chapter_id))
+    correct_answers, wrong_answers = c.fetchone()
+
+    # count the accuracy
+    accuracy = correct_answers/(correct_answers+wrong_answers)
+
+    c.close()
+    conn.close()
+    return str(accuracy)
+
 
 @login_manager.user_loader
 def load_user(id):
