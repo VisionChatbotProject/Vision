@@ -1,0 +1,34 @@
+# Builder stage:
+FROM python:3.8 AS builder
+
+# Install OS-level dependencies
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
+      build-essential
+
+# Create the virtual environment
+RUN python3 -m venv /venv
+ENV PATH=/venv/bin:$PATH
+
+# Install Python dependencies
+WORKDIR /app
+COPY chatbot/requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Final stage:
+FROM python:3.8 
+
+# Install OS-level dependencies if needed (libmysqlclient, not ...-dev)
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
+      build-essential
+
+# Copy the virtual environment; must be _exactly_ the same path
+COPY --from=builder /venv /venv
+ENV PATH=/venv/bin:$PATH
+
+# Copy in the application (if it wasn't `pip install`ed into the venv)
+WORKDIR /
+CMD ["sh", "/develop/startup.sh"]
