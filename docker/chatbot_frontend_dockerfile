@@ -33,4 +33,5 @@ ENV PATH=/venv/bin:$PATH
 WORKDIR /app
 # CMD ["sh", "/develop/startup_frontend.sh"]
 ENV DATABASE='../config/flask.db'
+ENV FLASK_SYSTEM='smartstudy'
 CMD daphne -b 0.0.0.0 -p 5000 app:asgi_app
