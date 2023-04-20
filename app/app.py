@@ -194,6 +194,18 @@ def api_get_intent():
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
+@app.route('/api/intent/train', methods=['POST'])
+def api_train_intent():
+    try:
+        docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+        my_container = docker_client.containers.get("vision-chatbot-agent")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
+        my_container.restart()
+        msg = "Training Executed Successfully. " + str(stdout)
+        return jsonify({"success":True, "msg": msg})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
 @app.route('/intent', methods=['GET', 'POST'])
 @login_required
 def show_intents():
