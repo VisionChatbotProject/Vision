@@ -9,4 +9,4 @@ RUN apt-get update \
 
 # Copy in the application (if it wasn't `pip install`ed into the venv)
 WORKDIR /
-CMD ["sh", "/develop/startup_client.sh"]
+CMD ["sh", "/develop/startup.sh"]

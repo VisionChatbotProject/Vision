@@ -5,7 +5,7 @@ FROM python:3.8 AS builder
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
-      build-essential nodejs npm
+      build-essential
 
 # Create the virtual environment
 RUN python3 -m venv /venv
@@ -13,7 +13,7 @@ ENV PATH=/venv/bin:$PATH
 
 # Install Python dependencies
 WORKDIR /app
-COPY app/requirements.txt requirements.txt
+COPY chatbot/requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # Final stage:
@@ -30,8 +30,5 @@ COPY --from=builder /venv /venv
 ENV PATH=/venv/bin:$PATH
 
 # Copy in the application (if it wasn't `pip install`ed into the venv)
-WORKDIR /app
-# CMD ["sh", "/develop/startup_frontend.sh"]
-ENV DATABASE='../config/flask.db'
-ENV FLASK_SYSTEM='smartstudy'
-CMD daphne -b 0.0.0.0 -p 5000 app:asgi_app
+WORKDIR /
+CMD ["sh", "/develop/startup.sh"]

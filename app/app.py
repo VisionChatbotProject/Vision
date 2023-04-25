@@ -11,6 +11,7 @@ from flask import Flask, session, render_template, request, url_for, flash, redi
 from flask_login import LoginManager, login_user, current_user, login_required, UserMixin
 #from flask.ext.login import LoginManager,login_user
 from asgiref.wsgi import WsgiToAsgi
+import docker
 
 #users =  { "user1": "1", "user2": "2", "user3": "psw123" }
 
@@ -193,6 +194,18 @@ def api_get_intent():
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
+@app.route('/api/intent/train', methods=['POST'])
+def api_train_intent():
+    try:
+        docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+        my_container = docker_client.containers.get("vision-chatbot-agent")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
+        my_container.restart()
+        msg = "Training Executed Successfully. " + str(stdout)
+        return jsonify({"success":True, "msg": msg})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
 @app.route('/intent', methods=['GET', 'POST'])
 @login_required
 def show_intents():
@@ -203,8 +216,13 @@ def show_intents():
     msg = ""
     if trainBot is not None and 'trainbot' in trainBot:
         try:
-            # dont change this line 
-            stdout = subprocess.check_output(["./exampl.sh"]).decode("utf-8")
+            if (os.environ.get('FLASK_SYSTEM') == 'smartstudy'):                
+                docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+                my_container = docker_client.containers.get("vision-chatbot-agent")
+                stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
+                my_container.restart()
+            else:
+                stdout = subprocess.check_output(["./exampl.sh"]).decode("utf-8")
             msg = "Training Executed Successfully. Please wait at least five minutes until next training." + str(stdout)
         except Exception as e:
             msg = "Failed to train" + str(e)
