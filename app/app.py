@@ -198,7 +198,9 @@ def api_get_intent():
 def api_train_intent():
     try:
         docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
-        my_container = docker_client.containers.get("vision-chatbot-agent")
+        # container_name = "vision-chatbot-agent"
+        container_name = "authoring-chatbot-agent"
+        my_container = docker_client.containers.get(container_name)
         stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
         my_container.restart()
         msg = "Training Executed Successfully. " + str(stdout)
