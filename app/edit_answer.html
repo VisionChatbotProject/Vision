@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('show_courses') }}">Courses</a></li>
+          <li><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li class="selected"><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+  <div id="site_content">
+
+    <div class="form__title">Edit answer</div>
+    <br/><br/>
+    <p class="form__desc">
+        Use this formular to edit answer
+    </p>
+    
+    <br/>
+    <br/>
+    <form class="form" action="" method="POST">
+        <div class="form__item">
+          <label for="question_text" class="form__label">Answer Text: </label>
+          <input type="text" class="form__input"  id="answer_text" name="answer_text" value="{{ selected_answer['answer_text'] }}" placeholder="Enter a answer text" require>
+          <span class="form__error">A sample error message</span>
+        </div>
+        <div class="form__item">
+          <label for="tactive" class="form__label">Correct answer</label>
+          <input type="checkbox" id="answer_correct" name="correct" placeholder="Is answer correct?" {{'checked="checked"' if selected_answer['is_correct'] else ""}}>
+          <span class="form__error">A sample error message</span>
+        </div>
+	<div class="form__item">
+          <button class="form__btn" type="submit">Edit answer</button>
+        </div>    
+    </form>
+   </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+    <ul id="menu">
+      <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+      <li><a href="index.html">Home</a></li>
+      <li class="selected"><a href="courses">Courses</a></li>
+      <li><a href="chapters">Chapters</a></li>
+      <li><a href="tasks">Tasks</a></li>
+      <li><a href="quizs">Quizs</a></li>
+      <li><a href="topics">Topics</a></li>
+    </ul>
+  </div>
+
+<div id="site_content">
+<h3>Courses</h3>
+    <a href="course/add" class="btn-add">Add new Course</a>  
+     {% if not courses %}
+        <a href="course/add" class="btn-add">Add new Course</a>  
+     {% endif %}
+
+     {% for row in courses %}
+    <h3> Name of the course: {{ row['name'] }}</h3>
+    <h3> Name of the teacher: {{ row['teacher'] }}</h3>
+    <h3> E-Mail of the teacher: {{ row['email_teacher'] }}</h3>
+    <h3> Description of the course: {{ row['description'] }}</h3>
+    <h3> Chapters of the course: {{ row['chapters'] }}</h3>
+    <h3> Materials: {{ row['materials'] }}</h3>
+    <h3> Extern Ressources: {{ row['externressources'] }}</h3>
+    <a href="course/edit/{{ courses[-1]['id_course'] }}" class="btn-edit">Edit</a>
+    <a href="course/delete/{{ courses[-1]['id_course'] }}" class="btn-edit">Delete</a>    
+    <br/>
+    {% endfor %}
+</div>
+
+{% endblock %}

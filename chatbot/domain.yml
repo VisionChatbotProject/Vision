@@ -1,0 +1,230 @@
+version: "2.0"
+
+config:
+  store_entities_as_slots: true
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false
+
+intents:
+- start
+- out_of_scope
+- show_quiz_info
+- faq:
+    is_retrieval_intent: true
+- greet
+#- affirm
+#- deny
+- choose_topic
+- launch_quiz
+- quiz_ans
+- quiz_num
+- ask_email
+- login
+- ask_score
+- mood_great
+- mood_unhappy
+- bot_challenge
+- thanks
+- help
+- no_make_quiz  
+- teacher
+- course_chapters
+- course_description
+- course_materials
+- course_ectressources
+- score_course
+- main_topic_course
+- email_coordinator
+- course_extressources
+- list_chapter
+- list_of_courses
+- description_chapter
+- content_chapter_from_course
+- key_concepts_chapter
+- ressources_chapter
+- observations_chapter
+- title_task
+- ressources_task
+- topic_meaning
+- goodbye
+- music_concept
+- concept_of_programming
+- boxuan_liu_student
+- New_Intent_Name
+entities:
+- course
+- chapter
+- topic
+- quiz_course
+- quiz_number
+- quiz_over
+- quiz_question_count
+- email
+- user_email
+- user_pwd
+- user_confirmation
+
+slots:
+  answer:
+    type: bool
+    influence_conversation: false
+  chapter:
+    type: text
+    influence_conversation: false
+  course:
+    type: text
+  topic:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  fallback_count:
+    type: float
+    max_value: 3
+    min_value: 0
+  quiz_course:
+    type: any
+  quiz_number:
+    type: any
+  quiz_question_list:
+    type: any
+  quiz_correct_ans:
+    type: float
+    min_value: 0
+  quiz_original_question_list:
+    type: any
+  quiz_over:
+    type: any
+  quiz_question_count:
+    type: float
+    min_value: 0
+  email:
+    type: any
+  teacher_email:
+    type: any
+  user_email:
+    type: any
+  user_pwd:
+    type: any
+  user_confirmation:
+    type: any
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+  utter_start:
+  - text: "Hi! How can I help you?"
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_quiz_answer_no:
+  - text: "Ok, thank you"  
+
+  utter_iamabot:
+  - text: "I am Visionbot. I am your learning assistant"
+  utter_please_rephrase:
+  - text: "I am sorry I didnt understand you"
+  utter_thanks:
+  - text: "You are welcome. I am happy to help you"
+  utter_help:
+  - text: "I can help you delivering infomation  1.- About Homeworks 2.- About Exams\
+      \ 3.- About where to find content"
+  utter_score_course:
+  - text: "The sorce to pass the course is 2.5"
+  utter_main_topic_course:
+  - text: "The main topic is natural language processing"
+  utter_email_coordinator:
+  - text: "The email of the coordinator is coordinator@gmail.com"
+  utter_fallback:
+  - text: Sorry, I didn't get you !!! Some one from the college wil get in touch with
+      you. Your question is sent to them.
+  utter_default:
+  - text: Sorry, I didn't get you !!!
+  utter_ask_info:
+  - text: Hey! What type of information do you want?
+  utter_usr_email:
+  - text: Hey ! Please provide your registered email ?
+  utter_usr_pwd:
+  - text: Please provide your password ?
+  utter_goodbye:
+  - text: "Bye"
+  utter_music_concept:
+  - text: "Music is a type of art"
+  utter_concept_of_programming:
+  - text: "Porgramming is the process or activity of writing computer programs"
+  utter_boxuan_liu_student:
+  - text: "Boxuan is a developer of vision"
+  utter_New_Intent_Name:
+  - text: "New Intent Response"
+actions:
+- action_ask_quiz_course
+- action_ask_quiz_number
+- action_ask_quiz_over
+- action_default_fallback
+- action_quiz_info_submit
+- action_quiz_launch_form
+- action_quiz_launch_submit
+- action_restart
+- action_show_topic
+- action_unlikely_intent
+- my_default_fallback
+- utter_faq
+- validate_quiz_info_form
+- validate_quiz_launch_form
+- validate_restaurant_form
+- action_ask_user_email
+- action_ask_user_pwd
+- action_ask_user_confirmation
+- validate_user_details_form
+- action_user_details_submit
+- action_show_score
+- action_session_start
+- query_course_teacher
+- query_list_course
+- query_course_chapters
+- query_course_description
+- query_course_materials
+- query_course_extressources
+- query_list_chapter
+- query_description_chapter
+#- query_content_chapter
+- query_content_chapter_from_course
+- query_key_concepts_chapter
+- query_ressources_chapter
+- query_observations_chapter
+- query_title_task
+- query_ressources_task
+- query_topic_meaning
+- action_login
+
+forms:
+  quiz_info_form:
+    ignored_intents:
+    - faq
+    required_slots:
+      answer:
+      - type: from_intent
+        intent: show_quiz_info
+        value: true  
+      quiz_course:
+      - type: from_text
+      quiz_number:
+      - type: from_text
+      quiz_over:
+      - type: from_text
+  user_details_form:
+    required_slots:
+      user_email:
+      - type: from_text
+        entity: email
+      user_pwd:
+      - type: from_text
+      user_confirmation:
+      - type: from_text

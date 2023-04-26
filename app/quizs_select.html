@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('show_courses') }}">Courses</a></li>
+          <li><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li class="selected"><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+<div id="site_content">
+    <div class="form__title">Quizs</div>
+    
+    <table width="100%">
+        <tr>
+            <th>ID</th>
+            <th>Quiz Name</th>
+            <th>Questions</th>
+	    <th>Action</th>
+	</tr>        
+            {% for row in quizs %}            
+                <tr>
+                    <td>{{ row['quiz_id'] }}</td>
+                    <td>{{ row['quiz_name'] }}</td>
+                    <td>{{ row['question_count'] }}</td>
+                    <td>
+                        <a href="/quiz/start/{{ row['quiz_id'] }}" class="btn-edit">Start</a>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

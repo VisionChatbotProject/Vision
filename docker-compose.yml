@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  vision-duckling:
+    image: rasa/duckling:0.1.6.5-r4
+    container_name: vision-duckling
+    ports:
+      - "8008:8000"    
+    networks:
+      - my-custom-network
+
+  vision-chatbot-agent:
+    depends_on:
+      - vision-duckling
+    build:
+      context: ./
+      dockerfile: docker/chatbot_agent_dockerfile
+    container_name: vision-chatbot-agent
+    volumes:
+      - ./chatbot:/app
+      - ./config:/config
+      - ./docker/agent:/develop
+    ports:
+      - "5005:5005"
+    networks:
+      - my-custom-network
+
+  vision-chatbot-actions:
+    depends_on:
+      - vision-chatbot-agent
+    build:
+      context: ./
+      dockerfile: docker/chatbot_actions_dockerfile
+    container_name: vision-chatbot-actions
+    volumes:
+      - ./chatbot:/app
+      - ./config:/config
+      - ./docker/actions:/develop
+    ports:
+      - "5055:5055"
+    networks:
+      - my-custom-network      
+
+  vision-frontend:
+    build:
+      context: ./
+      dockerfile: docker/chatbot_frontend_dockerfile
+    container_name: vision-frontend
+    volumes:
+      - ./app:/app
+      - ./config:/config
+      - ./docker/frontend:/develop
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "5000:5000"
+    networks: 
+      - my-custom-network
+
+  vision-client:
+    build:
+      context: ./
+      dockerfile: docker/chatbot_client_dockerfile
+    container_name: vision-client
+    volumes:
+      - ./client:/app
+      - ./docker/client:/develop
+    ports:
+      - "8080:8080"
+    networks:
+      - my-custom-network
+
+networks:
+  my-custom-network:
+    driver: bridge

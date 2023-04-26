@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('show_courses') }}">Courses</a></li>
+          <li><a href="{{ url_for('show_chapters') }}">Chapters</a></li>
+          <li><a href="{{ url_for('show_tasks') }}">Tasks</a></li>
+          <li class="selected"><a href="{{ url_for('show_quizs') }}">Quizs</a></li>
+          <li><a href="{{ url_for('show_topics') }}">Topics</a></li>
+        </ul>
+      </div>
+
+<div id="site_content">
+    <div class="form__title">Empty question list</div>
+    <br/>    
+    <div class="form__question_title">There are questions in DB</div>
+    <br/>
+    <div class="form__question_title">Add questions to DB</div>
+    <div class="form__question_title">Please note: questions without correct answers are not considered.</div>
+
+</div>
+
+
+{% endblock %}
