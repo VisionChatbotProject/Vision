@@ -873,7 +873,7 @@ def delete_topic(id):
     return redirect(url_for('show_topics'))
 
 @app.route('/api/exam/delete', methods=['DELETE'])
-def api_delete_topic():
+def api_delete_exam():
     try:
         json_body = request.form
         required_fields = ["id_exam"]
