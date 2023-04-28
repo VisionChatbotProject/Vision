@@ -232,22 +232,25 @@ def show_intents():
 @app.route('/api/course/add', methods=['POST'])
 def api_add_course():
     try:
-        json_body = request.form
-        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources", 'email_teacher']
+        json_body = request.json
+        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources",
+                           'email_teacher', 'exam_type', 'course_start', 'course_end', 'exam_date']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher') VALUES (?, ?, ?, ?, ?, ?, ?)",
-                         (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"], json_body["description"], json_body["externresources"], json_body['email_teacher']))
+            cursor.execute(
+                "INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher', 'exam_type', 'course_start', 'course_end', 'exam_date') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"],
+                 json_body["description"], json_body["externresources"], json_body['email_teacher'], json_body['exam_type'], json_body['course_start'], json_body['course_end'], json_body['exam_date']))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New course has been added"})
+            return jsonify({"success": True, "id": new_id, "description": "New course has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
 
 
 @app.route('/course/add', methods=('GET', 'POST'))
@@ -461,19 +464,41 @@ def add_intent():
     else:
         return render_template('add_intent.html')
 
+
+@app.route('/api/exam/add', methods=['POST'])
+def api_add_exam():
+    try:
+        json_body = request.form
+        required_fields = ["name","description","observation", "date", "active", "id_course", "id_chapter"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO topic('name', 'description', 'observation', 'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
+            new_id = cursor.lastrowid
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "id":new_id, "description":"New exam has been added"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+
 @app.route('/api/course/edit', methods=['PUT'])
 def api_edit_course():
     try:
         json_body = request.form
-        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher"]
+        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher",'exam_type', 'course_start', 'course_end', 'exam_date']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=? where id_course=?",
-                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], str(json_body["id_course"])))
+            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=?, exam_type=?, course_start=?, course_end=?, exam_date=? where id_course=?",
+                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], json_body["exam_type"],json_body["course_start"],json_body["course_end"],json_body["exam_date"], str(json_body["id_course"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -684,6 +709,27 @@ def edit_topic(id):
         conn.close()
         return render_template('edit_topic.html', topic=topic)
 
+
+@app.route('/api/exam/edit', methods=['PUT'])
+def api_edit_exam():
+    try:
+        json_body = request.form
+        required_fields = ["id_exam","name","description","observation", "date", "active", "id_course", "id_chapter"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("update exam set name=?, description=?, observation=?, date=?, active=?, id_course=?, id_chapter=? where id_exam=?",
+                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_exam"])))
+            num_affected = cursor.rowcount
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "description": str(num_affected) + " exam(s) has been updated"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
 @app.route('/api/course/delete', methods=['DELETE'])
 def api_delete_course():
     try:
@@ -823,6 +869,25 @@ def delete_topic(id):
     conn.commit()
     conn.close()
     return redirect(url_for('show_topics'))
+
+@app.route('/api/exam/delete', methods=['DELETE'])
+def api_delete_topic():
+    try:
+        json_body = request.form
+        required_fields = ["id_exam"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("delete from exam where id_exam=?", (str(json_body["id_exam"])))
+            num_affected = cursor.rowcount
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "description": str(num_affected) + " exam(s) has been deleted"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
 @app.route('/api/answer/add', methods=['POST'])
 def api_add_answer():
