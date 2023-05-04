@@ -10,9 +10,8 @@ from re import search
 import string
 import colorama
 from colorama import Fore
-import os
 
-database = os.environ.get('DATABASE')
+database = "chatbot.db"
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
@@ -117,8 +116,17 @@ class Query_ListChapter(Action):
         return []
 
 
-
-
+# module_task
+class Query_Tasks_of_Module(Action):
+     def name(self) -> Text:
+         return "query_tasks_of_module"
+     def run(self, dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+         modu=tracker.get_slot("module")
+         answer="The task of this module are \n"
+         query=f"""SELECT  """
+         
 
 ## New
 class Query_Content_Chapter_From_Course(Action):
@@ -219,6 +227,37 @@ class Query_Titel_Task(Action):
         final_response=response+chapter_resp
         dispatcher.utter_message(final_response)
         return []
+
+
+
+
+class Query_Exam_Deadline(Action):
+     def name(self) -> Text:
+         return "query_title_task"
+     def run(self, dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+             conn = create_connection(database)
+             cur = conn.cursor()
+             query="select id_exam, name, description, date from exam where date(date)>=date('now') and active=1;"
+             cur.execute (query)
+             results=cur.fetchall()
+             response = "You have following exams \n"
+             exam_resp=""
+             for exa in results:
+                 exam_resp+= "\nId of exam: "+str(exa[0])+"\n Exam: "+exa[1]+ "\n Description: " +chap[2]+ "\n Deadline: "+datetime.strptime(chap[3], '%Y-%m-%d').date().strftime('%d %b %Y')
+             final_response=response+chapter_resp
+             dispatcher.utter_message(final_response)
+             return []
+
+
+
+
+
+
+
+
+
 
 class Query_Ressources_Task(Action):
      def name(self) -> Text:
