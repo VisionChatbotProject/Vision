@@ -234,9 +234,8 @@ def show_intents():
 @app.route('/api/course/add', methods=['POST'])
 def api_add_course():
     try:
-        json_body = request.json
-        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources",
-                           'email_teacher', 'exam_type', 'course_start', 'course_end', 'exam_date']
+        json_body = request.form
+        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources",'email_teacher', 'course_start', 'course_end']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -244,9 +243,8 @@ def api_add_course():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher', 'exam_type', 'course_start', 'course_end', 'exam_date') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"],
-                 json_body["description"], json_body["externresources"], json_body['email_teacher'], json_body['exam_type'], json_body['course_start'], json_body['course_end'], json_body['exam_date']))
+                "INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher', 'course_start', 'course_end') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"], json_body["description"], json_body["externresources"], json_body['email_teacher'], json_body['course_start'], json_body['course_end']))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
@@ -492,15 +490,15 @@ def api_add_exam():
 def api_edit_course():
     try:
         json_body = request.form
-        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher",'exam_type', 'course_start', 'course_end', 'exam_date']
+        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher",'course_start', 'course_end']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=?, exam_type=?, course_start=?, course_end=?, exam_date=? where id_course=?",
-                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], json_body["exam_type"],json_body["course_start"],json_body["course_end"],json_body["exam_date"], str(json_body["id_course"])))
+            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=?, course_start=?, course_end=? where id_course=?",
+                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], json_body["exam_type"],json_body["course_start"],json_body["course_end"],str(json_body["id_course"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
