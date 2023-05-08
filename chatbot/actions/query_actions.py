@@ -314,7 +314,7 @@ class Query_SetValue(Action):
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user = tracker.get_slot("user")
-        dispatcher.utter_message("Setting slot value user to ..." + user)
+        dispatcher.utter_message("Setting slot value user to " + str(user))
         return [SlotSet('user', user)]
 
 def buscar(mystring):

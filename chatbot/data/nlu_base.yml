@@ -346,9 +346,15 @@ nlu:
 
 - intent: set_slot_value
   examples: |
+    - Slot user
+    - Slot user to [Hans](user)
+    - Set slot user
     - Set slot value user
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
+- regex: user
+  examples: |
+    - [a-zA-Z0-9\\s]*
 
 - intent: goodbye
   examples: |-

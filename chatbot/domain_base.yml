@@ -105,6 +105,7 @@ slots:
     type: any
   user:
     type: any
+    auto_fill: true
   user_email:
     type: any
   user_pwd:
