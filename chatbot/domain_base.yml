@@ -47,9 +47,7 @@ intents:
 - topic_meaning
 - set_slot_value
 - goodbye
-- music_concept
-- concept_of_programming
-- boxuan_liu_student
+
 entities:
 - course
 - chapter
@@ -161,12 +159,6 @@ responses:
   utter_goodbye:
   - text: "Bye"
 
-  utter_music_concept:
-  - text: "Music is a type of art"
-  utter_concept_of_programming:
-  - text: "Porgramming is the process or activity of writing computer programs"
-  utter_boxuan_liu_student:
-  - text: "Boxuan is a developer of vision"
 actions:
 - action_ask_quiz_course
 - action_ask_quiz_number

@@ -16,7 +16,8 @@ from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset, UserUtteranc
 from actions.action_utils import _subject_buttons, _quiz_buttons, _show_question_options, _user_answer, _yes_no_buttons, save_conversation, save_convo
 from utils.helper import *
 import utils.SQL_DB_utils as DB
-
+import os
+database = os.environ.get('DATABASE')
 
 class QuizInfoForm(Action):
     """
@@ -200,28 +201,26 @@ class ValidateQuizInfoForm(FormValidationAction):
         if result:
             if email is not None:
                 dispatcher.utter_message(text="Correct !!")
-                try:
-                    sqliteConnection = sqlite3.connect('chatbot.db')
-                    cursor = sqliteConnection.cursor()
-                    sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1 """
-                    sqlite_insert_query = """ INSERT INTO questions (user_email_right) VALUES ('email')"""
-                    cursor.execute(sqlite_update_query)
-                    cursor.execute(sqlite_insert_query)
-                    sqliteConnection.commit()
+                sqliteConnection = sqlite3.connect(database)
+                cursor = sqliteConnection.cursor()
+                sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1 """
+                sqlite_insert_query = """ INSERT INTO questions (user_email_right) VALUES ('email')"""
+                cursor.execute(sqlite_update_query)
+                cursor.execute(sqlite_insert_query)
+                sqliteConnection.commit()
             else:
                 dispatcher.utter_message(text=f"Register yourself to see the results")
             quiz_correct_ans = quiz_correct_ans + 1
         else:
             if email is not None:
                 dispatcher.utter_message(text=f"Incorrect !! Correct answer is {correct_answer}")
-                try:
-                    sqliteConnection = sqlite3.connect('chatbot.db')
-                    cursor = sqliteConnection.cursor()
-                    sqlite_update_query = """UPDATE questions SET user_wrong_answer = user_wrong_answer + 1 """
-                    sqlite_insert_query = """INSERT INTO questions (user_email_wrong) VALUES ('email')  """
-                    cursor.execute(sqlite_update_query)
-                    cursor.execute(sqlite_insert_query)
-                    sqliteConnection.commit()
+                sqliteConnection = sqlite3.connect(database)
+                cursor = sqliteConnection.cursor()
+                sqlite_update_query = """UPDATE questions SET user_wrong_answer = user_wrong_answer + 1 """
+                sqlite_insert_query = """INSERT INTO questions (user_email_wrong) VALUES ('email')  """
+                cursor.execute(sqlite_update_query)
+                cursor.execute(sqlite_insert_query)
+                sqliteConnection.commit()
             else:
                 dispatcher.utter_message(text=f"Register yourself to see the results")
 

@@ -16,7 +16,8 @@ from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset, UserUtteranc
 from actions.action_utils import _subject_buttons, _quiz_buttons, _show_question_options, _user_answer, _yes_no_buttons, save_conversation, save_convo
 from utils.helper import *
 import utils.SQL_DB_utils as DB
-
+import os
+database = os.environ.get('DATABASE')
 
 class QuizInfoForm(Action):
     """
@@ -56,6 +57,12 @@ class QuizInfoForm(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
+        # SlotSet('user', "Scorm-Server Student")
+        # val = tracker.current_state()
+        # logger.info(f"tracker.current_state():{val}")
+        user = tracker.get_slot("user")
+        # dispatcher.utter_message(text="Welcome ")
+
         required_slots = ["quiz_course", "quiz_number", "quiz_over"]
         logger.info(f"[{tracker.sender_id}] {__file__} :  Inside quiz_info_form  ")
 
@@ -65,7 +72,7 @@ class QuizInfoForm(Action):
             if tracker.slots.get(slot_name) is not None:
                 # The slot is not filled yet. Request the user to fill this slot next.
                 if slot_name == 'quiz_course':
-                    tell = "Please enter the name of the course for which you want to have the quiz ?"
+                    tell = "Please enter the name of the course for which you want to have the quiz ?" + user
                     dispatcher.utter_message(text=tell)
                 elif slot_name == 'quiz_number':
                     tell = "Please enter the quiz number that you want to launch ?"
@@ -200,28 +207,27 @@ class ValidateQuizInfoForm(FormValidationAction):
         if result:
             if email is not None:
                 dispatcher.utter_message(text="Correct !!")
-                try:
-                    sqliteConnection = sqlite3.connect('chatbot.db')
-                    cursor = sqliteConnection.cursor()
-                    sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1 """
-                    sqlite_insert_query = """ INSERT INTO questions (user_email_right) VALUES ('email')"""
-                    cursor.execute(sqlite_update_query)
-                    cursor.execute(sqlite_insert_query)
-                    sqliteConnection.commit()
+                sqliteConnection = sqlite3.connect(database)
+                cursor = sqliteConnection.cursor()
+                sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1 """
+                sqlite_insert_query = """ INSERT INTO questions (user_email_right) VALUES ('email')"""
+                cursor.execute(sqlite_update_query)
+                cursor.execute(sqlite_insert_query)
+                sqliteConnection.commit()
             else:
                 dispatcher.utter_message(text=f"Register yourself to see the results")
+
             quiz_correct_ans = quiz_correct_ans + 1
         else:
             if email is not None:
                 dispatcher.utter_message(text=f"Incorrect !! Correct answer is {correct_answer}")
-                try:
-                    sqliteConnection = sqlite3.connect('chatbot.db')
-                    cursor = sqliteConnection.cursor()
-                    sqlite_update_query = """UPDATE questions SET user_wrong_answer = user_wrong_answer + 1 """
-                    sqlite_insert_query = """INSERT INTO questions (user_email_wrong) VALUES ('email')  """
-                    cursor.execute(sqlite_update_query)
-                    cursor.execute(sqlite_insert_query)
-                    sqliteConnection.commit()
+                sqliteConnection = sqlite3.connect(database)
+                cursor = sqliteConnection.cursor()
+                sqlite_update_query = """UPDATE questions SET user_wrong_answer = user_wrong_answer + 1 """
+                sqlite_insert_query = """INSERT INTO questions (user_email_wrong) VALUES ('email')  """
+                cursor.execute(sqlite_update_query)
+                cursor.execute(sqlite_insert_query)
+                sqliteConnection.commit()
             else:
                 dispatcher.utter_message(text=f"Register yourself to see the results")
 

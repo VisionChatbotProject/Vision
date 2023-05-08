@@ -11,7 +11,8 @@ import string
 import colorama
 from colorama import Fore
 
-database = "chatbot.db"
+import os
+database = os.environ.get('DATABASE')
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
@@ -305,6 +306,16 @@ class Query_TopicMeaning(Action):
             final_response=response+topic_resp
             dispatcher.utter_message(text=final_response)
         return [AllSlotsReset()]
+
+class Query_SetValue(Action):
+     def name(self) -> Text:
+         return "query_set_value"
+     def run(self, dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        user = tracker.get_slot("user")
+        dispatcher.utter_message("Setting slot value user to ..." + user)
+        return [SlotSet('user', user)]
 
 def buscar(mystring):
     if (search("what does",mystring) and search("mean",mystring)) or search("meaning of",mystring) or search("definition of",mystring):
