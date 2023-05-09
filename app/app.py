@@ -1412,7 +1412,7 @@ def generate_quiz(user_id):
     return ",".join(str(x) for x in selected_question_ids)
 
 
-@app.route('/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=('GET', 'POST'))
+@app.route('/api/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=('GET', 'POST'))
 def get_quiz_performance(course_id, chapter_id):
     conn = get_db_connection()
     c = conn.cursor()
@@ -1422,6 +1422,15 @@ def get_quiz_performance(course_id, chapter_id):
                    WHERE course_id=? AND chapter_id=?''', (course_id, chapter_id))
     correct_answers, wrong_answers = c.fetchone()
 
+    if (correct_answers is None and wrong_answers is not None):
+        return str(0)
+
+    if (correct_answers is not None and wrong_answers is None):
+        return str(100)
+    
+    if (correct_answers is None and wrong_answers is None):
+        return str(-1)
+
     # count the accuracy
     accuracy = correct_answers/(correct_answers+wrong_answers)
 
@@ -1430,7 +1439,7 @@ def get_quiz_performance(course_id, chapter_id):
     return str(accuracy)
     
     
-@app.route('/get_user_performance/<string:user_id>/<int:course_id>/<int:chapter_id>', methods=['GET'])
+@app.route('/api/get_user_performance/<string:user_id>/<int:course_id>/<int:chapter_id>', methods=['GET'])
 def get_user_performance(user_id, course_id, chapter_id):
 
     conn = get_db_connection()
@@ -1455,6 +1464,29 @@ def get_user_performance(user_id, course_id, chapter_id):
     conn.close()
     return str(accuracy)
 
+@app.route('/api/cleardb', methods=['GET'])
+def clear_db():
+
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('''delete from answers''')
+    c.execute('''delete from chapter''')
+    c.execute('''delete from course''')
+    c.execute('''delete from exam''')
+    c.execute('''delete from intent''')
+    c.execute('''delete from module_additional_resources''')
+    c.execute('''delete from module_tasks''')
+    c.execute('''delete from questions''')
+    c.execute('''delete from quizs''')
+    c.execute('''delete from scores''')
+    c.execute('''delete from task''')
+    c.execute('''delete from topic''')
+    c.execute('''delete from train_time''')
+    # c.execute('''delete from users''')
+    c.close()
+    conn.commit()
+    conn.close()
+    return "Success"
 
 @login_manager.user_loader
 def load_user(id):
