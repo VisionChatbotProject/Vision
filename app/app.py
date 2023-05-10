@@ -1412,32 +1412,6 @@ def get_quiz_performance(course_id, chapter_id):
     conn.close()
     return str(accuracy)
     
-    
-@app.route('/api/get_user_performance/<string:user_id>/<int:course_id>/<int:chapter_id>', methods=['GET'])
-def get_user_performance(user_id, course_id, chapter_id):
-
-    conn = get_db_connection()
-    c = conn.cursor()
-
-    # check the total of right attempts and wrong attempts
-    c.execute('''SELECT COUNT(*) FROM questions
-                   WHERE course_id=? AND chapter_id=? AND instr(user_email_wrong_answer, ?) > 0''',
-                (course_id, chapter_id, user_id))
-    total_wrong = c.fetchone()[0]
-
-    c.execute('''SELECT COUNT(*) FROM questions
-               WHERE course_id=? AND chapter_id=? AND instr(user_email_right_answer, ?) > 0''',
-                (course_id, chapter_id, user_id))
-    total_correct = c.fetchone()[0]
-
-
-    # count the accuracy
-    accuracy = total_correct/(total_correct+total_wrong)
-
-    c.close()
-    conn.close()
-    return str(accuracy)
-
 
 @app.route('/get_course_performance/<int:course_id>', methods=['GET'])
 def get_course_performance(course_id):
