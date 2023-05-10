@@ -498,7 +498,7 @@ def api_edit_course():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=?, course_start=?, course_end=? where id_course=?",
-                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], json_body["exam_type"],json_body["course_start"],json_body["course_end"],str(json_body["id_course"])))
+                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"] ,json_body["course_start"],json_body["course_end"],str(json_body["id_course"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
