@@ -1413,7 +1413,7 @@ def get_quiz_performance(course_id, chapter_id):
     return str(accuracy)
     
 
-@app.route('/get_course_performance/<int:course_id>', methods=['GET'])
+@app.route('/api/get_course_performance/<int:course_id>', methods=['GET'])
 def get_course_performance(course_id):
 
     conn = get_db_connection()
@@ -1421,18 +1421,16 @@ def get_course_performance(course_id):
 
     c.execute('''SELECT user_right_answer, user_wrong_answer FROM questions WHERE course_id = ?''', (course_id,))
 
+    accuracy = -1
     for row in c.fetchall():
         user_right, user_wrong = row
         total = user_right + user_wrong
-        if total == 0:
-            return "no score record"
-        else:
+        if total != 0:
             accuracy = user_right / total
-    return str(accuracy)
-
-
+            
     c.close()
     conn.close()
+    return str(accuracy)
 
 @app.route('/api/cleardb', methods=['GET'])
 def clear_db():
