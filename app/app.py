@@ -1386,33 +1386,7 @@ def select_quiz():
     return render_template('quizs_select.html', quizs=quiz_rows)
 
 
-@app.route('/generate_quiz/<string:user_id>', methods=('GET', 'POST'))
-def generate_quiz(user_id):
-    conn = get_db_connection()
-    c = conn.cursor()
-
-    c.execute('SELECT question_id_right_answer, question_id_wrong_answer FROM users WHERE username = ?', (user_id,))
-    result = c.fetchone()
-    correct_questions = result[0].split(',') if result[0] else []
-    incorrect_questions = result[1].split(',') if result[1] else []
-
-    # exclude the right questions
-    c.execute('SELECT question_id FROM questions WHERE question_id NOT IN ({}) ORDER BY RANDOM() LIMIT 8'.format(','.join('?' for _ in correct_questions)), correct_questions)
-    question_ids = [row[0] for row in c.fetchall()]
-
-    # choose two questions from wrong questions poll
-    if len(incorrect_questions) >= 2:
-        incorrect_questions = random.sample(incorrect_questions, 2)
-    else:
-        incorrect_questions = random.sample(incorrect_questions, len(incorrect_questions))
-
-    # combine ten questions and return
-    selected_question_ids = question_ids + incorrect_questions
-    random.shuffle(selected_question_ids)
-    return ",".join(str(x) for x in selected_question_ids)
-
-
-@app.route('/api/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=('GET', 'POST'))
+@app.route('/api/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=['GET', 'POST'])
 def get_quiz_performance(course_id, chapter_id):
     conn = get_db_connection()
     c = conn.cursor()
@@ -1463,6 +1437,28 @@ def get_user_performance(user_id, course_id, chapter_id):
     c.close()
     conn.close()
     return str(accuracy)
+
+
+@app.route('/get_course_performance/<int:course_id>', methods=['GET'])
+def get_course_performance(course_id):
+
+    conn = get_db_connection()
+    c = conn.cursor()
+
+    c.execute('''SELECT user_right_answer, user_wrong_answer FROM questions WHERE course_id = ?''', (course_id,))
+
+    for row in c.fetchall():
+        user_right, user_wrong = row
+        total = user_right + user_wrong
+        if total == 0:
+            return "no score record"
+        else:
+            accuracy = user_right / total
+    return str(accuracy)
+
+
+    c.close()
+    conn.close()
 
 @app.route('/api/cleardb', methods=['GET'])
 def clear_db():
