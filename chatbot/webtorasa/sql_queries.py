@@ -48,29 +48,35 @@ class IntentsQuery:
 
             # replacing space with '_'
             intent_name = re.sub('[^a-zA-Z0-9_?\S]', '_', str(intent[1]))
-            example = re.sub('[^a-zA-Z0-9-?\n\f]', ' ', str(intent[2]))
+            example = intent[2]
+            # example = re.sub('[^a-zA-Z0-9?\f]', ' ', str(intent[2]))
 
             # replace multiple spaces with single space
             example = re.sub(' +', ' ', example)
 
-            # if at beginning of sentence '-' does not exist then add it
-            if example[0] != '-':
-                example = '- ' + example
+            # # if at beginning of sentence '-' does not exist then add it
+            # if example[0] != '-':
+            #     example = '- ' + example
 
             # adding '-' other places
-            new_intents = example.split('\n')
+            # new_intents = example.split('-')
+            # print(f'[INFO1] ########## {example}')
+            new_intents = example.split(',')
+            # print(f'[INFO2] ########## {new_intents}')
             temp_intent = ''
 
             # print(new_intents)
             for data in new_intents:
                 # at the beginning of sentence if '-' not found then add it
                 if data[0] != '-':
-                    data = '- ' + data
+                    data = '-' + data
 
                 temp_intent += data + '\n'
 
             response = re.sub('[^a-zA-Z0-9-?\s]', ' ', str(intent[3]))
             intents_list_for_domain.append(intent_name)
+            # print(f'[INFO] ########## {temp_intent}')
+                        
             # create data structures
             topic = Topic(
                 # intent_id=intent_id,

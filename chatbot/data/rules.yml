@@ -178,7 +178,179 @@ rules:
   steps:
   - intent: concept_of_programming
   - action: utter_concept_of_programming
-- rule: rule for boxuan_liu_student
+- rule: rule for pillars_of_learning
   steps:
-  - intent: boxuan_liu_student
-  - action: utter_boxuan_liu_student
+  - intent: pillars_of_learning
+  - action: utter_pillars_of_learning
+- rule: rule for motivation
+  steps:
+  - intent: motivation
+  - action: utter_motivation
+- rule: rule for teacher_skills
+  steps:
+  - intent: teacher_skills
+  - action: utter_teacher_skills
+- rule: rule for self_regulation
+  steps:
+  - intent: self_regulation
+  - action: utter_self_regulation
+- rule: rule for importance_of_self_regulation
+  steps:
+  - intent: importance_of_self_regulation
+  - action: utter_importance_of_self_regulation
+- rule: rule for tree_model
+  steps:
+  - intent: tree_model
+  - action: utter_tree_model
+- rule: rule for situated_learning
+  steps:
+  - intent: situated_learning
+  - action: utter_situated_learning
+- rule: rule for social_participation
+  steps:
+  - intent: social_participation
+  - action: utter_social_participation
+- rule: rule for learning_environment
+  steps:
+  - intent: learning_environment
+  - action: utter_learning_environment
+- rule: rule for Maria_Montessori_approach
+  steps:
+  - intent: Maria_Montessori_approach
+  - action: utter_Maria_Montessori_approach
+- rule: rule for focus_of_Maria_Montessori_approach
+  steps:
+  - intent: focus_of_Maria_Montessori_approach
+  - action: utter_focus_of_Maria_Montessori_approach
+- rule: rule for cooperative_learning
+  steps:
+  - intent: cooperative_learning
+  - action: utter_cooperative_learning
+- rule: rule for behaviorism
+  steps:
+  - intent: behaviorism
+  - action: utter_behaviorism
+- rule: rule for learning_theories
+  steps:
+  - intent: learning_theories
+  - action: utter_learning_theories
+- rule: rule for constructivism
+  steps:
+  - intent: constructivism
+  - action: utter_constructivism
+- rule: rule for problem_based_learning
+  steps:
+  - intent: problem_based_learning
+  - action: utter_problem_based_learning
+- rule: rule for subject_oriented
+  steps:
+  - intent: subject_oriented
+  - action: utter_subject_oriented
+- rule: rule for premack_principle
+  steps:
+  - intent: premack_principle
+  - action: utter_premack_principle
+- rule: rule for teacher_centered
+  steps:
+  - intent: teacher_centered
+  - action: utter_teacher_centered
+- rule: rule for difference_between_teacher_centered_and_subject_based
+  steps:
+  - intent: difference_between_teacher_centered_and_subject_based
+  - action: utter_difference_between_teacher_centered_and_subject_based
+- rule: rule for think_pair_share
+  steps:
+  - intent: think_pair_share
+  - action: utter_think_pair_share
+- rule: rule for microsystem
+  steps:
+  - intent: microsystem
+  - action: utter_microsystem
+- rule: rule for Bronfenbrenner_theory
+  steps:
+  - intent: Bronfenbrenner_theory
+  - action: utter_Bronfenbrenner_theory
+- rule: rule for socialization
+  steps:
+  - intent: socialization
+  - action: utter_socialization
+- rule: rule for meaningful_activities
+  steps:
+  - intent: meaningful_activities
+  - action: utter_meaningful_activities
+- rule: rule for learning_new_information
+  steps:
+  - intent: learning_new_information
+  - action: utter_learning_new_information
+- rule: rule for direct_instruction
+  steps:
+  - intent: direct_instruction
+  - action: utter_direct_instruction
+- rule: rule for interactive_instruction
+  steps:
+  - intent: interactive_instruction
+  - action: utter_interactive_instruction
+- rule: rule for support_student
+  steps:
+  - intent: support_student
+  - action: utter_support_student
+- rule: rule for large_group_teaching
+  steps:
+  - intent: large_group_teaching
+  - action: utter_large_group_teaching
+- rule: rule for experiential_learning
+  steps:
+  - intent: experiential_learning
+  - action: utter_experiential_learning
+- rule: rule for simulation
+  steps:
+  - intent: simulation
+  - action: utter_simulation
+- rule: rule for research_project
+  steps:
+  - intent: research_project
+  - action: utter_research_project
+- rule: rule for greeting
+  steps:
+  - intent: greeting
+  - action: utter_greeting
+- rule: rule for how_are_you
+  steps:
+  - intent: how_are_you
+  - action: utter_how_are_you
+- rule: rule for who_are_you
+  steps:
+  - intent: who_are_you
+  - action: utter_who_are_you
+- rule: rule for thank_you
+  steps:
+  - intent: thank_you
+  - action: utter_thank_you
+- rule: rule for bye
+  steps:
+  - intent: bye
+  - action: utter_bye
+- rule: rule for find_task
+  steps:
+  - intent: find_task
+  - action: utter_find_task
+- rule: rule for how_to_help
+  steps:
+  - intent: how_to_help
+  - action: utter_how_to_help
+- rule: rule for what_to_do
+  steps:
+  - intent: what_to_do
+  - action: utter_what_to_do
+- rule: rule for asdasd
+  steps:
+  - intent: asdasd
+  - action: utter_asdasd
+- rule: rule for asdasd2
+  steps:
+  - intent: asdasd2
+  - action: utter_asdasd2
+- rule: rule for asdasdasdasdasd
+  steps:
+  - intent: asdasdasdasdasd
+  - action: utter_asdasdasdasdasd

@@ -3,6 +3,7 @@ import json
 import random
 import sys
 import sqlite3
+import time
 import traceback
 import subprocess
 import flask
@@ -201,9 +202,9 @@ def api_train_intent():
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
-        stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+time.time()+".tar.gz\"")
         my_container.restart()
-        msg = "Training Executed Successfully. " + str(stdout)
+        msg = "Server reloading ... " + str(stdout)
         return jsonify({"success":True, "msg": msg})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })

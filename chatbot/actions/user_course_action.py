@@ -7,6 +7,7 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
+import sqlite3
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -203,8 +204,9 @@ class ValidateQuizInfoForm(FormValidationAction):
                 dispatcher.utter_message(text="Correct !!")
                 sqliteConnection = sqlite3.connect(database)
                 cursor = sqliteConnection.cursor()
-                sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1 """
-                sqlite_insert_query = """ INSERT INTO questions (user_email_right) VALUES ('email')"""
+                sqlite_update_query = """UPDATE questions SET user_right_answer = user_right_answer + 1"""
+                sqlite_insert_query = """INSERT INTO questions (user_email_right_answer, question_text) VALUES ('{email}', '')"""
+                logger.info(f"[{tracker.sender_id}] {__file__} : ########################### {sqlite_insert_query}")
                 cursor.execute(sqlite_update_query)
                 cursor.execute(sqlite_insert_query)
                 sqliteConnection.commit()
@@ -217,7 +219,7 @@ class ValidateQuizInfoForm(FormValidationAction):
                 sqliteConnection = sqlite3.connect(database)
                 cursor = sqliteConnection.cursor()
                 sqlite_update_query = """UPDATE questions SET user_wrong_answer = user_wrong_answer + 1 """
-                sqlite_insert_query = """INSERT INTO questions (user_email_wrong) VALUES ('email')  """
+                sqlite_insert_query = """INSERT INTO questions (user_email_wrong_answer, question_text) VALUES ('{email}', '')  """
                 cursor.execute(sqlite_update_query)
                 cursor.execute(sqlite_insert_query)
                 sqliteConnection.commit()
