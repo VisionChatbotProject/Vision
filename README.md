@@ -8,7 +8,7 @@ Adapt '.env' file to your local setup
 cd app
 python -m venv env
 .\env\Scripts\activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 python -m flask run
 Login at http://localhost:5000/
 

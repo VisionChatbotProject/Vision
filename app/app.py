@@ -3,6 +3,7 @@ import json
 import random
 import sys
 import sqlite3
+import time
 import traceback
 import subprocess
 import flask
@@ -201,9 +202,9 @@ def api_train_intent():
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
-        stdout = my_container.exec_run(cmd="/bin/bash -c \"cd /app && rasa train --force\"")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+time.time()+".tar.gz\"")
         my_container.restart()
-        msg = "Training Executed Successfully. " + str(stdout)
+        msg = "Server reloading ... " + str(stdout)
         return jsonify({"success":True, "msg": msg})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
@@ -235,21 +236,22 @@ def show_intents():
 def api_add_course():
     try:
         json_body = request.form
-        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources", 'email_teacher']
+        required_fields = ["name", "teacher", "chapters", "materials", "description", "externresources",'email_teacher', 'course_start', 'course_end']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+            return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher') VALUES (?, ?, ?, ?, ?, ?, ?)",
-                         (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"], json_body["description"], json_body["externresources"], json_body['email_teacher']))
+            cursor.execute(
+                "INSERT INTO course('name','teacher','chapters','materials','description','externressources', 'email_teacher', 'course_start', 'course_end') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (json_body["name"], json_body["teacher"], json_body["chapters"], json_body["materials"], json_body["description"], json_body["externresources"], json_body['email_teacher'], json_body['course_start'], json_body['course_end']))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New course has been added"})
+            return jsonify({"success": True, "id": new_id, "description": "New course has been added"})
     except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+        return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
 
 
 @app.route('/course/add', methods=('GET', 'POST'))
@@ -463,19 +465,41 @@ def add_intent():
     else:
         return render_template('add_intent.html')
 
+
+@app.route('/api/exam/add', methods=['POST'])
+def api_add_exam():
+    try:
+        json_body = request.form
+        required_fields = ["name","description","observation", "date", "active", "id_course", "id_chapter"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO topic('name', 'description', 'observation', 'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
+            new_id = cursor.lastrowid
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "id":new_id, "description":"New exam has been added"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+
 @app.route('/api/course/edit', methods=['PUT'])
 def api_edit_course():
     try:
         json_body = request.form
-        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher"]
+        required_fields = ["id_course", "name", "teacher", "chapters", "materials", "description", "externresources", "email_teacher",'course_start', 'course_end']
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
+        else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=? where id_course=?",
-                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"], str(json_body["id_course"])))
+            cursor.execute("update course set name=?, teacher=?, email_teacher=?, chapters=?, description=?, materials=?, externressources=?, course_start=?, course_end=? where id_course=?",
+                         (json_body["name"], json_body["teacher"], json_body["email_teacher"], json_body["chapters"], json_body["description"], json_body["materials"], json_body["externresources"] ,json_body["course_start"],json_body["course_end"],str(json_body["id_course"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -686,6 +710,27 @@ def edit_topic(id):
         conn.close()
         return render_template('edit_topic.html', topic=topic)
 
+
+@app.route('/api/exam/edit', methods=['PUT'])
+def api_edit_exam():
+    try:
+        json_body = request.form
+        required_fields = ["id_exam","name","description","observation", "date", "active", "id_course", "id_chapter"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("update exam set name=?, description=?, observation=?, date=?, active=?, id_course=?, id_chapter=? where id_exam=?",
+                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_exam"])))
+            num_affected = cursor.rowcount
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "description": str(num_affected) + " exam(s) has been updated"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
 @app.route('/api/course/delete', methods=['DELETE'])
 def api_delete_course():
     try:
@@ -825,6 +870,25 @@ def delete_topic(id):
     conn.commit()
     conn.close()
     return redirect(url_for('show_topics'))
+
+@app.route('/api/exam/delete', methods=['DELETE'])
+def api_delete_exam():
+    try:
+        json_body = request.form
+        required_fields = ["id_exam"]
+        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
+        if len(required_fields) > 0:
+            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("delete from exam where id_exam=?", (str(json_body["id_exam"])))
+            num_affected = cursor.rowcount
+            conn.commit()
+            conn.close()
+            return jsonify({"success":True, "description": str(num_affected) + " exam(s) has been deleted"})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
 @app.route('/api/answer/add', methods=['POST'])
 def api_add_answer():
@@ -1323,33 +1387,7 @@ def select_quiz():
     return render_template('quizs_select.html', quizs=quiz_rows)
 
 
-@app.route('/generate_quiz/<string:user_id>', methods=('GET', 'POST'))
-def generate_quiz(user_id):
-    conn = get_db_connection()
-    c = conn.cursor()
-
-    c.execute('SELECT question_id_right_answer, question_id_wrong_answer FROM users WHERE username = ?', (user_id,))
-    result = c.fetchone()
-    correct_questions = result[0].split(',') if result[0] else []
-    incorrect_questions = result[1].split(',') if result[1] else []
-
-    # exclude the right questions
-    c.execute('SELECT question_id FROM questions WHERE question_id NOT IN ({}) ORDER BY RANDOM() LIMIT 8'.format(','.join('?' for _ in correct_questions)), correct_questions)
-    question_ids = [row[0] for row in c.fetchall()]
-
-    # choose two questions from wrong questions poll
-    if len(incorrect_questions) >= 2:
-        incorrect_questions = random.sample(incorrect_questions, 2)
-    else:
-        incorrect_questions = random.sample(incorrect_questions, len(incorrect_questions))
-
-    # combine ten questions and return
-    selected_question_ids = question_ids + incorrect_questions
-    random.shuffle(selected_question_ids)
-    return ",".join(str(x) for x in selected_question_ids)
-
-
-@app.route('/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=('GET', 'POST'))
+@app.route('/api/get_quiz_performance/<int:course_id>/<int:chapter_id>', methods=['GET', 'POST'])
 def get_quiz_performance(course_id, chapter_id):
     conn = get_db_connection()
     c = conn.cursor()
@@ -1359,6 +1397,15 @@ def get_quiz_performance(course_id, chapter_id):
                    WHERE course_id=? AND chapter_id=?''', (course_id, chapter_id))
     correct_answers, wrong_answers = c.fetchone()
 
+    if (correct_answers is None and wrong_answers is not None):
+        return str(0)
+
+    if (correct_answers is not None and wrong_answers is None):
+        return str(100)
+    
+    if (correct_answers is None and wrong_answers is None):
+        return str(-1)
+
     # count the accuracy
     accuracy = correct_answers/(correct_answers+wrong_answers)
 
@@ -1366,32 +1413,49 @@ def get_quiz_performance(course_id, chapter_id):
     conn.close()
     return str(accuracy)
     
-    
-@app.route('/get_user_performance/<string:user_id>/<int:course_id>/<int:chapter_id>', methods=['GET'])
-def get_user_performance(user_id, course_id, chapter_id):
+
+@app.route('/api/get_course_performance/<int:course_id>', methods=['GET'])
+def get_course_performance(course_id):
 
     conn = get_db_connection()
     c = conn.cursor()
 
-    # check the total of right attempts and wrong attempts
-    c.execute('''SELECT COUNT(*) FROM questions
-                   WHERE course_id=? AND chapter_id=? AND instr(user_email_wrong_answer, ?) > 0''',
-                (course_id, chapter_id, user_id))
-    total_wrong = c.fetchone()[0]
+    c.execute('''SELECT user_right_answer, user_wrong_answer FROM questions WHERE course_id = ?''', (course_id,))
 
-    c.execute('''SELECT COUNT(*) FROM questions
-               WHERE course_id=? AND chapter_id=? AND instr(user_email_right_answer, ?) > 0''',
-                (course_id, chapter_id, user_id))
-    total_correct = c.fetchone()[0]
-
-
-    # count the accuracy
-    accuracy = total_correct/(total_correct+total_wrong)
-
+    accuracy = -1
+    for row in c.fetchall():
+        user_right, user_wrong = row
+        total = user_right + user_wrong
+        if total != 0:
+            accuracy = user_right / total
+            
     c.close()
     conn.close()
     return str(accuracy)
 
+@app.route('/api/cleardb', methods=['GET'])
+def clear_db():
+
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('''delete from answers''')
+    c.execute('''delete from chapter''')
+    c.execute('''delete from course''')
+    c.execute('''delete from exam''')
+    c.execute('''delete from intent''')
+    c.execute('''delete from module_additional_resources''')
+    c.execute('''delete from module_tasks''')
+    c.execute('''delete from questions''')
+    c.execute('''delete from quizs''')
+    c.execute('''delete from scores''')
+    c.execute('''delete from task''')
+    c.execute('''delete from topic''')
+    c.execute('''delete from train_time''')
+    # c.execute('''delete from users''')
+    c.close()
+    conn.commit()
+    conn.close()
+    return "Success"
 
 @login_manager.user_loader
 def load_user(id):

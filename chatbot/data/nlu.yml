@@ -217,6 +217,7 @@ nlu:
     - What is the content of the chapter [1](chapter)?
     - Could you please content [1](chapter)?
 #    - Content of [1](chapter)?  
+
 - intent: list_of_courses
   examples: |
     - I want to see courses
@@ -268,6 +269,7 @@ nlu:
     - Meaning of [Education](topic)
     - Defintion of [Education](topic)
     - Defintion of [Technology](topic)
+
 - intent: show_quiz_info
   examples: |
     - i want to take a quiz
@@ -342,34 +344,281 @@ nlu:
     - share my performance
     - share my result
 
-- intent: goodbye
-  examples: |-
-    - good afternoon
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+- intent: set_slot_value
+  examples: |
+    - Slot user
+    - Slot user to [Hans](user)
+    - Set slot user
+    - Set slot value user
+    - Set slot value user to [Sebastian](user)
+    - Set slot value for user [Tom](user)
+- regex: user
+  examples: |
+    - [a-zA-Z0-9\\s]*
 
 - intent: music_concept
   examples: |
-    - What is music 
-    - What is the concept of music 
-    - Music deinition
+    - What is music
+    - What is the concept of music
+    - Music definition
 - intent: concept_of_programming
   examples: |
-    - What is programming? 
+    - What is programming?
     - What is the definition of programming? 
     - What do you understand under programming?
-- intent: boxuan_liu_student
+- intent: pillars_of_learning
   examples: |
-    - Who is boxuan? 
-    - Where is Boxuan?
-- intent: New_Intent_Name
+    - What are the 4 pillars of learning?
+    - How are the 4 pillars of learning called?
+- intent: motivation
   examples: |
-    - New Intent List
+    - How can you motivate learners?
+    - What motivates learners?
+    - What can I do to motivate my learners?
+    - How can teachers motivate their learners?
+    - How can you increase learners' motivation?
+- intent: teacher_skills
+  examples: |
+    - What kind of skills should a teacher have?
+    - Which skills are important for effective teaching?
+    - What are examples of effective teaching skills?
+- intent: self_regulation
+  examples: |
+    - How can the teacher support self-reflection in students?
+    - How can you improve your students' self-regulation and being reflective?
+    - How can you encourage self-regulation and self-reflection in students?
+- intent: importance_of_self_regulation
+  examples: |
+    - What does self-regulation and being reflective mean in the teaching and learning context?
+    - Why is self-regulation and being reflective important?
+- intent: tree_model
+  examples: |
+    - What can the tree model be used for?
+    - What does the tree model look like?
+    - Explain the tree model.
+    - What is the tree model?
+- intent: situated_learning
+  examples: |
+    - What is situated learning?
+    - What does situated learning mean?
+    - What are the main aspects of social participation?
+    - What does the term 'situated learning' entail?
+- intent: social_participation
+  examples: |
+    - How can social participation be implemented?
+    - Which teaching methods are useful to improve social participation in class?
+- intent: learning_environment
+  examples: |
+    - How do I create a motivating learning environment?
+    - What is the point in creating a positive learning environment?
+    - Why is a positive learning environment important?
+    - What does a positive learning environment look like?
+    - What do you understand by a positive learning environment and which characteristics does it have?
+    - How can teachers create a positive learning environment?
+    - What needs to be considered when creating a motivating learning environment?
+    - What aspects are important for creating a positive learning environment?
+    - Which factors must be taken into account when creating a motivating learning environment?
+    - Which factors are important when creating a positive learning environment?
+    - Name and describe the characteristics of a motivating learning environment.
+    - What kind of learning environment should be provided in school?
+    - Which aspects should be considered when creating a positive learning environment?
+    - How does a positive learning environment affect students?
+- intent: Maria_Montessori_approach
+  examples: |
+    - Explain Maria Montessori's approach to teaching and learning.
+    - What is the teaching and learning approach of Maria Montessori based on?
+    - What is the intention of Maria Montessori's approach to teaching and learning?
+    - What is Maria Montessori's approach to teaching and learning about?
+    - How can the desire for learning be encouraged?
+    - What does Maria Montessori's approach to teaching and learning describe?
+    - Considering Maria Montessori's approach to teaching and learning
+    - how can students' learning be encouraged?
+    - Which aspect is specially valued in Maria Montessori's approach to teaching and learning?
+- intent: focus_of_Maria_Montessori_approach
+  examples: |
+    - What areas of development are focused on in Maria Montessori's approach to teaching and learning?
+    - What does Maria Montessori's approach to teaching and learning focus on in the development of a child?
+    - Unlike most teaching methods that focus on academic success
+    - Montessori focuses on which aspects of a child's development?
+- intent: cooperative_learning
+  examples: |
+    - What is cooperative learning?
+    - What is the intention of cooperative learning?
+    - How can you encourage students' team work in class?
+- intent: behaviorism
+  examples: |
+    - How does learning work according to behaviorism?
+    - What is behaviorism?
+    - What defines behaviorism?
+    - Describe the learning theory of behaviorism.
+    - Which one out of the five learning theories focuses on consequences and rewards?
+- intent: learning_theories
+  examples: |
+    - Describe different learning theories.
+    - What are learning theories?
+    - Which kinds of learning theories exist?
+    - Which learning theories influence 21st century teaching the most?
+    - What are learning theories and what are they used for?
+    - Which learning theories are currently the most relevant ones?
+- intent: constructivism
+  examples: |
+    - What is the focus of teaching in constructivism?
+    - What is the role of teachers in constructivism?
+    - What is the difference between the teachers' and the students' role in constructivism?
+    - What is constructivism?
+- intent: problem_based_learning
+  examples: |
+    - How does problem-based learning work?
+    - What is problem-based learning?
+    - What does problem-based learning mean?
+    - What is the use of problem-based learning for students?
+    - What is the intention of problem-based learning?
+- intent: subject_oriented
+  examples: |
+    - What are the characteristics of the subject-oriented classroom?
+    - What does "subject-oriented" mean?
+    - What is the most important aspect of subject-oriented teaching and learning?
+    - What does "subject-oriented classroom" mean?
+    - What advantage does the subject-oriented classroom have?
+    - Unlike frontal teaching
+    - what is the advantage of subject-oriented learning?
+    - Why change from a teacher-centered teaching/learning approach to a subject-oriented one?
+    - What is subject-oriented teaching and learning?
+    - What is the subject-oriented understanding of learning?
+    - Why is a subject-oriented learning environment more efficient for learners?
+- intent: premack_principle
+  examples: |
+    - What is the Premack-Principle?
+    - What does the Premack-Principle state?
+    - How can you describe the Premack-Principle?
+- intent: teacher_centered
+  examples: |
+    - What does the term "teacher-centered" mean?
+    - What characterizes a traditional teacher-centered way of teaching?
+    - What methods does a teacher-centered approach to teaching and learning include?
+    - What is the difference between teacher-centered and subject-oriented classes?
+    - What characterizes a teacher-centred classroom?
+- intent: difference_between_teacher_centered_and_subject_based
+  examples: |
+    - What are the differences between teacher-centred and subject-based classes
+    - considering the learner's perspective?
+    - Why is subject-oriented teaching nowadays the preferred way of teaching?
+    - What are the disadvantages of a teacher-centred class?
+- intent: think_pair_share
+  examples: |
+    - What is the "Think-Pair-Share" activity?
+    - How can you describe the "Think-Pair-Share" activity?
+    - What are the benefits of the "Think-Pair-Share" activity?
+- intent: microsystem
+  examples: |
+    - What is the microsystem in Bronfenbrenner's Ecological Systems Theory?
+    - What does the microsystem level of Bronfenbrenner's concept of the Ecological System include?
+    - How can the microsystem according to Bronfenbrenner be defined?
+- intent: Bronfenbrenner_theory
+  examples: |
+    - Explain Bronfenbrenner's theory.
+    - What is Bronfenbrenner's theory about?
+    - What does Bronfenbrenner's Ecological Systems Theory state?
+    - What are the four levels of Bronfenbrenner's Ecological Systems Theory?
+    - Who introduced the concept of multiple environments related to child development and what are the four levels in the Theory of Ecological Systems?
+    - Who developed the Theory of Ecological Systems?
+    - Explain Bronfenbrenner's Ecological Systems Theory.
+    - What relevance does Bronfenbrenner's Ecological Systems Theory have for teachers?
+- intent: socialization
+  examples: |
+    - What is meant by socialization?
+    - What does the term "socialization" mean?
+- intent: meaningful_activities
+  examples: |
+    - When is an activity considered meaningful for students?
+    - What characterizes meaningful activities for students?
+    - When is an activity considered meaningful by learners?
+    - Why is the students' motivation promoted through meaningful activities?
+- intent: learning_new_information
+  examples: |
+    - What role does prior knowledge play in learning new information?
+    - What should be considered when learning new information?
+- intent: direct_instruction
+  examples: |
+    - Which form of teaching is most likely to be chosen by educators when teaching a large class with more than 30 students?
+    - What methods can be chosen for direct instruction?
+    - Why is direct instruction considered to be insufficient for contemporary learning needs?
+    - What are the disadvantages and advantages of direct instruction?
+- intent: interactive_instruction
+  examples: |
+    - What distinguishes interactive instruction from other forms of instruction?
+    - What are the learning objectives of interactive instruction?
+    - What is interactive instruction?
+- intent: support_student
+  examples: |
+    - How can teachers support students' active involvement in the learning process?
+    - To what extent does students' active involvement in school contribute to better learning success?
+    - Why is it important that students are actively involved in the learning process?
+- intent: large_group_teaching
+  examples: |
+    - What is the difference between large group teaching and small group teaching?
+    - What is a disadvantage of large group teaching?
+- intent: experiential_learning
+  examples: |
+    - What kind of learning emphasizes the importance between the connection of school and real life?
+    - Name ways in which learners can be supported in transferring theory into practice.
+    - Why should experiential learning be used in primary school?
+    - What is experiential learning?
+    - Why is it important that learners are able to relate their learning content to their lifeworld?
+    - What can experiential learning achieve?
+- intent: simulation
+  examples: |
+    - What is a simulation for?
+    - What does simulation mean?
+- intent: research_project
+  examples: |
+    - What is a research project?
+    - What is the purpose of a research project?
+- intent: greeting
+  examples: |
+    - Hello 
+    - Hey
+    - Hi
+- intent: how_are_you
+  examples: |
+    - how are you?
+    - Are you fine?
+- intent: who_are_you
+  examples: |
+    - who are you?
+    - Whats your name?
+- intent: thank_you
+  examples: |
+    - Dumb
+    - shit
+    - Fuck
+    - crap
+- intent: bye
+  examples: |
+    - Goodbye
+    - Bye
+    - Ciao
+- intent: find_task
+  examples: |
+    - Where can I find the assignment
+    - Are there any tasks?
+- intent: how_to_help
+  examples: |
+    - How can you help me?
+    - What can you do?
+    - What are your functions?
+    - What can I do with you?
+- intent: what_to_do
+  examples: |
+    - What do I need you for?
+    - What should I do with a chatbot?
+    - What are you good for?
+- intent: asdasd
+  examples: |
+    -asdasd
+- intent: asdasd2
+  examples: |
+    -asdasd
+- intent: asdasdasdasdasd
+  examples: |
+    -asdasdasd

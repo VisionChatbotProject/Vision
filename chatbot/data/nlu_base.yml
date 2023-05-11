@@ -1,0 +1,371 @@
+version: '2.0'
+nlu:
+- intent: start
+  examples: |
+    - start
+    - begin
+
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - hi hi 
+
+#- intent: affirm
+#  examples: |
+#    - yes
+#    - y
+#    - indeed
+#    - of course
+#    - that sounds good
+#    - correct
+
+#- intent: deny
+#  examples: |
+#    - no
+#    - n
+#    - never
+#    - I don't think so
+#    - don't like that
+#    - no way
+#    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+    - Who are you?
+
+- intent: thanks
+  examples: |
+    - all clear
+    - all right, thank you!
+    - thanks
+    - Thanks for the feedback.
+    - thanks for the answer
+    - thanks for the help!
+    - Thanks for the quick feedback :)
+    - Thank you :)
+    - Thank you so much.
+    - Thank you very much.
+    - That was helpful.
+    - you are the coolest guy i know
+    - you are good, thank you
+    - Thank you very much
+    - I am glad
+    - Merci!
+    - Nice!
+    - Okay, thank you
+    - Okay
+    - Super
+    - Thank you
+    - thx
+    - thank you very much for the feedback!
+    - funny!
+
+- intent: help
+  examples: |
+    - help 
+    - Can you help me? 
+    - I need help
+    - I need orientation 
+    - Menu
+    - Options 
+    - I want to see the menu 
+    - What can you do? 
+    - Are you intelligent? 
+
+- intent: teacher
+  examples: |
+    - who is the teacher of the course?
+    - who is the teacher 
+    - who is the lecturer
+    - what is the name of the teacher
+    - teacher
+
+- intent: course_chapters
+  examples: |
+    - what are the chapters of this course
+    - what is the structure of this course?
+    - chapters
+    - what is the content of this course
+    - course contents?
+
+- intent: course_description
+  examples: |
+    - what is the course about?
+    - description of the course
+    - can you say me what is the course about
+    - course description
+    - description of the course
+
+- intent: course_materials
+  examples: |
+    - which materiales I need for the course
+    - course materials
+    - materials for course
+    - literature for the course
+    - general literature for the course 
+    - course literature 
+    - which books i need to buy for the course
+    - books for coure
+
+- intent: course_extressources
+  examples: |
+    - which extern ressources I need for the course
+    - extern ressources for the course
+
+- intent: score_course
+  examples: |
+    - What is the minimum grade to pass the course?
+    - What is the score to pass the course?
+    - Which note to pass the course?
+    - Note required to pass the course? 
+
+- intent: main_topic_course
+  examples: |
+    - What is the main topic of the course?
+    - topic covered in the course?
+    - principial topics of the course? 
+    - main topic
+
+- intent: email_coordinator
+  examples: |
+    - What is the email of the coordinator?
+    - email of coordinator
+    - coordinator contact
+    - I need to contact the coordinator
+    - Email of the teacher 
+    - What is the email of the teacher?
+
+- intent: list_chapter
+  examples: |
+    - List of chapters
+    - What modules does the course have? 
+    - Can you list the chapters?
+    - I need the description of chapter 
+    - What is the description of the chapter 
+    - Chapters please
+
+- intent: description_chapter
+  examples: |
+    - I want the description of chapter [1](chapter)
+    - Description of chapter [1](chapter)
+    - What is the chapter [1](chapter) about? 
+    - I need information of the chapter [1](chapter)
+    - [1](chapter)
+    - Chapter number [1](chapter)
+    - Chapter [1](chapter)
+
+#- intent: content_chapter
+#  examples: |
+#    - Show me the content of chapter [1](chapter)
+#    - Content chapter [1](chapter)
+#    - What is the content of the chapter [1](chapter)?
+#    - Content of [1]chapter
+
+- intent: content_chapter_from_course
+  examples: |
+    - Please show me the content of the chapter [1](chapter)?
+    - What is the content of the chapter [1](chapter)?
+    - Could you please content [1](chapter)?
+#    - Content of [1](chapter)?  
+
+- intent: list_of_courses
+  examples: |
+    - I want to see courses
+    - Please show me all courses
+    - List of courses
+
+- intent: key_concepts_chapter
+  examples: |
+    - What are the key concepts of chapter [1](chapter)
+    - Key concepts of chapter [1](chapter)
+    - What are the important meaning of chapter [1](chapter)?
+    - Impotant ceoncepts of chapter [1](chapter)
+
+- intent: ressources_chapter
+  examples: |
+    - Which material do we need for chapter [1](chapter)
+    - Ressources chapter [1](chapter)
+    - Literatute for chapter [1](chapter)?
+    - Important literature for chapter [1](chapter)
+    - Books for chapter [1](chapter)
+
+- intent: observations_chapter
+  examples: |
+    - Do we need to prepare something for chapter [1](chapter)
+    - What do I consider for chapter [1](chapter) 
+    - Dis the teacher say something about chapter [1](chapter)?
+
+- intent: title_task
+  examples: |
+    - Do we have homeworks? 
+    - Are there pending tasks?
+    - Do we have homework? 
+    - What do we have to do for next class? 
+
+- intent: ressources_task
+  examples: |
+    - Which literature do we need for the task 
+    - What ressources are there for task 
+    - Do we have some recommendations for task 
+    - Ressources for task 
+
+- intent: topic_meaning
+  examples: |
+    - What does [Education](topic) mean?
+    - What does [Concept](topic) mean?
+    - What does [Definition](topic) mean?
+    - What is the mearning of [Education](topic)?
+    - What is the mearning of [Technology](topic)?
+    - Meaning of [Education](topic)
+    - Defintion of [Education](topic)
+    - Defintion of [Technology](topic)
+
+- intent: show_quiz_info
+  examples: |
+    - i want to take a quiz
+    - yes
+    - ok
+    - I am ready
+    - of course
+    - sure  
+    - launch a quiz
+    - run a quiz
+    - run [Language](quiz_course) quiz
+    - quiz for
+    - quiz for [Mathmatics](quiz_course)
+    - quiz
+
+- intent: no_make_quiz
+  examples: |
+    - no,I do not
+    - I am not ready now
+    - no
+
+- intent: out_of_scope
+  examples: |
+    - I want to order food
+    - What is 2 + 2?
+    - Who's the US President?
+    - 1
+
+- intent: quiz_num
+  examples: |
+    - quiz 1
+    - 1
+    - 2
+    - quiz 2
+    - quiz 3
+    - 3
+    - 4
+    - 5
+
+- intent: quiz_ans
+  examples: |
+    - answer a
+    - answer b
+    - a
+    - b
+    - c
+    - answer a,b
+    - answer c
+    - d
+
+- intent: login
+  examples: |
+    - i want to login
+    - login
+    - signin
+    - i want to sign in
+    - register me
+    - i want to register
+    - i want to login
+    - i want to signin
+    - sign-in
+
+- intent: ask_score
+  examples: |
+    - show me my score
+    - show me my result
+    - show me my performance
+    - performance
+    - score please
+    - show result
+    - share my result
+    - share my performance
+    - share my result
+
+- intent: set_slot_value
+  examples: |
+    - Slot user
+    - Slot user to [Hans](user)
+    - Set slot user
+    - Set slot value user
+    - Set slot value user to [Sebastian](user)
+    - Set slot value for user [Tom](user)
+- regex: user
+  examples: |
+    - [a-zA-Z0-9\\s]*
+
+- intent: goodbye
+  examples: |-
+    - good afternoon
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later

@@ -34,8 +34,7 @@ class YamlHandler:
                         for intents in data:
 
                             # check intent == "goodbye" and examples " last value "see you later"
-                            if intents["intent"].strip() == end_info_dict[0].strip() \
-                                    and intents["examples"].split('-')[-1].strip() == end_info_dict[1].strip():
+                            if "regex" in intents or intents["intent"].strip() == end_info_dict[0].strip() and intents["examples"].split('-')[-1].strip() == end_info_dict[1].strip():
                                 intent_list.append(intents)
                                 yaml_dict["nlu"] = intent_list
                                 return yaml_dict

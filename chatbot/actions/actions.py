@@ -122,16 +122,13 @@ class StartOfConversation(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        buttons = _login_button()
-        buttons = button_it(buttons)
-        dispatcher.utter_message(text="To proceed further you need to login first.", buttons=buttons)
+        events = []
+        dispatcher.utter_message(text="Welcome I am the Vision chatbot. How can I help you?")
 
         teacher_email = DB.getTeacherEmail()
         quiz_course = None
         # quiz_course = DB.findCourse()
         slots =  [SlotSet('teacher_email', teacher_email), SlotSet('quiz_course', quiz_course)]
-
-        events = []
 
         # any slots that should be carried over should come after the
         # `session_started` event
@@ -141,7 +138,6 @@ class StartOfConversation(Action):
         # events.append(ActionExecuted("action_login"))
 
         return events
-
 
 class Login(Action):
     """

@@ -4,7 +4,7 @@ config:
   store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: false
+  carry_over_slots_to_new_session: true
 
 intents:
 - start
@@ -13,8 +13,6 @@ intents:
 - faq:
     is_retrieval_intent: true
 - greet
-#- affirm
-#- deny
 - choose_topic
 - launch_quiz
 - quiz_ans
@@ -27,7 +25,7 @@ intents:
 - bot_challenge
 - thanks
 - help
-- no_make_quiz  
+- no_make_quiz
 - teacher
 - course_chapters
 - course_description
@@ -47,20 +45,65 @@ intents:
 - title_task
 - ressources_task
 - topic_meaning
+- set_slot_value
 - goodbye
 - music_concept
 - concept_of_programming
-- boxuan_liu_student
-- New_Intent_Name
+- pillars_of_learning
+- motivation
+- teacher_skills
+- self_regulation
+- importance_of_self_regulation
+- tree_model
+- situated_learning
+- social_participation
+- learning_environment
+- Maria_Montessori_approach
+- focus_of_Maria_Montessori_approach
+- cooperative_learning
+- behaviorism
+- learning_theories
+- constructivism
+- problem_based_learning
+- subject_oriented
+- premack_principle
+- teacher_centered
+- difference_between_teacher_centered_and_subject_based
+- think_pair_share
+- microsystem
+- Bronfenbrenner_theory
+- socialization
+- meaningful_activities
+- learning_new_information
+- direct_instruction
+- interactive_instruction
+- support_student
+- large_group_teaching
+- experiential_learning
+- simulation
+- research_project
+- greeting
+- how_are_you
+- who_are_you
+- thank_you
+- bye
+- find_task
+- how_to_help
+- what_to_do
+- asdasd
+- asdasd2
+- asdasdasdasdasd
 entities:
 - course
 - chapter
+- slide
 - topic
 - quiz_course
 - quiz_number
 - quiz_over
 - quiz_question_count
 - email
+- user
 - user_email
 - user_pwd
 - user_confirmation
@@ -70,6 +113,9 @@ slots:
     type: bool
     influence_conversation: false
   chapter:
+    type: text
+    influence_conversation: false
+  slide:
     type: text
     influence_conversation: false
   course:
@@ -102,6 +148,9 @@ slots:
     type: any
   teacher_email:
     type: any
+  user:
+    type: any
+    auto_fill: true
   user_email:
     type: any
   user_pwd:
@@ -125,7 +174,7 @@ responses:
   - text: "Great, carry on!"
 
   utter_quiz_answer_no:
-  - text: "Ok, thank you"  
+  - text: "Ok, thank you"
 
   utter_iamabot:
   - text: "I am Visionbot. I am your learning assistant"
@@ -155,14 +204,187 @@ responses:
   - text: Please provide your password ?
   utter_goodbye:
   - text: "Bye"
+
   utter_music_concept:
   - text: "Music is a type of art"
   utter_concept_of_programming:
   - text: "Porgramming is the process or activity of writing computer programs"
-  utter_boxuan_liu_student:
-  - text: "Boxuan is a developer of vision"
-  utter_New_Intent_Name:
-  - text: "New Intent Response"
+  utter_pillars_of_learning:
+  - text: "The 4 pillars of learning are  learning to know  learning to be  learning\
+      \ to live together  learning to do"
+  utter_motivation:
+  - text: "It motivates when children can apply what they have learned in school and\
+      \ solve problems in real life  Feedback  the recognition of achievements and\
+      \ the strengthening of students  self-confidence are further examples how to\
+      \ motivate students"
+  utter_teacher_skills:
+  - text: "Effective teaching includes the skill to plan"
+  utter_self_regulation:
+  - text: "Through discussion and collaboration with other students"
+  utter_importance_of_self_regulation:
+  - text: "It means being able to comprehend one   s abilities  to understand one\
+      \   s mistakes and being able to correct them"
+  utter_tree_model:
+  - text: "The tree model provides a guide to planning an effective learning and teaching\
+      \ experience  Both the teacher side as well as the learner side are represented\
+      \ and considered in the tree model  The tree model is divided into 4 categories\
+      \  roots  growth  blossoming  and renewal"
+  utter_situated_learning:
+  - text: "Humans are socially curious beings and learn mainly through social interaction\
+      \ with others  Therefore  a learning environment should promote cooperation\
+      \  discussions and group work and provide opportunities for feedback"
+  utter_social_participation:
+  - text: "Groupwork  social interaction in the learning environment as well as collaborative\
+      \ work related to studying and learning foster social participation  Providing\
+      \ students with opportunities to give receive feedback and express their opinion\
+      \ also supports social participation"
+  utter_learning_environment:
+  - text: "Through social interactions  room design  wall decoration  layout  available\
+      \ resources and strategies  learners are encouraged to actively participate\
+      \ in the learning process"
+  utter_Maria_Montessori_approach:
+  - text: "Maria Montessori   s approach is based on the idea that children are naturally\
+      \ eager for knowledge and capable of learning and by creating positive learning\
+      \ environments with well-designed teaching materials  the desire to learn is\
+      \ enhanced"
+  utter_focus_of_Maria_Montessori_approach:
+  - text: "The focus of the Montessori approach lies in a combination of the psychological\
+      \  emotional and intellectual development of a child"
+  utter_cooperative_learning:
+  - text: "Cooperative learning is a pedagogical practice that promotes children s\
+      \ socialization and learning by working together to complete tasks"
+  utter_behaviorism:
+  - text: "In behaviorism  students learn through reinforcement  constant positive\
+      \ or negative feedback from their teacher tells them what they are doing is\
+      \ either right or wrong"
+  utter_learning_theories:
+  - text: "Learning theories describe the way knowledge is taught and learned  The\
+      \ thus developed models determine the application of teachers  instructional\
+      \ designs  The most relevant learning theories are constructivism  behaviorism\
+      \  cognitivism  connectivism and subject-orientation"
+  utter_constructivism:
+  - text: "The emphasis in constructivism is on providing students with experiences\
+      \ that should help them develop their own knowledge  This knowledge is linked\
+      \ to each learner s lifeworld  The teacher takes on the role of a learning companion\
+      \ who provides the necessary space for self-directed learning  Learning thus\
+      \ becomes a collaborative process where teachers and students develop knowledge\
+      \ together"
+  utter_problem_based_learning:
+  - text: "Problem-based learning lets students work on real-life problems with the\
+      \ goal of identifying possible solutions to the problem  This way"
+  utter_subject_oriented:
+  - text: "The term  subject-oriented  refers to forms of teaching that provide learners\
+      \ with the possibilities to lead learning activities and shape their own learning\
+      \ progress  The subject-oriented understanding of learning defines learning\
+      \ as personal development process that is based on individual reasons for learning\
+      \ rather than outside forces  Therefore  instead of viewing learning as an activity\
+      \ that occurs when someone is being taught  subject-oriented learning argues\
+      \ that learning only takes place when the subject  the student  has a reason\
+      \ to learn  Learners are thus intrinsically motivated"
+  utter_premack_principle:
+  - text: "The Premack principle states that students are more willing to participate\
+      \ in an activity they do not enjoy if they know that an activity they enjoy\
+      \ will follow"
+  utter_teacher_centered:
+  - text: "Teacher-centered refers to learning situations where the teacher guides\
+      \ the learning process  He she has control over what and how students learn\
+      \  The teacher takes on the active part by presenting knowledge"
+  utter_difference_between_teacher_centered_and_subject_based:
+  - text: "In the teacher-centred approach  learners are extrinsically motivated because\
+      \ they have no say in their learning process  Also  learners who are not as\
+      \ fast in grasping concepts are more likely to miss and or misunderstand information\
+      \  As a result  their individual abilities are given less consideration since\
+      \ attention is primarily paid to what learners cannot do"
+  utter_think_pair_share:
+  - text: "The think-pair-share method gives all students the opportunity to interact\
+      \ with other students and takes the pressure off of students who may have difficulty\
+      \ engaging in class"
+  utter_microsystem:
+  - text: "The Microsystem is the most immediate environment in which children live\
+      \  The Microsystem includes the home  school or daycare  the child s peer group\
+      \ and his her community  In the Microsystem  the child interacts with family\
+      \ members  classmates  teachers and caregivers"
+  utter_Bronfenbrenner_theory:
+  - text: "In his Ecological Systems Theory  Bronfenbrenner introduces the concept\
+      \ of multiple environments in correlation to child development  It consists\
+      \ of layers  namely the Microsystem  home  school  family  classmates   the\
+      \ Mesosystem  relationships between microsystems   the Exosystem  external factors\
+      \ such as the educational or political system  and the Macrosystem  values \
+      \ beliefs and norms   Teachers can only directly influence the learning environment\
+      \ at school  but by providing enough positive learning experiences  they can\
+      \ help counteract negative experiences the student may have had in other parts\
+      \ of their microsystem"
+  utter_socialization:
+  - text: "Socialization is the process in which the individual develops relationships\
+      \ with other individuals and adopts certain behaviors towards them  Socialization\
+      \ is important for a successful social participation in the teaching learning\
+      \ setting"
+  utter_meaningful_activities:
+  - text: "An activity is considered meaningful in the teaching learning context when\
+      \ the learner views it as useful or beneficial to their individual learning\
+      \ process  This promotes intrinsic motivation"
+  utter_learning_new_information:
+  - text: "Successful learning is only possible when new information can be connected\
+      \ to previously acquired knowledge and by activating said knowledge"
+  utter_direct_instruction:
+  - text: "Nowadays  direct instruction is considered insufficient for contemporary\
+      \ learning needs because learners are mainly passive and do not actively engage\
+      \ with the learning content  Nevertheless  it can  at times  prove to be a useful\
+      \ teaching strategy when introducing new content  Methods of direct teaching\
+      \ are  for example  the lecture  didatic questioning or the demonstration"
+  utter_interactive_instruction:
+  - text: "In interactive instruction  students learn from both their peers and their\
+      \ teacher through discussion and sharing  Methods of interactive instruction\
+      \ are  for example  discussions  debates  brainstorming  All these methods enable\
+      \ multi-perspective learning"
+  utter_support_student:
+  - text: "Active involvement in the learning process helps learners to internalize\
+      \ what they have learned  This can be promoted by involving students in the\
+      \ learning process and in the design of the lessons  The students can determine\
+      \ part of the learning content themselves and learning goals can be formulated\
+      \ together"
+  utter_large_group_teaching:
+  - text: "The larger the class  the more difficult it is for teachers to respond\
+      \ to the individual needs of each student"
+  utter_experiential_learning:
+  - text: "Experiential learning states that students learn best when they are directly\
+      \ engaged or in touch with the material being studied  in other words  when\
+      \ they experience the knowledge first hand rather than just reading  hearing\
+      \ or talking about it  This type of learning is very subject-oriented and action-oriented\
+      \ which allows creating a direct link between theory and practice"
+  utter_simulation:
+  - text: "Students are presented with an artificial problem or situation based on\
+      \ reality and put into a simulated environment  Play and reality are essentially\
+      \ combined to encourage communication and promote critical thinking"
+  utter_research_project:
+  - text: "Students research topics and present their results in the form of a report\
+      \  a presentation  an artwork or in another creative way"
+  utter_greeting:
+  - text: "I m glad to read from you"
+  utter_how_are_you:
+  - text: "I m fine  thank you  And you?"
+  utter_who_are_you:
+  - text: "My name is Bitbot  I m your digital learning assistant"
+  utter_thank_you:
+  - text: "It s a pity I can t help you  I m still in the trial phase and would like\
+      \ to develop further"
+  utter_bye:
+  - text: "Bye  Come back soon  You can reach me at any time of the day or night"
+  utter_find_task:
+  - text: "Here you can find the homework"
+  utter_how_to_help:
+  - text: "I have five different main functions  I can answer your questions about\
+      \ the course  we can do a quiz  I can give you feedback on your learning status\
+      \  recommend additional material and remind you of deadlines"
+  utter_what_to_do:
+  - text: "I can help you study if you want  We can test your course knowledge and\
+      \ I will try to answer all of your questions about the course"
+  utter_asdasd:
+  - text: "asdasd"
+  utter_asdasd2:
+  - text: "asdasd"
+  utter_asdasdasdasdasd:
+  - text: "asdasdasd"
 actions:
 - action_ask_quiz_course
 - action_ask_quiz_number
@@ -203,6 +425,7 @@ actions:
 - query_ressources_task
 - query_topic_meaning
 - action_login
+- query_set_value
 
 forms:
   quiz_info_form:
@@ -212,7 +435,7 @@ forms:
       answer:
       - type: from_intent
         intent: show_quiz_info
-        value: true  
+        value: true
       quiz_course:
       - type: from_text
       quiz_number:
