@@ -1,8 +1,8 @@
 #!/bin/bash
-
-cd /app
 export DATABASE='/config/bot.db'
 export DATA=''
+
+cd /app
 
 # if [ -z "$(ls -A ./models)" ]; then
 if [ -f "/config/contessa.tar.gz" ]; then
