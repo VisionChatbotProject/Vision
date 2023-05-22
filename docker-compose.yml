@@ -19,7 +19,6 @@ services:
     environment:
       - URL_ACTION_ENDPOINT=${ACTION_ENDPOINT_URL-https://botactions.visionapp.smart-study.net}
     volumes:
-      - ./chatbot:/app
       - ./config:/config
       - ./docker/agent:/develop
     ports:
@@ -37,7 +36,6 @@ services:
     environment:
       - URL_ACTION_ENDPOINT=${ACTION_ENDPOINT_URL-https://botactions.visionapp.smart-study.net}
     volumes:
-      - ./chatbot:/app
       - ./config:/config
       - ./docker/actions:/develop
     ports:

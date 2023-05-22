@@ -25,6 +25,8 @@ RUN apt-get update \
     apt-get install --no-install-recommends --assume-yes \
       build-essential
 
+COPY ../chatbot/ /app
+
 # Copy the virtual environment; must be _exactly_ the same path
 COPY --from=builder /venv /venv
 ENV PATH=/venv/bin:$PATH
