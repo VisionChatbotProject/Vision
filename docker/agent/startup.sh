@@ -2,6 +2,7 @@
 export DATABASE='/config/bot.db'
 export DATA=''
 
+/replace_vars.sh
 cd /app
 
 # if [ -z "$(ls -A ./models)" ]; then

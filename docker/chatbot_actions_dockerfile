@@ -25,6 +25,12 @@ RUN apt-get update \
     apt-get install --no-install-recommends --assume-yes \
       build-essential
 
+# Package that includes `envsubst`
+RUN apt-get install -y gettext
+
+COPY ../docker/replace_vars.sh /replace_vars.sh
+RUN chmod +x /replace_vars.sh
+
 COPY ../chatbot/ /app
 
 # Copy the virtual environment; must be _exactly_ the same path
