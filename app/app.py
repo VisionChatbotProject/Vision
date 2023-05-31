@@ -202,7 +202,7 @@ def api_train_intent():
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
-        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+str(time.time())+".tar.gz\"")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+time.time()+".tar.gz\"")
         my_container.restart()
         msg = "Server reloading ... " + str(stdout)
         return jsonify({"success":True, "msg": msg})
@@ -412,17 +412,23 @@ def add_topic():
 def api_add_intent():
     try:
         json_body = request.form
+  
         required_fields = ["intent_name", "intent_list", "response", "is_quiz", "id_chapter", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        
         # execute insert process
         else:
             # insert intent
             conn = get_db_connection()
             cursor = conn.cursor()
+
+            # json_body = ImmutableMultiDict([('intent_name', 'Intent 505050'), ('intent_list', 'Intent 505050'), ('is_quiz', 'True'), ('response', 'Intent 505050'), ('id_course', '18'), ('id_chapter', '-1')])
+            is_quiz_int = int(eval(json_body["is_quiz"]))
+        
             cursor.execute("INSERT INTO intent('intent_name','intent_list','response', 'is_quiz', 'id_course', 'id_chapter') VALUES (?, ?, ?, ?, ?, ?)",
-                           (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["is_quiz"], json_body["id_course"], json_body["id_chapter"]))
+                           (json_body["intent_name"], json_body["intent_list"], json_body["response"], is_quiz_int, json_body["id_course"], json_body["id_chapter"]))
             intent_id = cursor.lastrowid
 
             # creat quiz and insert question to question table if is_quiz is true
@@ -451,6 +457,8 @@ def api_add_intent():
 def add_intent(): 
     if request.method == 'POST':
 
+        print('/intent/add/------------------')
+
         intent_name = request.form["intent_name"].strip()
         intent_list = request.form.getlist("intent_list[]")
         response = request.form["response"].strip()
@@ -464,7 +472,6 @@ def add_intent():
         return redirect(url_for('show_intents'))
     else:
         return render_template('add_intent.html')
-
 
 @app.route('/api/exam/add', methods=['POST'])
 def api_add_exam():
@@ -485,7 +492,6 @@ def api_add_exam():
             return jsonify({"success":True, "id":new_id, "description":"New exam has been added"})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
 
 @app.route('/api/course/edit', methods=['PUT'])
 def api_edit_course():
