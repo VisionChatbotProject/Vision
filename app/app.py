@@ -202,7 +202,7 @@ def api_train_intent():
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
-        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+time.time()+".tar.gz\"")
+        stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+str(time.time())+".tar.gz\"")
         my_container.restart()
         msg = "Server reloading ... " + str(stdout)
         return jsonify({"success":True, "msg": msg})
@@ -456,8 +456,6 @@ def api_add_intent():
 @login_required
 def add_intent(): 
     if request.method == 'POST':
-
-        print('/intent/add/------------------')
 
         intent_name = request.form["intent_name"].strip()
         intent_list = request.form.getlist("intent_list[]")
