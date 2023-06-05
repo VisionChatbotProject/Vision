@@ -1,12 +1,13 @@
 #!/bin/bash
-
-cd /app
 export DATABASE='/config/bot.db'
 export DATA=''
 
+/replace_vars.sh
+cd /app
+
 # if [ -z "$(ls -A ./models)" ]; then
 if [ -f "/config/contessa.tar.gz" ]; then
-   echo "Model '/config/contessa.tar.gz' exsits, skipping training"
+   echo "Model '/config/contessa.tar.gz' exists, skipping training"
 else
    cp '/config/flask.db' '/config/bot.db'
    python3 webtorasa/main.py

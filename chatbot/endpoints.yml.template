@@ -1,4 +1,5 @@
 # This file contains the different endpoints your bot can use.
+# It will be overwritten by Docker. 
 
 # Server where the models are pulled from.
 # https://rasa.com/docs/rasa/model-storage#fetching-models-from-a-server
@@ -11,9 +12,7 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 action_endpoint:
-  url: "https://botactions.visionapp.smart-study.net/webhook"
-  # url: "http://localbotactions.smartauthoring.com:5055/webhook"
-  # url: "http://vision-chatbot-actions:5055/webhook"
+  url: "${URL_ACTION_ENDPOINT}/webhook"
 
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.

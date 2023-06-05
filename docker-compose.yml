@@ -16,8 +16,9 @@ services:
       context: ./
       dockerfile: docker/chatbot_agent_dockerfile
     container_name: vision-chatbot-agent
+    environment:
+      - URL_ACTION_ENDPOINT=${ACTION_ENDPOINT_URL-https://botactions.visionapp.smart-study.net}
     volumes:
-      - ./chatbot:/app
       - ./config:/config
       - ./docker/agent:/develop
     ports:
@@ -32,8 +33,9 @@ services:
       context: ./
       dockerfile: docker/chatbot_actions_dockerfile
     container_name: vision-chatbot-actions
+    environment:
+      - URL_ACTION_ENDPOINT=${ACTION_ENDPOINT_URL-https://botactions.visionapp.smart-study.net}
     volumes:
-      - ./chatbot:/app
       - ./config:/config
       - ./docker/actions:/develop
     ports:
