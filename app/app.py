@@ -1,5 +1,6 @@
 import os
 import json
+import pdb
 import random
 import sys
 import sqlite3
@@ -195,17 +196,88 @@ def api_get_intent():
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
+#
+# Train Edit ------------------------------------------------------------------
+#
+@app.route('/api/train/edit', methods=['PUT'])
+def api_train_update():
+
+    def update_end_time(uuid, end_time):       
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE training SET end_time = ? WHERE uuid = ?", (end_time, uuid))
+        conn.commit()
+        conn.close()
+
+    try:
+
+        uuid = request.json.get("uuid")
+        end_time = request.json.get("end_time")
+
+        update_end_time(uuid, end_time)
+
+        return jsonify({"success":True, "uuid": uuid})
+    
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+#
+# Train Add -------------------------------------------------------------------
+#
+@app.route('/api/train/add', methods=['POST'])
+def api_train_add(): 
+    
+    def add_training(uuid, start_time):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO training('uuid', 'start_time') VALUES (?, ?)", 
+            (uuid, start_time)
+        )
+        new_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return new_id
+
+    try:
+
+        uuid = request.json['uuid']
+        start_time = request.json['start_time']
+        
+        new_id = add_training(uuid, start_time)
+
+        try:
+            docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+            # container_name = "vision-chatbot-agent"#
+            container_name = "authoring-chatbot-agent"
+            my_container = docker_client.containers.get(container_name)   
+            # Call train script asynchron with &
+            stdout = my_container.exec_run(cmd=f"/bin/bash -c /develop/train.sh {uuid} &")
+            my_container.restart()      
+
+            msg = "Server reloading ... " + str(stdout)
+        except Exception as e:
+            msg = "Docker error: " + str(e)
+ 
+
+        return jsonify({"success":True, "id": new_id, "msg": msg})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+
 @app.route('/api/intent/train', methods=['POST'])
 def api_train_intent():
     try:
+ 
         docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
         stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+str(time.time())+".tar.gz\"")
-        my_container.restart()
+        my_container.restart()      
+
         msg = "Server reloading ... " + str(stdout)
-        return jsonify({"success":True, "msg": msg})
+        return jsonify({"success":True, "id": -1, "msg": msg})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
@@ -1454,7 +1526,7 @@ def clear_db():
     c.execute('''delete from scores''')
     c.execute('''delete from task''')
     c.execute('''delete from topic''')
-    c.execute('''delete from train_time''')
+    c.execute('''delete from training''')
     # c.execute('''delete from users''')
     c.close()
     conn.commit()
