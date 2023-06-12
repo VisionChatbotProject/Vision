@@ -14,7 +14,7 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 #from flask.ext.login import LoginManager,login_user
 from asgiref.wsgi import WsgiToAsgi
 import docker
-
+import asyncio
 #users =  { "user1": "1", "user2": "2", "user3": "psw123" }
 
 class User(UserMixin):
@@ -225,7 +225,7 @@ def api_train_update():
 # Train Add -------------------------------------------------------------------
 #
 @app.route('/api/train/add', methods=['POST'])
-def api_train_add(): 
+async def api_train_add(): 
     
     def add_training(uuid, start_time):
         conn = get_db_connection()
@@ -239,28 +239,31 @@ def api_train_add():
         conn.close()
         return new_id
 
-    try:
-
-        uuid = request.json['uuid']
-        start_time = request.json['start_time']
-        
-        new_id = add_training(uuid, start_time)
-
+    def train(uuid):
         try:
             docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
             # container_name = "vision-chatbot-agent"#
             container_name = "authoring-chatbot-agent"
-            my_container = docker_client.containers.get(container_name)   
-            # Call train script asynchron with &
-            stdout = my_container.exec_run(cmd=f"/bin/bash -c /develop/train.sh {uuid} &")
-            my_container.restart()      
-
-            msg = "Server reloading ... " + str(stdout)
+            my_container = docker_client.containers.get(container_name)
+            # Call train script asynchron with &        
+            stdout = my_container.exec_run(cmd=f"/bin/bash -c /develop/train.sh {uuid}")
+            my_container.restart()
+            msg = "Server reloading ... "+str(stdout)
         except Exception as e:
             msg = "Docker error: " + str(e)
- 
+        
+    try:
 
-        return jsonify({"success":True, "id": new_id, "msg": msg})
+        uuid = request.json['uuid']
+        start_time = request.json['start_time']
+        new_id = add_training(uuid, start_time)
+        # heavy_process = Process(target=train(uuid), daemon=True)
+        # heavy_process.start()
+        await asyncio.gather(
+            train(uuid)
+        )
+        msg = ""
+        return jsonify({"success":True, "id": new_id, "uuid": uuid, "msg": msg})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
