@@ -1,5 +1,6 @@
 import os
 import json
+import pdb
 import random
 import sys
 import sqlite3
@@ -195,17 +196,88 @@ def api_get_intent():
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
+#
+# Train Edit ------------------------------------------------------------------
+#
+@app.route('/api/train/edit', methods=['PUT'])
+def api_train_update():
+
+    def update_end_time(uuid, end_time):       
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE training SET end_time = ? WHERE uuid = ?", (end_time, uuid))
+        conn.commit()
+        conn.close()
+
+    try:
+
+        uuid = request.json.get("uuid")
+        end_time = request.json.get("end_time")
+
+        update_end_time(uuid, end_time)
+
+        return jsonify({"success":True, "uuid": uuid})
+    
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+#
+# Train Add -------------------------------------------------------------------
+#
+@app.route('/api/train/add', methods=['POST'])
+def api_train_add(): 
+    
+    def add_training(uuid, start_time):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO training('uuid', 'start_time') VALUES (?, ?)", 
+            (uuid, start_time)
+        )
+        new_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return new_id
+
+    try:
+
+        uuid = request.json['uuid']
+        start_time = request.json['start_time']
+        
+        new_id = add_training(uuid, start_time)
+
+        try:
+            docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+            # container_name = "vision-chatbot-agent"#
+            container_name = "authoring-chatbot-agent"
+            my_container = docker_client.containers.get(container_name)   
+            # Call train script asynchron with &
+            stdout = my_container.exec_run(cmd=f"/bin/bash -c /develop/train.sh {uuid} &")
+            my_container.restart()      
+
+            msg = "Server reloading ... " + str(stdout)
+        except Exception as e:
+            msg = "Docker error: " + str(e)
+ 
+
+        return jsonify({"success":True, "id": new_id, "msg": msg})
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
+
+
 @app.route('/api/intent/train', methods=['POST'])
 def api_train_intent():
     try:
+ 
         docker_client = docker.DockerClient(base_url='unix://var/run/docker.sock')
         # container_name = "vision-chatbot-agent"
         container_name = "authoring-chatbot-agent"
         my_container = docker_client.containers.get(container_name)
         stdout = my_container.exec_run(cmd="/bin/bash -c \"mv /config/contessa.tar.gz /config/contessa_"+str(time.time())+".tar.gz\"")
-        my_container.restart()
+        my_container.restart()      
+
         msg = "Server reloading ... " + str(stdout)
-        return jsonify({"success":True, "msg": msg})
+        return jsonify({"success":True, "id": -1, "msg": msg})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
 
@@ -412,17 +484,23 @@ def add_topic():
 def api_add_intent():
     try:
         json_body = request.form
+  
         required_fields = ["intent_name", "intent_list", "response", "is_quiz", "id_chapter", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
+        
         # execute insert process
         else:
             # insert intent
             conn = get_db_connection()
             cursor = conn.cursor()
+
+            # json_body = ImmutableMultiDict([('intent_name', 'Intent 505050'), ('intent_list', 'Intent 505050'), ('is_quiz', 'True'), ('response', 'Intent 505050'), ('id_course', '18'), ('id_chapter', '-1')])
+            is_quiz_int = int(eval(json_body["is_quiz"]))
+        
             cursor.execute("INSERT INTO intent('intent_name','intent_list','response', 'is_quiz', 'id_course', 'id_chapter') VALUES (?, ?, ?, ?, ?, ?)",
-                           (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["is_quiz"], json_body["id_course"], json_body["id_chapter"]))
+                           (json_body["intent_name"], json_body["intent_list"], json_body["response"], is_quiz_int, json_body["id_course"], json_body["id_chapter"]))
             intent_id = cursor.lastrowid
 
             # creat quiz and insert question to question table if is_quiz is true
@@ -465,7 +543,6 @@ def add_intent():
     else:
         return render_template('add_intent.html')
 
-
 @app.route('/api/exam/add', methods=['POST'])
 def api_add_exam():
     try:
@@ -485,7 +562,6 @@ def api_add_exam():
             return jsonify({"success":True, "id":new_id, "description":"New exam has been added"})
     except Exception as e:
         return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
 
 @app.route('/api/course/edit', methods=['PUT'])
 def api_edit_course():
@@ -582,16 +658,34 @@ def edit_chapter(id):
 def api_edit_intent():
     try:
         json_body = request.form
-        required_fields = ["id_intent", "intent_name","intent_list","response"]
+        required_fields = ["id_intent", "intent_name","intent_list","response", "is_quiz"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ?, id_course=?, id_chapter=? where id_intent=?",
-                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_intent"])))
+            is_quiz_int = int(eval(json_body["is_quiz"]))
+            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ?, id_course=?, id_chapter=?, is_quiz=? where id_intent=?",
+                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["id_course"], json_body["id_chapter"], is_quiz_int, str(json_body["id_intent"])))
             num_affected = cursor.rowcount
+            
+            # creat quiz and insert question to question table if is_quiz is true
+            if json_body["is_quiz"]:
+                pass
+                # needs to be implemented/updated
+                
+                # cursor.execute("INSERT INTO quizs(quiz_name) VALUES (?)",
+                #                [json_body["intent_name"]])
+                # quiz_id = cursor.lastrowid
+
+                # cursor.execute("INSERT INTO questions(quiz_id, question_text) VALUES (?, ?)",
+                #                [str(quiz_id), json_body["intent_list"]])
+                # question_id = cursor.lastrowid
+
+                # cursor.execute("INSERT INTO answers(question_id, answer_text, is_correct) VALUES (?, ?, ?)",
+                #                [str(question_id), json_body["response"], str(1)])
+            
             conn.commit()
             conn.close()
             return jsonify({"success":True, "description": str(num_affected) + " intent(s) has been updated"})
@@ -1450,7 +1544,7 @@ def clear_db():
     c.execute('''delete from scores''')
     c.execute('''delete from task''')
     c.execute('''delete from topic''')
-    c.execute('''delete from train_time''')
+    c.execute('''delete from training''')
     # c.execute('''delete from users''')
     c.close()
     conn.commit()

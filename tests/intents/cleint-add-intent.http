@@ -1,0 +1,12 @@
+
+###
+POST http://localhost:5000/api/intent/add
+Content-Type: application/x-www-form-urlencoded
+
+intent_name=intent_777
+&intent_list=intent_777
+&is_quiz=false
+&response=intent_777
+&id_course=18
+&id_chapter=-1
+
