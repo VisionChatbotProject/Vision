@@ -658,16 +658,34 @@ def edit_chapter(id):
 def api_edit_intent():
     try:
         json_body = request.form
-        required_fields = ["id_intent", "intent_name","intent_list","response"]
+        required_fields = ["id_intent", "intent_name","intent_list","response", "is_quiz"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ?, id_course=?, id_chapter=? where id_intent=?",
-                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_intent"])))
+            is_quiz_int = int(eval(json_body["is_quiz"]))
+            cursor.execute("update intent set intent_name = ?, intent_list = ?, response = ?, id_course=?, id_chapter=?, is_quiz=? where id_intent=?",
+                             (json_body["intent_name"], json_body["intent_list"], json_body["response"], json_body["id_course"], json_body["id_chapter"], is_quiz_int, str(json_body["id_intent"])))
             num_affected = cursor.rowcount
+            
+            # creat quiz and insert question to question table if is_quiz is true
+            if json_body["is_quiz"]:
+                pass
+                # needs to be implemented/updated
+                
+                # cursor.execute("INSERT INTO quizs(quiz_name) VALUES (?)",
+                #                [json_body["intent_name"]])
+                # quiz_id = cursor.lastrowid
+
+                # cursor.execute("INSERT INTO questions(quiz_id, question_text) VALUES (?, ?)",
+                #                [str(quiz_id), json_body["intent_list"]])
+                # question_id = cursor.lastrowid
+
+                # cursor.execute("INSERT INTO answers(question_id, answer_text, is_correct) VALUES (?, ?, ?)",
+                #                [str(question_id), json_body["response"], str(1)])
+            
             conn.commit()
             conn.close()
             return jsonify({"success":True, "description": str(num_affected) + " intent(s) has been updated"})
