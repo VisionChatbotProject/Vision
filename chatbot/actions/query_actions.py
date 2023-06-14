@@ -308,16 +308,6 @@ class Query_TopicMeaning(Action):
             dispatcher.utter_message(text=final_response)
         return [AllSlotsReset()]
 
-class Query_SetValue(Action):
-     def name(self) -> Text:
-         return "query_set_value"
-     def run(self, dispatcher: CollectingDispatcher,
-             tracker: Tracker,
-             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        user = tracker.get_slot("user")
-        dispatcher.utter_message("Setting slot value user to " + str(user))
-        return [SlotSet('user', user)]
-
 def buscar(mystring):
     if (search("what does",mystring) and search("mean",mystring)) or search("meaning of",mystring) or search("definition of",mystring):
         if search("what does",mystring) and search("mean",mystring): 
@@ -328,6 +318,23 @@ def buscar(mystring):
             return (mystring.partition("definition of ")[2])
     else:
         return 0
+
+
+
+class Query_SetValue(Action):
+    def name(self) -> Text:
+        return "query_set_value"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+            user = tracker.get_slot("user")
+            dispatcher.utter_message("Setting slot value user to " + str(user))
+            return [SlotSet('user', user)]
+
+
+
+
+
 
 def select_from_database(query1,answer1):
     #query teacher of course

@@ -22,14 +22,16 @@ nlu:
     - good afternoon
     - hi hi 
 
-#- intent: affirm
-#  examples: |
-#    - yes
-#    - y
-#    - indeed
-#    - of course
-#    - that sounds good
-#    - correct
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - ok  
+    - indeed
+    - launch a quiz  
+    - of course
+    - that sounds good
+    - correct
 
 #- intent: deny
 #  examples: |
@@ -57,6 +59,22 @@ nlu:
     - so so perfect
     - so good
     - so perfect
+
+
+- intent: set_slot_value
+  examples: |
+    - Slot user
+    - Slot user to [Hans](user)
+    - Set slot user
+    - Set slot value user
+    - Set slot value user to [Sebastian](user)
+    - Set slot value for user [Tom](user)
+    - regex: user
+    examples: |
+    - [a-zA-Z0-9\\s]*   
+
+
+
 
 - intent: mood_unhappy
   examples: |
@@ -223,6 +241,7 @@ nlu:
     - I want to see courses
     - Please show me all courses
     - List of courses
+    
 
 - intent: key_concepts_chapter
   examples: |
@@ -270,20 +289,20 @@ nlu:
     - Defintion of [Education](topic)
     - Defintion of [Technology](topic)
 
-- intent: show_quiz_info
-  examples: |
-    - i want to take a quiz
-    - yes
-    - ok
-    - I am ready
-    - of course
-    - sure  
-    - launch a quiz
-    - run a quiz
-    - run [Language](quiz_course) quiz
-    - quiz for
-    - quiz for [Mathmatics](quiz_course)
-    - quiz
+#- intent: show_quiz_info
+#  examples: |
+#    - i want to take a quiz
+#    - yes
+#    - ok
+#    - I am ready
+#    - of course
+#    - sure  
+#    - launch a quiz
+#    - run a quiz
+#    - run [Language](quiz_course) quiz
+#    - quiz for
+#    - quiz for [Mathmatics](quiz_course)
+#    - quiz
 
 - intent: no_make_quiz
   examples: |

@@ -13,6 +13,7 @@ intents:
 - faq:
     is_retrieval_intent: true
 - greet
+- affirm  
 - choose_topic
 - launch_quiz
 - quiz_ans
@@ -111,7 +112,7 @@ entities:
 slots:
   answer:
     type: bool
-    influence_conversation: false
+    influence_conversation: true
   chapter:
     type: text
     influence_conversation: false
@@ -434,7 +435,7 @@ forms:
     required_slots:
       answer:
       - type: from_intent
-        intent: show_quiz_info
+        intent: affirm
         value: true
       quiz_course:
       - type: from_text

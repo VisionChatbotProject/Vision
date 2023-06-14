@@ -41,7 +41,7 @@ rules:
 
 - rule: Activate form to fetch info which quiz to launch
   steps:
-  - intent: show_quiz_info
+  - intent: affirm
   - action: quiz_info_form
   - slot_was_set:
     - answer: true
