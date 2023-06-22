@@ -17,6 +17,8 @@ else
 fi
 
 # agent server
-rasa run --enable-api --cors "*" --debug #& #
-
-# tail -f /dev/null
+if [ -f "/app/models/contessa.tar.gz" ]; then
+   rasa run --enable-api --cors "*" --debug #& #
+# else
+   # tail -f /dev/null
+fi

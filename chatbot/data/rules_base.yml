@@ -21,6 +21,11 @@ rules:
   - intent: greet
   - action: utter_greet
 
+- rule: set_slot_value
+  steps:
+  - intent: set_slot_value
+  - action: action_set_value
+
 - rule: user_login
   steps:
   - intent: user_login
@@ -32,6 +37,29 @@ rules:
   steps:
   - intent: nlu_fallback
   - action: action_my_default_fallback
+
+- rule: Activate quiz form
+  steps:
+  - intent: quiz_form
+  - action: action_quiz_form
+  - slot_was_set:
+    - answer: true
+  - active_loop: action_quiz_form
+
+- rule: Submit quiz form
+  condition:
+  - active_loop: action_quiz_form
+  steps:
+  - action: action_quiz_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_quiz_form_submit
+
+- rule: quiz_show_score
+  steps:
+  - intent: quiz_show_score
+  - action: action_quiz_show_score
 
 - rule: course_teacher
   steps:
@@ -92,11 +120,6 @@ rules:
   steps:
   - intent: task_deadlines
   - action: action_task_deadlines
-
-- rule: set_slot_value
-  steps:
-  - intent: set_slot_value
-  - action: action_set_value
 
 - rule: Say goodbye anytime the user says goodbye
   steps:

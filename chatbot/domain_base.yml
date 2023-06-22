@@ -16,6 +16,8 @@ intents:
 - help
 - nlu_fallback
 - user_login
+- quiz_form
+- quiz_show_score
 - course_teacher
 - course_chapters
 - course_description
@@ -130,15 +132,15 @@ responses:
 actions:
 - action_default_fallback
 - action_session_start
-- action_restart
 - action_unlikely_intent
 - action_my_default_fallback
 - action_help
 - action_set_value
+- action_quiz_form
+- action_quiz_form_submit
+- validate_quiz_form
 - action_quiz_number
 - action_quiz_over
-- action_quiz_info_submit
-- action_quiz_info_form
 - action_quiz_show_score
 - action_user_email
 - action_user_pwd
@@ -157,16 +159,15 @@ actions:
 - action_task_ressources
 - action_task_deadlines
 - action_task_list
+- action_restart
 
 forms:
-  quiz_info_form:
+  quiz_form:
     required_slots:
-      # answer:
-      # - type: from_intent
-      #   intent: show_quiz_info
-      #   value: true
-      quiz_course:
-      - type: from_text
+      answer:
+      - type: from_intent
+        intent: quiz_form
+        value: true
       quiz_number:
       - type: from_text
       quiz_over:
