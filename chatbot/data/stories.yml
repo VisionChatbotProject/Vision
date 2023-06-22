@@ -22,17 +22,16 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: mood_happy
+  - intent: mood_great
   - action: utter_happy
 
-- story: happy path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: show_quiz_info
-  - action: quiz_info_form
-  # - active_loop: quiz_info_form
-  # - slot_was_set:
-  #   - requested_slot: null
-  #   - quiz_launch: True
-  - action:  action_quiz_info_submit
+# - story: happy path 2
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - action: quiz_info_form
+#   # - active_loop: quiz_info_form
+#   # - slot_was_set:
+#   #   - requested_slot: null
+#   #   - quiz_launch: True
+#   - action:  action_quiz_info_submit

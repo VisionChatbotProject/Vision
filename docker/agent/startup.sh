@@ -17,6 +17,6 @@ else
 fi
 
 # agent server
-# rasa run --enable-api --cors "*" --debug #& #
+rasa run --enable-api --cors "*" --debug #& #
 
 # tail -f /dev/null

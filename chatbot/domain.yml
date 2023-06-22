@@ -601,10 +601,10 @@ actions:
 forms:
   quiz_info_form:
     required_slots:
-      answer:
-      - type: from_intent
-        intent: show_quiz_info
-        value: true
+      # answer:
+      # - type: from_intent
+      #   intent: show_quiz_info
+      #   value: true
       quiz_course:
       - type: from_text
       quiz_number:

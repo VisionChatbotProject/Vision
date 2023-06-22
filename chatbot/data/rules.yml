@@ -23,7 +23,6 @@ rules:
 - rule: user_login
   steps:
   - intent: user_login
-  - action: user_details_form
   - active_loop: user_details_form
   - action: action_user_details_submit
   - action: action_deactivate_loop
