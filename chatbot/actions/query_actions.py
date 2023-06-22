@@ -10,8 +10,9 @@ from re import search
 import string
 import colorama
 from colorama import Fore
+import os
 
-database = "chatbot.db"
+database = os.environ.get('DATABASE')
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
@@ -66,8 +67,9 @@ class Query_Description_Course(Action):
      def run(self, dispatcher: CollectingDispatcher,
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        course = tracker.get_slot("quiz_course")
         answer="Following is the description of the course: \n"
-        query="SELECT description FROM course"
+        query=f"SELECT description FROM course WHERE name = '{course}'"
         get_query_results = select_from_database(query,answer)
         dispatcher.utter_message(text= get_query_results)
         return []
