@@ -28,10 +28,10 @@ RUN apt-get update \
 # Package that includes `envsubst`
 RUN apt-get install -y gettext
 
-COPY ../docker/replace_vars.sh /replace_vars.sh
-RUN chmod +x /replace_vars.sh
+#COPY ../docker/replace_vars.sh /replace_vars.sh
+#RUN chmod +x /replace_vars.sh
 
-COPY ../chatbot/ /app
+#COPY ../chatbot/ /app
 
 # Copy the virtual environment; must be _exactly_ the same path
 COPY --from=builder /venv /venv
