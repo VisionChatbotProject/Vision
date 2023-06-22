@@ -22,25 +22,6 @@ nlu:
     - good afternoon
     - hi hi 
 
-#- intent: affirm
-#  examples: |
-#    - yes
-#    - y
-#    - indeed
-#    - of course
-#    - that sounds good
-#    - correct
-
-#- intent: deny
-#  examples: |
-#    - no
-#    - n
-#    - never
-#    - I don't think so
-#    - don't like that
-#    - no way
-#    - not really
-
 - intent: mood_great
   examples: |
     - perfect
@@ -56,6 +37,7 @@ nlu:
     - extremely good
     - so so perfect
     - so good
+    - fine
     - so perfect
 
 - intent: mood_unhappy
@@ -204,19 +186,12 @@ nlu:
     - Chapter number [1](chapter)
     - Chapter [1](chapter)
 
-#- intent: content_chapter
-#  examples: |
-#    - Show me the content of chapter [1](chapter)
-#    - Content chapter [1](chapter)
-#    - What is the content of the chapter [1](chapter)?
-#    - Content of [1]chapter
-
-- intent: content_chapter_from_course
+- intent: content_chapter
   examples: |
-    - Please show me the content of the chapter [1](chapter)?
-    - What is the content of the chapter [1](chapter)?
-    - Could you please content [1](chapter)?
-#    - Content of [1](chapter)?  
+   - Show me the content of chapter [1](chapter)
+   - Content chapter [1](chapter)
+   - What is the content of the chapter [1](chapter)?
+   - Content of [1]chapter
 
 - intent: list_of_courses
   examples: |
@@ -245,30 +220,19 @@ nlu:
     - What do I consider for chapter [1](chapter) 
     - Dis the teacher say something about chapter [1](chapter)?
 
-- intent: title_task
+- intent: task_list
   examples: |
     - Do we have homeworks? 
     - Are there pending tasks?
     - Do we have homework? 
     - What do we have to do for next class? 
 
-- intent: ressources_task
+- intent: task_ressources
   examples: |
     - Which literature do we need for the task 
     - What ressources are there for task 
     - Do we have some recommendations for task 
     - Ressources for task 
-
-- intent: topic_meaning
-  examples: |
-    - What does [Education](topic) mean?
-    - What does [Concept](topic) mean?
-    - What does [Definition](topic) mean?
-    - What is the mearning of [Education](topic)?
-    - What is the mearning of [Technology](topic)?
-    - Meaning of [Education](topic)
-    - Defintion of [Education](topic)
-    - Defintion of [Technology](topic)
 
 - intent: show_quiz_info
   examples: |
@@ -320,7 +284,7 @@ nlu:
     - answer c
     - d
 
-- intent: login
+- intent: user_login
   examples: |
     - i want to login
     - login
@@ -352,9 +316,6 @@ nlu:
     - Set slot value user
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
-- regex: user
-  examples: |
-    - [a-zA-Z0-9\\s]*
 
 - intent: goodbye
   examples: |-

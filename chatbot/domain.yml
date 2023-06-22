@@ -9,44 +9,23 @@ session_config:
 intents:
 - start
 - out_of_scope
-- show_quiz_info
-- faq:
-    is_retrieval_intent: true
 - greet
-- affirm
-- deny  
-- choose_topic
-- launch_quiz
-- quiz_ans
-- quiz_num
-- ask_email
-- login
-- ask_score
 - mood_great
 - mood_unhappy
-- bot_challenge
 - thanks
 - help
-- no_make_quiz
-- teacher
+- nlu_fallback
+- user_login
+- course_teacher
 - course_chapters
 - course_description
 - course_materials
-- course_ectressources
-- score_course
-- main_topic_course
-- email_coordinator
 - course_extressources
-- list_chapter
-- list_of_courses
-- description_chapter
-- content_chapter_from_course
-- key_concepts_chapter
-- ressources_chapter
-- observations_chapter
-- title_task
-- ressources_task
-- topic_meaning
+- chapter_description
+- chapter_content
+- task_list
+- task_ressources
+- task_deadlines
 - set_slot_value
 - goodbye
 - music_concept
@@ -92,14 +71,37 @@ intents:
 - find_task
 - how_to_help
 - what_to_do
-- asdasd
-- asdasd2
-- asdasdasdasdasd
+- answer_what_is_the_description_of_the_course
+- SAT1
+- SAT2
+- SAT3
+- SAT4
+- SAT5
+- SAT6
+- SAT7
+- SAT8
+- SAT9
+- SAT10
+- SAT11
+- SAT12
+- SAT13
+- SAT14
+- SAT15_1
+- SAT15
+- SAT16
+- SAT17
+- SAT18
+- SAT19
+- SAT20
+- SAT21
+- SAT22
+- SAT23
+- SAT24
 entities:
 - course
 - chapter
+- task
 - slide
-- topic
 - quiz_course
 - quiz_number
 - quiz_over
@@ -111,9 +113,9 @@ entities:
 - user_confirmation
 
 slots:
-  #  answer:
-  #    type: bool
-  #    influence_conversation: true
+  answer:
+    type: bool
+    influence_conversation: false
   chapter:
     type: text
     influence_conversation: false
@@ -168,16 +170,12 @@ responses:
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
-
   utter_did_that_help:
   - text: "Did that help you?"
-
   utter_happy:
   - text: "Great, carry on!"
-
-    #  utter_quiz_answer_no:
-    #  - text: "Ok, thank you"
-
+  utter_quiz_answer_no:
+  - text: "Ok, thank you"
   utter_iamabot:
   - text: "I am Visionbot. I am your learning assistant"
   utter_please_rephrase:
@@ -187,19 +185,12 @@ responses:
   utter_help:
   - text: "I can help you delivering infomation  1.- About Homeworks 2.- About Exams\
       \ 3.- About where to find content"
-  utter_score_course:
-  - text: "The sorce to pass the course is 2.5"
-  utter_main_topic_course:
-  - text: "The main topic is natural language processing"
-  utter_email_coordinator:
-  - text: "The email of the coordinator is coordinator@gmail.com"
   utter_fallback:
   - text: Sorry, I didn't get you !!! Some one from the college wil get in touch with
       you. Your question is sent to them.
   utter_default:
-  - text: Sorry, I didn't get you !!!
-  utter_ask_info:
-  - text: Hey! What type of information do you want?
+  - text: Sorry, I didn't get you, with hep I can provide you a list of things you
+      can ask me !!!
   utter_usr_email:
   - text: Hey ! Please provide your registered email ?
   utter_usr_pwd:
@@ -224,8 +215,8 @@ responses:
   utter_self_regulation:
   - text: "Through discussion and collaboration with other students"
   utter_importance_of_self_regulation:
-  - text: "It means being able to comprehend one   s abilities  to understand one\
-      \   s mistakes and being able to correct them"
+  - text: "It means being able to comprehend one s abilities  to understand one s\
+      \ mistakes and being able to correct them"
   utter_tree_model:
   - text: "The tree model provides a guide to planning an effective learning and teaching\
       \ experience  Both the teacher side as well as the learner side are represented\
@@ -245,7 +236,7 @@ responses:
       \ resources and strategies  learners are encouraged to actively participate\
       \ in the learning process"
   utter_Maria_Montessori_approach:
-  - text: "Maria Montessori   s approach is based on the idea that children are naturally\
+  - text: "Maria Montessori s approach is based on the idea that children are naturally\
       \ eager for knowledge and capable of learning and by creating positive learning\
       \ environments with well-designed teaching materials  the desire to learn is\
       \ enhanced"
@@ -381,63 +372,239 @@ responses:
   utter_what_to_do:
   - text: "I can help you study if you want  We can test your course knowledge and\
       \ I will try to answer all of your questions about the course"
-  utter_asdasd:
-  - text: "asdasd"
-  utter_asdasd2:
-  - text: "asdasd"
-  utter_asdasdasdasdasd:
-  - text: "asdasdasd"
+  utter_answer_what_is_the_description_of_the_course:
+  - text: "this is a course about music"
+  utter_SAT1:
+  - text: "Go to https   visionapp smart-study net  If you already have an account\
+      \  type in your username and password  If you do not have an account  create\
+      \ a new one by clicking on  Not a member? Sign up    You do not have to download\
+      \ or install anything"
+  utter_SAT2:
+  - text: "Go to  My Courses  on the left-hand side menu  Click on the  plus on the\
+      \ right upper corner  Fill in the necessary information  Save the course"
+  utter_SAT3:
+  - text: "All fields have to be filled in or the Chatbot Tutor will not be able to\
+      \ answer these questions when asked by the students"
+  utter_SAT4:
+  - text: "The categories  Course Materials  and  Course Resources  allow you to give\
+      \ the Chatbot Tutor additional information on where students can find the entire\
+      \ course material in  for example  your Learning Management System  LMS"
+  utter_SAT5:
+  - text: "Your course can be structured into sections and within sections  you can\
+      \ add units  \nClick on  Edit Course    Click on the plus next to  Sections\
+      \   Fill in the necessary information  Save the section \nClick on the section\
+      \ to add units  Click on the plus next to  Units   Give the unit a title  Save\
+      \ the unit"
+  utter_SAT6:
+  - text: "Once you have defined sections and units  you can also change their order\
+      \  Click on the arrow icon right next to  Sections   Units   You can now change\
+      \ the order by dragging and dropping the individual items to your preferred\
+      \ position  Click on  Close  once you are finished"
+  utter_SAT7:
+  - text: "Click on the unit to add content  Open the sidebar menu by clicking on\
+      \  Drag and drop the items you want from the sidebar  You can choose between\
+      \ Text  Image  Video  Link and many more  You can also add sections from the\
+      \ sidebar in order to structure your content  Or you can upload external HTML\
+      \ sources"
+  utter_SAT8:
+  - text: "You can add any kind of external HTLM content  Within your unit  click\
+      \ on the download icon in the bar underneath the save button  A separate window\
+      \ will pop up  Insert your HTML code and press  Import"
+  utter_SAT9:
+  - text: "Click on arrows in the bar underneath the save button  A separate window\
+      \ will pop up showing the HTML code of your content  Copy the whole code  close\
+      \ the window again  Create a new unit  click on the upload icon in the bar underneath\
+      \ the save button  A separate window will pop up  Insert your HTML code and\
+      \ press  Import"
+  utter_SAT10:
+  - text: "You can edit your items by clicking on them  In the sidebar you now have\
+      \ the option to change Dimension  Typography and Decorations  \nYou can also\
+      \ duplicate items by clicking on the copy icon   or delete items by clicking\
+      \ on the trash icon \nDo not forget to regularly save your progress with the\
+      \ save button on top of your unit"
+  utter_SAT11:
+  - text: "The title of your unit will have an asterisk in case you have not saved\
+      \ your changes yet"
+  utter_SAT12:
+  - text: "After you have dragged and dropped a video element into your unit  click\
+      \ on the video  Click on the gear wheel icon in the bar underneath the save\
+      \ button  You can now add the source of your video  either HTML  Youtube or\
+      \ Vimeo"
+  utter_SAT13:
+  - text: "After you have dragged and dropped an image element into your unit  a separate\
+      \ window will open  Drop files directly into the field or click on it to upload\
+      \ images saved on your computer  The image will appear on the right-hand side\
+      \ of the window  Click on it to add it to your unit"
+  utter_SAT14:
+  - text: "Go to your course  On the bottom of the page  you find the option  Questionnaire\
+      \   Click on the plus next to  Questionnaire   Give your questionnaire a title\
+      \  Save the questionnaire  Click on the questionnaire  Click on  Add Question\
+      \   Type in a title for you question  e g   Question 1    Multiple Choice Question\
+      \ 1   and the question and save everything  Click on  Add Answer   Add as many\
+      \ answers as you like  don t forget to tick the  Correct Answer  box for the\
+      \ correct answer option  and save your answers  You can add as many question\
+      \ answer sets as you like"
+  utter_SAT15_1:
+  - text: "Once you have successfully created your course  you can export the SCORM\
+      \ course  Go to the course itself  click on  the export icon right next to your\
+      \ course s title  A ZIP file will be downloaded onto your computer  Use this\
+      \ file to upload it in your SCORM supported LMS"
+  utter_SAT15:
+  - text: "Yes  you can copy text you have already written in another document  e\
+      \ g   Word  PDF  Power Point   If you wish to paste the text in an unformatted\
+      \ way  right-click on your mouse in the text field and choose the option  Insert\
+      \ as unformatted text"
+  utter_SAT16:
+  - text: "In the category  Dimension   you can position your text box  \n \t Margin\
+      \  will change the position of your text box in relation to neighboring elements\
+      \  it is used to create space around  top  right  bottom  left  the text box\
+      \  \n \t Padding  is used to create space between the text and the text box\
+      \  top  right  bottom  left   padding uses the same background color as the\
+      \ text and counts as part of the text box s width \nIn the category  Typography\
+      \   you can change the format of the text \n \t Font   choose between different\
+      \ fonts  e g   Arial  Times New Roman  Verdana \n \t Font size   you can directly\
+      \ type in  normal  or  small   or you choose px and type in a value\n \t Letter\
+      \ spacing   you can directly type in  normal  or  small   or you choose px and\
+      \ type in a value\n \t Font color   you can directly type in a color or a color\
+      \ code or choose a color from the color palette\n \t Text align   choose between\
+      \ left  right  justified and centered\n \t Text decoration   choose between\
+      \ underlined or strikethrough\n \t Font style   for italics\nIn the category\
+      \  Decorations   you can change the background color of a text box  Type in\
+      \ a color or a color code or choose a color from the color palette"
+  utter_SAT17:
+  - text: "Teachers can easily create engaging courses with VISION s Smart Authoring\
+      \ Tool which can then be exported to be used in their Learning Management System\
+      \  This way  they only create a course once and can reuse it multiple times\
+      \  They can use the thus created course for a flipped classroom method  where\
+      \ teachers offer content in different forms of representation with which students\
+      \ engage at home  The time in the classroom is then reserved to deepen the knowledge\
+      \  It is a shift away from teacher-centered learning to student-centered learning\
+      \ and thus also a freeing up of the teacher s valuable time which can then be\
+      \ spent on individual student support"
+  utter_SAT18:
+  - text: "Learning is a complex cognitive  affective and psychomotor process which\
+      \ demands time and effort  The more learners are confronted and engage with\
+      \ information  the easier and more profoundly they acquire this information\
+      \  Courses created with the Smart Authoring Tool offer such an intensive exploration\
+      \ of new as well as pre-existing knowledge  A course created with the Smart\
+      \ Authoring Tool is available 24 7  includes different forms of representation\
+      \ and provides students with a broad range of different learning materials \
+      \ besides offering a presentation with the most important aspect of a topic\
+      \  including picture  video and text options  teachers can also provide students\
+      \ with a course syllabus as well as additional sources such as books or websites\
+      \  Students can then choose when and how to use course materials in order to\
+      \ personalize their learning process"
+  utter_SAT19:
+  - text: "It always has to be considered that technology  such as the Smart Authoring\
+      \ Too  itself is limited and always needs human input or interaction  A course\
+      \ created with the Smart Authoring Tool is only a support but can never replace\
+      \ the teacher or the work in a real-life classroom  even if this real-life classroom\
+      \ should be virtual   Active involvement is only possible to a certain degree\
+      \ within the Smart Authoring Tool  and it is dependent on the Learning Management\
+      \ System it runs on"
+  utter_SAT20:
+  - text: "Scale different elements according to their importance  Also use caps \
+      \ italics  bold and contrast for different pieces of information  In the Smart\
+      \ Authoring Tool  you can do this by directly clicking on the text or by going\
+      \ to the sidebar category  Typography   choosing font size  font color and weight\
+      \ \n \tBe consistent in your design  Use the same colors  fonts and forms to\
+      \ express importance \n \tGroup connected information together and make use\
+      \ of the white space to set these groups apart from each other \n \tUse visuals\
+      \ to support written text"
+  utter_SAT21:
+  - text: "Successful learning  that is the successful transfer from information heard\
+      \ in the classroom to the practical application of said knowledge in one s own\
+      \ life  can only happen if new information is connected to previously acquired\
+      \ knowledge  An engaging first unit should thus start with an activation of\
+      \ prior knowledge  by offering  for example  an opening statement or question\
+      \ to be discussed with the students  You can also offer a video of yourself\
+      \  the expert  summarizing the knowledge necessary to build on in your course\
+      \ \n \tThe successful transfer of information can be supported if students are\
+      \ able to connect what they learn to the real life  You should thus include\
+      \ examples which illustrate how a phenomenon or principal applies to real-life\
+      \ situations  either in the form of videos  pictures or testimonials  You can\
+      \ also illustrate connections between different subject matters  Case studies\
+      \ are another example of real-life scenarios which can be included in your course\
+      \ material \n \tStudents need to have enough time to grasp new concepts  Units\
+      \ should thus focus on a limited set of information and work on these in depth\
+      \  Units should also follow a certain structure in order for students to recognize\
+      \ realistic goals they can achieve \n \tUnits should be varied and offer different\
+      \ forms of representation to address different types of learners  They should\
+      \ acknowledge that the student is at the center of the learning process and\
+      \ not the teacher  and that it is the student who constructs knowledge through\
+      \ interaction with said knowledge  with the teacher  as well as with other students\
+      \  The Smart Authoring Tool allows you to use text  videos  pictures  links\
+      \  quizzes and many more different items  You can also include an audio recording\
+      \ of yourself or some other expert"
+  utter_SAT22:
+  - text: "Successful learning can only be realized if students are actively involved\
+      \ in their learning process  Active involvement with the help of the Smart Authoring\
+      \ Tool can be fostered through \n \tactivities such as quizzes or self-reflection\
+      \ tasks where students have to actively acquire knowledge \n \tchoices in how\
+      \ students can acquire knowledge  they can be offered a text or a video  \n\
+      \ \trepeated questions addressed to the students on what they have learned thus\
+      \ far \nThe Smart Authoring Tool also allows you to add external content with\
+      \ its upload function  For more active involvement  you could  for example \
+      \ add h5p exercises"
+  utter_SAT23:
+  - text: "If you want to revise a topic to see your students  progress and for your\
+      \ students to see their own progress  you can use quiz options such as single-choice\
+      \ or multiple-choice questions  Single-choice or multiple-choice questions can\
+      \ also be used at the beginning of a topic to see the learning starting point\
+      \ of each student  With these quiz formats  a certain pre-defined answer is\
+      \ expected  which allows for a quick overview of which students still need additional\
+      \ information  It also guarantees for unbiased feedback since the answer is\
+      \ either true or false  \nFill in the blank quizzes or open-end questions can\
+      \ also help identifying your students  learning progress or starting point \
+      \ They allow for more than one possible answer  and therefore need more time\
+      \ in answering and correcting  and are more difficult in offering correction\
+      \ that is unbiased \nIf you want students to critically reflect on a certain\
+      \ topic  essay questions are the best choice  They allow students to express\
+      \ their own opinions and also be more creative in answering questions"
+  utter_SAT24:
+  - text: "Self-reflection and self-assessment in the teaching and learning context\
+      \ mean to understand one s strengths as well as one s weaknesses and to find\
+      \ strategies to positively influence the learning process  Self-reflection and\
+      \ self-assessment can be added to the Smart Authoring Tool by uploading external\
+      \ content"
 actions:
-- action_ask_quiz_course
-- action_ask_quiz_number
-- action_ask_quiz_over
 - action_default_fallback
-- action_quiz_info_submit
-- action_quiz_launch_form
-- action_quiz_launch_submit
-- action_restart
-- action_show_topic
-- action_unlikely_intent
-- my_default_fallback
-- utter_faq
-- validate_quiz_info_form
-- validate_quiz_launch_form
-- validate_restaurant_form
-- action_ask_user_email
-- action_ask_user_pwd
-- action_ask_user_confirmation
-- validate_user_details_form
-- action_user_details_submit
-- action_show_score
 - action_session_start
-- query_course_teacher
-- query_list_course
-- query_course_chapters
-- query_course_description
-- query_course_materials
-- query_course_extressources
-- query_list_chapter
-- query_description_chapter
-#- query_content_chapter
-- query_content_chapter_from_course
-- query_key_concepts_chapter
-- query_ressources_chapter
-- query_observations_chapter
-- query_title_task
-- query_ressources_task
-- query_topic_meaning
-- action_login
-- query_set_value
+- action_restart
+- action_unlikely_intent
+- action_my_default_fallback
+- action_help
+- action_set_value
+- action_quiz_number
+- action_quiz_over
+- action_quiz_info_submit
+- action_quiz_info_form
+- action_quiz_show_score
+- action_user_email
+- action_user_pwd
+- action_user_confirmation
+- action_user_details_form
+- action_user_details_submit
+- action_user_login
+- action_course_teacher
+- action_course_list
+- action_course_chapters
+- action_course_description
+- action_course_materials
+- action_course_extressources
+- action_chapter_description
+- action_chapter_content
+- action_task_ressources
+- action_task_deadlines
+- action_task_list
 
 forms:
   quiz_info_form:
-    ignored_intents:
-    - faq
     required_slots:
-      #      answer:
-      #      - type: from_intent
-      #        intent: affirm
-      #        value: true
+      answer:
+      - type: from_intent
+        intent: show_quiz_info
+        value: true
       quiz_course:
       - type: from_text
       quiz_number:

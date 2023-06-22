@@ -5,11 +5,6 @@ rules:
   - intent: start
   - action: utter_start
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
-
 - rule: thanks
   steps:
   - intent: thanks
@@ -18,152 +13,90 @@ rules:
 - rule: Show menu
   steps:
   - intent: help
-  - action: utter_help
+  - action: action_help
 
 - rule: Greet
   steps:
   - intent: greet
   - action: utter_greet
 
-- rule: Show Score or performance
+- rule: user_login
   steps:
-  - intent: ask_score
-  - action: action_show_score
-
-- rule: Ask User email id
-  steps:
-  - intent: login
+  - intent: user_login
   - action: user_details_form
   - active_loop: user_details_form
-  - active_loop:
   - action: action_user_details_submit
   - action: action_deactivate_loop
 
-- rule: Activate form to fetch info which quiz to launch
-  steps:
-  - intent: show_quiz_info
-  - action: quiz_info_form
-    #  - slot_was_set:
-    #    - answer: true
-  - active_loop: quiz_info_form
-  - active_loop:
-  - action: action_quiz_info_submit
-  - action: action_deactivate_loop
-
-- rule: respond for FAQ
-  steps:
-  - intent: faq
-  - action: utter_faq
-
-#- rule: Say ok thank you for no answer
-#  steps:
-#  - intent: no_make_quiz
-#  - action: utter_quiz_answer_no
-
-- rule: Say i dont understand when fallback
+- rule: my_default_fallback
   steps:
   - intent: nlu_fallback
-  - action: my_default_fallback
+  - action: action_my_default_fallback
 
-- rule: Say who is the teacher
+- rule: course_teacher
   steps:
-  - intent: teacher
-  - action: query_course_teacher
+  - intent: course_teacher
+  - action: action_course_teacher
 
-- rule: Say the chapters of the course
+- rule: course_chapters
   steps:
   - intent: course_chapters
-  - action: query_course_chapters
+  - action: action_course_chapters
 
-- rule: Say the description of the course
+- rule: course_description
   steps:
   - intent: course_description
-  - action: query_course_description
+  - action: action_course_description
 
-- rule: Say the materials of the course
+- rule: course_materials
   steps:
   - intent: course_materials
-  - action: query_course_materials
+  - action: action_course_materials
 
-- rule: Say the extern ressources of the course
+- rule: course_extressources
   steps:
   - intent: course_extressources
-  - action: query_course_extressources
+  - action: action_course_extressources
 
-- rule: Say the score to pass the course
+- rule: chapter_description
   steps:
-  - intent: score_course
-  - action: utter_score_course
+  - intent: chapter_description
+  - action: action_chapter_description
 
-- rule: say the main topic of the course
+- rule: chapter_content
   steps:
-  - intent: main_topic_course
-  - action: utter_main_topic_course
+  - intent: chapter_content
+  - action: action_chapter_content
 
-- rule: say the email of the coordinator
+- rule: chapter_description
   steps:
-  - intent: email_coordinator
-  - action: utter_email_coordinator
+  - intent: chapter_description
+  - action: action_chapter_description
 
-- rule: list the chapters of the course
+- rule: chapter_content
   steps:
-  - intent: list_chapter
-  - action: query_list_chapter
+  - intent: chapter_content
+  - action: action_chapter_content
 
-- rule: description of chatper
+- rule: task_list
   steps:
-  - intent: description_chapter
-  - action: query_description_chapter
+  - intent: task_list
+  - action: action_task_list
 
-#- rule: show content of chapter
-#  steps:
-#  - intent: content_chapter
-#  - action: query_content_chapter
-
-- rule: show the list of courses
+- rule: task_ressources
   steps:
-  - intent: list_of_courses
-  - action: query_list_course
+  - intent: task_ressources
+  - action: action_task_ressources
 
-- rule: show content of chapter from course
+- rule: task_deadlines
   steps:
-  - intent: content_chapter_from_course
-  - action: query_content_chapter_from_course
+  - intent: task_deadlines
+  - action: action_task_deadlines
 
-- rule: answer key concept from chapter
-  steps:
-  - intent: key_concepts_chapter
-  - action: query_key_concepts_chapter
-
-- rule: answer the ressources of chapter
-  steps:
-  - intent: ressources_chapter
-  - action: query_ressources_chapter
-
-- rule: answer additional information about chapter
-  steps:
-  - intent: observations_chapter
-  - action: query_observations_chapter
-
-- rule: answer if there is homework / homework active
-  steps:
-  - intent: title_task
-  - action: query_title_task
-
-- rule: answer the ressources for the pending tasks
-  steps:
-  - intent: ressources_task
-  - action: query_ressources_task
-
-- rule: answer the meaning of a topic
-  steps:
-  - intent: topic_meaning
-  - action: query_topic_meaning
-
-- rule: set value of slot
+- rule: set_slot_value
   steps:
   - intent: set_slot_value
-  - action: query_set_value
+  - action: action_set_value
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
@@ -342,15 +275,107 @@ rules:
   steps:
   - intent: what_to_do
   - action: utter_what_to_do
-- rule: rule for asdasd
+- rule: rule for answer_what_is_the_description_of_the_course
   steps:
-  - intent: asdasd
-  - action: utter_asdasd
-- rule: rule for asdasd2
+  - intent: answer_what_is_the_description_of_the_course
+  - action: utter_answer_what_is_the_description_of_the_course
+- rule: rule for SAT1
   steps:
-  - intent: asdasd2
-  - action: utter_asdasd2
-- rule: rule for asdasdasdasdasd
+  - intent: SAT1
+  - action: utter_SAT1
+- rule: rule for SAT2
   steps:
-  - intent: asdasdasdasdasd
-  - action: utter_asdasdasdasdasd
+  - intent: SAT2
+  - action: utter_SAT2
+- rule: rule for SAT3
+  steps:
+  - intent: SAT3
+  - action: utter_SAT3
+- rule: rule for SAT4
+  steps:
+  - intent: SAT4
+  - action: utter_SAT4
+- rule: rule for SAT5
+  steps:
+  - intent: SAT5
+  - action: utter_SAT5
+- rule: rule for SAT6
+  steps:
+  - intent: SAT6
+  - action: utter_SAT6
+- rule: rule for SAT7
+  steps:
+  - intent: SAT7
+  - action: utter_SAT7
+- rule: rule for SAT8
+  steps:
+  - intent: SAT8
+  - action: utter_SAT8
+- rule: rule for SAT9
+  steps:
+  - intent: SAT9
+  - action: utter_SAT9
+- rule: rule for SAT10
+  steps:
+  - intent: SAT10
+  - action: utter_SAT10
+- rule: rule for SAT11
+  steps:
+  - intent: SAT11
+  - action: utter_SAT11
+- rule: rule for SAT12
+  steps:
+  - intent: SAT12
+  - action: utter_SAT12
+- rule: rule for SAT13
+  steps:
+  - intent: SAT13
+  - action: utter_SAT13
+- rule: rule for SAT14
+  steps:
+  - intent: SAT14
+  - action: utter_SAT14
+- rule: rule for SAT15_1
+  steps:
+  - intent: SAT15_1
+  - action: utter_SAT15_1
+- rule: rule for SAT15
+  steps:
+  - intent: SAT15
+  - action: utter_SAT15
+- rule: rule for SAT16
+  steps:
+  - intent: SAT16
+  - action: utter_SAT16
+- rule: rule for SAT17
+  steps:
+  - intent: SAT17
+  - action: utter_SAT17
+- rule: rule for SAT18
+  steps:
+  - intent: SAT18
+  - action: utter_SAT18
+- rule: rule for SAT19
+  steps:
+  - intent: SAT19
+  - action: utter_SAT19
+- rule: rule for SAT20
+  steps:
+  - intent: SAT20
+  - action: utter_SAT20
+- rule: rule for SAT21
+  steps:
+  - intent: SAT21
+  - action: utter_SAT21
+- rule: rule for SAT22
+  steps:
+  - intent: SAT22
+  - action: utter_SAT22
+- rule: rule for SAT23
+  steps:
+  - intent: SAT23
+  - action: utter_SAT23
+- rule: rule for SAT24
+  steps:
+  - intent: SAT24
+  - action: utter_SAT24
