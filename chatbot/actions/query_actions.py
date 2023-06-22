@@ -11,8 +11,7 @@ import string
 import colorama
 from colorama import Fore
 
-import os
-database = os.environ.get('DATABASE')
+database = "chatbot.db"
 
 class Query_Lecturer_Course(Action):
      def name(self) -> Text:
@@ -44,9 +43,9 @@ class Query_List_Course(Action):
             course_resp+= str(cours[0])+ "\n"
              
         text1 = response+course_resp
-        text2 ="Do you want to make a quiz?"
+       # text2 ="Do you want to make a quiz?"
         dispatcher.utter_message(text1)
-        dispatcher.utter_message(text2)
+       # dispatcher.utter_message(text2)
         return []
 
 class Query_Chapters_Course(Action):
@@ -67,9 +66,8 @@ class Query_Description_Course(Action):
      def run(self, dispatcher: CollectingDispatcher,
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        course = tracker.get_slot("quiz_course")
         answer="Following is the description of the course: \n"
-        query=f"SELECT description FROM course WHERE name = '{course}'"
+        query="SELECT description FROM course"
         get_query_results = select_from_database(query,answer)
         dispatcher.utter_message(text= get_query_results)
         return []

@@ -41,10 +41,10 @@ rules:
 
 - rule: Activate form to fetch info which quiz to launch
   steps:
-  - intent: affirm
+  - intent: show_quiz_info
   - action: quiz_info_form
-  - slot_was_set:
-    - answer: true
+    #  - slot_was_set:
+    #    - answer: true
   - active_loop: quiz_info_form
   - active_loop:
   - action: action_quiz_info_submit
@@ -55,10 +55,10 @@ rules:
   - intent: faq
   - action: utter_faq
 
-- rule: Say ok thank you for no answer
-  steps:
-  - intent: no_make_quiz
-  - action: utter_quiz_answer_no
+#- rule: Say ok thank you for no answer
+#  steps:
+#  - intent: no_make_quiz
+#  - action: utter_quiz_answer_no
 
 - rule: Say i dont understand when fallback
   steps:

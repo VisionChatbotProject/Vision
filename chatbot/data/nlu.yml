@@ -1,4 +1,5 @@
 version: '2.0'
+  w can the teacher support self-reflection in students?
 nlu:
 - intent: start
   examples: |
@@ -25,7 +26,6 @@ nlu:
 - intent: affirm
   examples: |
     - yes
-    - y
     - ok  
     - indeed
     - launch a quiz  
@@ -33,15 +33,15 @@ nlu:
     - that sounds good
     - correct
 
-#- intent: deny
-#  examples: |
-#    - no
-#    - n
-#    - never
-#    - I don't think so
-#    - don't like that
-#    - no way
-#    - not really
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
 
 - intent: mood_great
   examples: |
@@ -61,17 +61,17 @@ nlu:
     - so perfect
 
 
-- intent: set_slot_value
-  examples: |
-    - Slot user
-    - Slot user to [Hans](user)
-    - Set slot user
-    - Set slot value user
-    - Set slot value user to [Sebastian](user)
-    - Set slot value for user [Tom](user)
-    - regex: user
-    examples: |
-    - [a-zA-Z0-9\\s]*   
+#- intent: set_slot_value
+#  examples: |
+#    - Slot user
+#    - Slot user to [Hans](user)
+#    - Set slot user
+#    - Set slot value user
+#    - Set slot value user to [Sebastian](user)
+#    - Set slot value for user [Tom](user)
+#    - regex: user
+#    examples: |
+#    - [a-zA-Z0-9\\s]*   
 
 
 
@@ -289,26 +289,20 @@ nlu:
     - Defintion of [Education](topic)
     - Defintion of [Technology](topic)
 
-#- intent: show_quiz_info
-#  examples: |
-#    - i want to take a quiz
-#    - yes
-#    - ok
-#    - I am ready
-#    - of course
-#    - sure  
-#    - launch a quiz
-#    - run a quiz
-#    - run [Language](quiz_course) quiz
-#    - quiz for
-#    - quiz for [Mathmatics](quiz_course)
-#    - quiz
-
-- intent: no_make_quiz
+- intent: show_quiz_info
   examples: |
-    - no,I do not
-    - I am not ready now
-    - no
+    - launch a quiz
+    - run a quiz
+    - run [Language](quiz_course) quiz
+    - quiz for
+    - quiz for [Mathmatics](quiz_course)
+    - quiz
+
+#- intent: no_make_quiz
+#  examples: |
+#    - no,I do not
+#    - I am not ready now
+#    - no
 
 - intent: out_of_scope
   examples: |
@@ -632,12 +626,14 @@ nlu:
     - What do I need you for?
     - What should I do with a chatbot?
     - What are you good for?
-- intent: asdasd
-  examples: |
-    -asdasd
-- intent: asdasd2
-  examples: |
-    -asdasd
-- intent: asdasdasdasdasd
-  examples: |
-    -asdasdasd
+#- intent: asdasd
+#  examples: |
+#    - asdasd
+#    - I want to set asdasd
+#- intent: asdasd2
+#  examples: |
+#    - asdasd
+#    - please put the value asdasd2  
+#- intent: asdasdasdasdasd
+#  examples: |
+#    -asdasdasd

@@ -13,7 +13,8 @@ intents:
 - faq:
     is_retrieval_intent: true
 - greet
-- affirm  
+- affirm
+- deny  
 - choose_topic
 - launch_quiz
 - quiz_ans
@@ -110,9 +111,9 @@ entities:
 - user_confirmation
 
 slots:
-  answer:
-    type: bool
-    influence_conversation: true
+  #  answer:
+  #    type: bool
+  #    influence_conversation: true
   chapter:
     type: text
     influence_conversation: false
@@ -174,8 +175,8 @@ responses:
   utter_happy:
   - text: "Great, carry on!"
 
-  utter_quiz_answer_no:
-  - text: "Ok, thank you"
+    #  utter_quiz_answer_no:
+    #  - text: "Ok, thank you"
 
   utter_iamabot:
   - text: "I am Visionbot. I am your learning assistant"
@@ -433,10 +434,10 @@ forms:
     ignored_intents:
     - faq
     required_slots:
-      answer:
-      - type: from_intent
-        intent: affirm
-        value: true
+      #      answer:
+      #      - type: from_intent
+      #        intent: affirm
+      #        value: true
       quiz_course:
       - type: from_text
       quiz_number:
