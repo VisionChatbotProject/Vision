@@ -129,8 +129,6 @@ def getListofTopics():
 def getListofQuiz(course_id):
     try:
         sql = f'select quiz_id from quizs where id_course = {course_id}'
-        logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
-        getDB(db_name)
         df = pd.read_sql_query(sql, con)
         record = (df['quiz_id'].to_list())
     except Exception as e:
@@ -577,15 +575,17 @@ def current_course_id(tracker):
     name = tracker.get_slot("quiz_course")
     sql=f"""SELECT id_course from course where name = '{name}'"""
     cursor.execute(sql)
-    entry = cursor.fetchone()
-    logger.info(f'####### {__file__} : {name} {entry}')
-    return entry[0]
+    res = cursor.fetchone()
+    logger.info(f' -------- current_course_id {__file__} : course:{name}, course_id:{res[0]}')
+    return res[0]
 
 def current_chapter_id(tracker):
     getDB(db_name)
     name = tracker.get_slot("chapter")
-    sql=f"""SELECT id_chapter from chapter where name = '{name}'"""
+    sql=f"""SELECT id_chapter from chapter where name_chapter = '{name}'"""
     cursor.execute(sql)
     entry = cursor.fetchone()
-    logger.info(f'{__file__} : sql = {sql}')
+    logger.info(f' ******** current_chapter_id {__file__} : sql = {sql}')
     return entry[0]
+
+
