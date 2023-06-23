@@ -6,6 +6,7 @@ from rasa_sdk.events import SlotSet, EventType
 from rasa_sdk.forms import FormAction
 from utils.utils import *
 from utils.db import *
+from utils.quiz import *
 
 # This form is to launch quiz for a user
 class QuizForm(FormAction):

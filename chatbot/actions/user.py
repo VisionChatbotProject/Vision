@@ -38,7 +38,7 @@ class UserEmail(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        log_tracker_event(tracker, logger)
+        log_tracker_event(tracker)
         dispatcher.utter_message(response="utter_usr_email")
         return []
 
@@ -54,7 +54,7 @@ class UserPwd(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        log_tracker_event(tracker, logger)
+        log_tracker_event(tracker)
         dispatcher.utter_message(response="utter_usr_pwd")
         return []
 
@@ -70,7 +70,7 @@ class UserConfirmation(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        log_tracker_event(tracker, logger)
+        log_tracker_event(tracker)
         buttons = yes_no_buttons()
         buttons = button_it(buttons)
         dispatcher.utter_message(text="Your credentials are not correct. Do you want to enter again ?", buttons=buttons)
@@ -149,7 +149,7 @@ class ActionUserDetailSubmit(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        log_tracker_event(tracker, logger)
+        log_tracker_event(tracker)
         
         email = tracker.get_slot('user_email')
         if email is None or email == "":

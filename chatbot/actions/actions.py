@@ -4,7 +4,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, Restarted, AllSlotsReset, UserUtteranceReverted
 from utils.utils import *
 
-# End of conversation
 class ActionEndOfFlow(Action):
     def name(self) -> Text:
         return "action_restart"
@@ -15,9 +14,7 @@ class ActionEndOfFlow(Action):
             domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
 
-        log_tracker_event(tracker, logger)
-        save_conversation(tracker, logger)
-        save_convo(tracker, logger)
+        log_tracker_event(tracker)
         dispatcher.utter_message(text="EOC")
         return [Restarted(), AllSlotsReset()]
 
