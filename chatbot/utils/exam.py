@@ -1,23 +1,23 @@
 from datetime import datetime, timedelta
 import re
 from utils.email import send_exam_notification
-from utils.db import DB
+from utils.db import *
 
 time = datetime.now() + timedelta(days=7)
 seven_days_later = time.strftime('%Y-%m-%d')
 
 def get_upcoming_exam():
-    DB.execute("SELECT name FROM exam WHERE date(date) = date(?) AND active = 1", (seven_days_later))
-    date = DB.fetchall()
+    getDB().execute("SELECT name FROM exam WHERE date(date) = date(?) AND active = 1", (seven_days_later))
+    date = getDB().fetchall()
     exams = []
     for d in date:
         exams.append(d[0])
     return exams
 
 def get_user_email():
-    DB.execute("SELECT username FROM users")
+    getDB().execute("SELECT username FROM users")
     user_emails = []
-    user_name = DB.fetchall()
+    user_name = getDB().fetchall()
     for u in user_name:
         if is_email(u[0]):
             user_emails.append(u[0])

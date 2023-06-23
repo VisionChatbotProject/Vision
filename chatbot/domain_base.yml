@@ -16,7 +16,9 @@ intents:
 - help
 - nlu_fallback
 - user_login
-- quiz_form
+- quiz_number
+- quiz_over
+- quiz_form_launch
 - quiz_show_score
 - course_teacher
 - course_chapters
@@ -139,8 +141,8 @@ actions:
 - action_quiz_form
 - action_quiz_form_submit
 - validate_quiz_form
-- action_quiz_number
-- action_quiz_over
+- action_ask_quiz_number
+- action_ask_quiz_over
 - action_quiz_show_score
 - action_user_email
 - action_user_pwd
@@ -164,10 +166,10 @@ actions:
 forms:
   quiz_form:
     required_slots:
-      answer:
-      - type: from_intent
-        intent: quiz_form
-        value: true
+      # answer:
+      # - type: from_intent
+      #   intent: quiz_form
+      #   value: true
       quiz_number:
       - type: from_text
       quiz_over:

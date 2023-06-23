@@ -3,7 +3,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from utils.utils import *
-from utils.db import DB, select_from_database
+from utils.db import *
 
 # get list of tasks for current course
 class TaskList(Action):
@@ -34,9 +34,9 @@ class TaskDeadlines(Action):
     ) -> List[Dict[Text, Any]]:
        
         query="select id_task, title, description, deadline from task where date(deadline)>=date('now') and active=1 and id_course='{current_course_id(tracker)}' and id_chapter='{current_chapter_id(tracker)}'"
-        DB.execute(query)
+        getDB().execute(query)
         chapter_resp=""
-        for chap in DB.fetchall():
+        for chap in getDB().fetchall():
             chapter_resp+= "\nId of task: "+str(chap[0])+"\n Task: "+chap[1]+ "\n Description: " +chap[2]+ "\n Deadline: "+datetime.strptime(chap[3], '%Y-%m-%d').date().strftime('%d %b %Y')
 
         dispatcher.utter_message("Yes, you have following tasks \n" + chapter_resp)
@@ -54,9 +54,9 @@ class TaskRessources(Action):
     ) -> List[Dict[Text, Any]]:
         
         query = "select title, ressources, deadline from task where date(deadline)>=date('now') and active=1 and id_course='{current_course_id(tracker)}' and id_chapter='{current_chapter_id(tracker)}'"
-        DB.execute(query)
+        getDB().execute(query)
         chapter_resp=""
-        for chap in DB.fetchall():
+        for chap in getDB().fetchall():
             chapter_resp+= "\nTask: "+str(chap[0])+"\n  Ressources: " +chap[1]+ "\n Deadline: "+datetime.strptime(chap[2], '%Y-%m-%d').date().strftime('%d %b %Y')
         
         dispatcher.utter_message("Following ressources for the tasks: \n" + chapter_resp)

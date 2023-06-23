@@ -42,16 +42,6 @@ def shuffleQuestions(q):
 
     return q, d
 
-def current_course(tracker):
-    return tracker.get_slot("quiz_course")
-
-def current_chapter_id(tracker):
-    name = tracker.get_slot("chapter")
-    query=f"""SELECT id from chapter where name = '{name}'"""
-    # result = select_from_database(query)
-    # TODO needs to be implemented
-    return None
-
 def get_name_phone(tracker):
     name = tracker.get_slot('name')
     phone = tracker.get_slot('phone')
@@ -247,12 +237,13 @@ def get_user_performance(user_id, course_id, chapter_id, db_connection):
     return str(accuracy)
 
 def buscar(mystring):
-    if (search("what does",mystring) and search("mean",mystring)) or search("meaning of",mystring) or search("definition of",mystring):
-        if search("what does",mystring) and search("mean",mystring): 
-            return mystring.partition("what does ")[2].partition(" mean")[0]
-        if search("meaning of",mystring): 
-            return (mystring.partition("meaning of ")[2])
-        if search("definition of",mystring):
-            return (mystring.partition("definition of ")[2])
-    else:
-        return 0
+    pass
+    # if (search("what does",mystring) and search("mean",mystring)) or search("meaning of",mystring) or search("definition of",mystring):
+    #     if search("what does",mystring) and search("mean",mystring): 
+    #         return mystring.partition("what does ")[2].partition(" mean")[0]
+    #     if search("meaning of",mystring): 
+    #         return (mystring.partition("meaning of ")[2])
+    #     if search("definition of",mystring):
+    #         return (mystring.partition("definition of ")[2])
+    # else:
+    #     return 0

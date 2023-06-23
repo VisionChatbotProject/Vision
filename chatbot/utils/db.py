@@ -7,21 +7,23 @@ from datetime import date
 from collections import defaultdict
 
 client = None
+cursor = None
 db_name = os.environ.get('DATABASE')
 logger = getLogger()
 @lru_cache(maxsize=512)
 
-def DB():
-    db = client.cursor()
-    return db
-
-def getDB(db_name):
-    # creates a database in RAM
+def getDB(db_name=os.environ.get('DATABASE')):
     global client
+    global cursor
     if client is None:
         client = sqlite3.connect(db_name, check_same_thread=False)
         db = client.cursor()
+        cursor = db
     return db
+
+def getCursor():
+    global cursor
+    return cursor
 
 def closeClient():
     global client
@@ -30,61 +32,39 @@ def closeClient():
         client.close()
 
 def select_from_database(query1,answer1):
-    conn = create_connection(db_name)
-    cur = conn.cursor()
-    cur.execute(query1)
-    rows = cur.fetchall()
+    cursor.execute(query1)
+    rows = cursor.fetchall()
     if len(list(rows)) < 1:
         return("Sorry I cannot find information about it")
     else:
         for row in rows:
             return (answer1 + ', '.join(row))
 
-def create_connection(db_file):
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except Error as e:
-        print(e)
-    return conn
-
 def removeAll():
-    db = getDB(db_name)
-    db.patient.remove({})
-    db.execute('''DELETE FROM Student;''')
-    db.commit()
-
+    cursor.patient.remove({})
+    cursor.execute('''DELETE FROM Student;''')
+    cursor.commit()
 
 def removeOne(mobile_no):
-    db = getDB(db_name)
-    db.execute(f'''DELETE FROM Student where phone={mobile_no};''')
-    db.commit()
+    cursor.execute(f'''DELETE FROM Student where phone={mobile_no};''')
+    cursor.commit()
     print('Deleted Entry from DB')
 
-
 def findAll():
-    ' returns all the records( a dictionary) in the form of a list '
-    db = getDB(db_name)
-    cursor = db.execute("SELECT * FROM Student;")
-
+    cursor1 = cursor.execute("SELECT * FROM Student;")
     lst = []
-    for record in cursor:
+    for record in cursor1:
         lst.append(record)
     return lst
 
-
+# returns the list of courses offered , in case of exception it will return None
 def getListofCourses():
-    ' returns the list of courses offered , in case of exception it will return None '
     record = None
-    sql = f'SELECT DISTINCT name from course '
-    logger.info(f'{__file__} : Inside getListofCourses :  sql = {sql}')
     try:
-        getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(f'SELECT DISTINCT name from course ', client)
         record = (df['name'].to_list())
 
     except Exception as e:
-        logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         return None
 
     return record
@@ -146,23 +126,16 @@ def getListofTopics():
     return record
 
 
-def getListofQuiz(quiz_course):
-    ' returns list of quiz ids for a given course '
-
-    sql = f'select quiz_id from quizs'
-    logger.info(f'{__file__} : Inside getListofQuiz for course = {quiz_course} :  sql = {sql}')
+# returns list of quiz ids for a given course
+def getListofQuiz(course_id):
     try:
+        sql = f'select quiz_id from quizs where id_course = {course_id}'
+        logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         getDB(db_name)
         df = pd.read_sql_query(sql, client)
         record = (df['quiz_id'].to_list())
-        logger.info(f'{__file__} : Inside getListofQuiz for course = {quiz_course} : record :{record}')
-
     except Exception as e:
-        logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         record = []
-
-    logger.info(f'{__file__} : Inside getListofQuiz  = {record}')
-
     return record
 
 
@@ -596,3 +569,25 @@ def createSampleDB():
     client.commit()
     entry = count('course')
     print(entry)
+    
+def current_course(tracker):
+    db = getDB(db_name)
+    return tracker.get_slot("quiz_course")
+
+def current_course_id(tracker):
+    db = getDB(db_name)
+    name = tracker.get_slot("quiz_course")
+    sql=f"""SELECT id_course from course where name = '{name}'"""
+    db.execute(sql)
+    entry = db.fetchone()
+    logger.info(f'####### {__file__} : {name} {entry}')
+    return entry[0]
+
+def current_chapter_id(tracker):
+    db = getDB(db_name)
+    name = tracker.get_slot("chapter")
+    sql=f"""SELECT id_chapter from chapter where name = '{name}'"""
+    db.execute(sql)
+    entry = db.fetchone()
+    logger.info(f'{__file__} : sql = {sql}')
+    return entry[0]

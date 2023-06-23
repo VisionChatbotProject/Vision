@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from utils.utils import *
-from utils.db import DB, select_from_database
+from utils.db import *
 
 # get list of courses
 class CourseList(Action):
@@ -16,8 +16,8 @@ class CourseList(Action):
     ) -> List[Dict[Text, Any]]:
 
         query="SELECT name FROM course"
-        DB.execute(query)
-        results = DB.fetchall()
+        getDB().execute(query)
+        results = getDB().fetchall()
         course_resp=""
         for cours in results:
             course_resp+= str(cours[0])+ "\n"

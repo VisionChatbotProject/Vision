@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from utils.utils import *
-from utils.db import DB, select_from_database
+from utils.db import *
 
 # get description of current chapter
 class ChapterDescription(Action):

@@ -4,7 +4,7 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, EventType
 from utils.utils import *
-from utils.db import DB, select_from_database
+from utils.db import *
 
 class UserForm(Action):
     """
@@ -94,7 +94,7 @@ class UserDetailsForm(FormValidationAction):
     ) -> Dict[Text, Any]:
 
         email = tracker.get_slot('email')
-        entry = DB.findUser(email)
+        entry = getDB().findUser(email)
         if entry is not None:
             # dispatcher.utter_message(text="Your user email is a registered email. Welcome !!! ")
             return {"user_email": email}
@@ -111,7 +111,7 @@ class UserDetailsForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         
         user_email = tracker.get_slot('user_email')
-        user_pwd = DB.findUserPwd(user_email)
+        user_pwd = getDB().findUserPwd(user_email)
         if slot_value == user_pwd:
             # dispatcher.utter_message(text="Welcome !!! ")
             return {"user_pwd": slot_value, "user_confirmation": ""}

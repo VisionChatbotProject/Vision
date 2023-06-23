@@ -113,7 +113,7 @@ nlu:
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
 
-- intent: quiz_num
+- intent: quiz_number
   examples: |
     - quiz 1
     - 1
@@ -135,7 +135,7 @@ nlu:
     - answer c
     - d
 
-- intent: quiz_form
+- intent: quiz_form_launch
   examples: |
     - i want to take a quiz
     - yes
