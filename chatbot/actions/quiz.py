@@ -9,7 +9,7 @@ from utils.db import *
 from utils.quiz import *
 
 # This form is to launch quiz for a user
-class QuizForm(FormAction):
+class QuizForm(Action):
     def name(self) -> Text:
         return "action_quiz_form"
     
