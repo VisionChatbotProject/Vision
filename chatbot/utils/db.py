@@ -6,30 +6,29 @@ from logging import getLogger
 from datetime import date
 from collections import defaultdict
 
-client = None
+con = None
 cursor = None
 db_name = os.environ.get('DATABASE')
 logger = getLogger()
 @lru_cache(maxsize=512)
 
 def getDB(db_name=os.environ.get('DATABASE')):
-    global client
+    global con
     global cursor
-    if client is None:
-        client = sqlite3.connect(db_name, check_same_thread=False)
-        db = client.cursor()
-        cursor = db
-    return db
+    if con is None:
+        con = sqlite3.connect(db_name, check_same_thread=False)
+        cursor = con.cursor()
+    return cursor
 
 def getCursor():
     global cursor
     return cursor
 
 def closeClient():
-    global client
+    global con
 
-    if client is not None:
-        client.close()
+    if con is not None:
+        con.close()
 
 def select_from_database(query1,answer1):
     cursor.execute(query1)
@@ -42,18 +41,18 @@ def select_from_database(query1,answer1):
 
 def removeAll():
     cursor.patient.remove({})
-    cursor.execute('''DELETE FROM Student;''')
-    cursor.commit()
+    cursor.execute("DELETE FROM Student;")
+    con.commit()
 
 def removeOne(mobile_no):
     cursor.execute(f'''DELETE FROM Student where phone={mobile_no};''')
-    cursor.commit()
+    con.commit()
     print('Deleted Entry from DB')
 
 def findAll():
-    cursor1 = cursor.execute("SELECT * FROM Student;")
+    res = cursor.execute("SELECT * FROM Student;")
     lst = []
-    for record in cursor1:
+    for record in res:
         lst.append(record)
     return lst
 
@@ -61,7 +60,7 @@ def findAll():
 def getListofCourses():
     record = None
     try:
-        df = pd.read_sql_query(f'SELECT DISTINCT name from course ', client)
+        df = pd.read_sql_query(f'SELECT DISTINCT name from course ', con)
         record = (df['name'].to_list())
 
     except Exception as e:
@@ -78,7 +77,7 @@ def getListOfFaqAnswer():
 
     try:
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         df = df[['faq_name', 'faq_answer']]
         D = df.to_dict('list')
 
@@ -97,7 +96,7 @@ def getListOfFaqQuestion():
 
     try:
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         df = df[['faq_name', 'faq_question']]
         D = df.to_dict('list')
 
@@ -116,7 +115,7 @@ def getListofTopics():
 
     try:
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         record = (df['topic'].to_list())
 
     except Exception as e:
@@ -132,7 +131,7 @@ def getListofQuiz(course_id):
         sql = f'select quiz_id from quizs where id_course = {course_id}'
         logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         record = (df['quiz_id'].to_list())
     except Exception as e:
         record = []
@@ -145,7 +144,7 @@ def getListofQuizQuestions(quiz_course, quiz_number):
     logger.info(f'{__file__} : Inside getListofQuizQuestions for course = {quiz_course} quizID = {quiz_number}:  sql = {sql}')
     try:
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         result = df.to_records(index=False)
         # records below is list of tuples
         records = list(result)
@@ -181,7 +180,7 @@ def checkQuizAns(quiz_course, quiz_number, quiz_count, user_ans, original_quiz_q
     # user_ans = re.split("[\s,]+", ans.lower())
     try:
         getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        df = pd.read_sql_query(sql, con)
         result = df.to_records(index=False)
         # records below is list of tuples
         records = list(result)
@@ -212,8 +211,8 @@ def findOneTopic(**data):
     logger.info(f'{__file__} : Inside findOneTopic :  sql = {sql}')
 
     try:
-        db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         record = (df['meaning'].values[0])
 
     except Exception as e:
@@ -229,8 +228,8 @@ def findCourse():
     logger.info(f'{__file__} : Inside findOneTopic :  sql = {sql}')
 
     try:
-        db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         record = (df['name'].values[0])
 
     except Exception as e:
@@ -245,8 +244,8 @@ def findOne(**data):
     sql = f'SELECT * from {data.get("tbl")} where name="{data.get("name")}"'
     logger.info(f'{__file__} : Inside findOne :  sql = {sql}')
     try:
-        db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         record = (df['description'].values[0])
 
     except Exception as e:
@@ -261,8 +260,8 @@ def findUser(email):
     sql = f'SELECT * from users where username="{email}"'
     logger.info(f'{__file__} : Inside findUser :  sql = {sql}')
     try:
-        db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         record = (df['username'].values[0])
 
     except Exception as e:
@@ -277,8 +276,8 @@ def findUserPwd(email):
     sql = f'SELECT * from users where username="{email}"'
     logger.info(f'{__file__} : Inside findUserPwd : sql = {sql}')
     try:
-        db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         record = (df['password'].values[0])
 
     except Exception as e:
@@ -291,14 +290,14 @@ def findReferences(**data):
     course = data.get("course")
     sql = f'''select course.name , module.name, ressources from course INNER JOIN module ON course.id_course=module.id_course and course.name = "{course}";'''
     logger.info(f'{__file__} : Inside findReferences :  sql = {sql}')
-    df = pd.read_sql_query(sql, client)
+    df = pd.read_sql_query(sql, con)
     record = (df['ressources'].to_list())
     return record
 
 def count(tbl):
-    db = getDB(db_name)
-    cursor = db.execute(f"SELECT * FROM {tbl};")
-    return cursor.rowcount
+    getDB(db_name)
+    res = cursor.execute(f"SELECT * FROM {tbl};")
+    return res.rowcount
 
 def insertScore(score, quizID, email="abc@xyz.com"):
     """
@@ -312,10 +311,10 @@ def insertScore(score, quizID, email="abc@xyz.com"):
     print(sql)
     logger.info(f'{__file__} : Inside insertScore :  sql = {sql}')
     try:
-        db = getDB(db_name)
-        db.execute(sql)
-        client.commit()
-        return db.lastrowid
+        getDB(db_name)
+        cursor.execute(sql)
+        con.commit()
+        return cursor.lastrowid
     except Exception as e:
         logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         return 0
@@ -324,9 +323,9 @@ def getTeacherEmail():
     sql = f"SELECT email_teacher FROM course ;"
     logger.info(f'{__file__} : Inside getTeacherEmail :  sql = {sql}')
 
-    db = getDB(db_name)
-    db.execute(sql)
-    entry = db.fetchone()
+    getDB(db_name)
+    cursor.execute(sql)
+    entry = cursor.fetchone()
     email_teacher = entry[0]
     print(f'{__file__} : Inside getTeacherEmail : entry={entry} email_teacher = {email_teacher}')
 
@@ -336,8 +335,8 @@ def getScore(email):
     sql = f'select quizs.quiz_name, scores.score, scores.date_of_quiz from scores, quizs where scores.quiz_id==quizs.quiz_id and  scores.username=="{email}" order by scores.date_of_quiz;'
     logger.info(f'{__file__} : Inside getScore :  sql = {sql}')
     try:
-        # db = getDB(db_name)
-        df = pd.read_sql_query(sql, client)
+        getDB(db_name)
+        df = pd.read_sql_query(sql, con)
         if len(df) == 0:
             return "Sorry !! No scores available"
         df.columns = ['Quiz' , 'Score' , 'Date']
@@ -349,14 +348,14 @@ def getScore(email):
 
 insert_dict = {
     'chapter': "INSERT INTO chapter (name_chapter, short_description, content, key_concepts, ressources, obserrvations) values (?,?,?,?,?,?)",
-    'course': "INSERT INTO course (name, teacher, chapters, materials, description, externressources, email_teacher) values (?,?,?,?,?,?,?)",
-    'intent': "INSERT INTO intent (intent_name, intent_list, response) values (?,?,?)",
-    'task': "INSERT INTO task (title, description, resources, deadline, active) values (?,?,?,?,?)",
-    'topic': "INSERT INTO topic (topic, meaning, information) values (?,?,?)",
+    'course' : "INSERT INTO course (name, teacher, chapters, materials, description, externressources, email_teacher) values (?,?,?,?,?,?,?)",
+    'intent' : "INSERT INTO intent (intent_name, intent_list, response) values (?,?,?)",
+    'task'   : "INSERT INTO task (title, description, resources, deadline, active) values (?,?,?,?,?)",
+    'topic'  : "INSERT INTO topic (topic, meaning, information) values (?,?,?)",
 }
 
 def insert_row(data):
-    db = getDB(db_name)
+    getDB(db_name)
     tbl = data['table']
     print(f"insert_row : {tbl}")
     sql = insert_dict[tbl]
@@ -364,10 +363,10 @@ def insert_row(data):
     def tbl_values(data):
         D = {
             'chapter': [data.get('name_chapter'), data.get('short_description'), data.get('content'), data.get('key_concepts'), data.get('ressources'), data.get('obserrvations')],
-            'course':  [data.get('name'), data.get('teacher'), data.get('chapters'), data.get('materials'), data.get('description'), data.get('externressources'), data.get('email_teacher')],
-            'intent':  [data.get('intent_name'), data.get('intent_list'), data.get('response')],
-            'task':    [data.get('title'), data.get('description'), data.get('resources'), data.get('deadline'), data.get('active')],
-            'topic':   [data.get('topic'), data.get('meaning'), data.get('information')],
+            'course' : [data.get('name'), data.get('teacher'), data.get('chapters'), data.get('materials'), data.get('description'), data.get('externressources'), data.get('email_teacher')],
+            'intent' : [data.get('intent_name'), data.get('intent_list'), data.get('response')],
+            'task'   : [data.get('title'), data.get('description'), data.get('resources'), data.get('deadline'), data.get('active')],
+            'topic'  : [data.get('topic'), data.get('meaning'), data.get('information')],
         }
         return D[data['table']]
 
@@ -375,13 +374,13 @@ def insert_row(data):
     print(f"insert_row : {sql} , {val}")
     ret = {}
     try:
-        db.execute(sql, val)
-        client.commit()
-        if db.rowcount == 0:
-            ret['description'] = str(f"{db.rowcount} record inserted.")
+        cursor.execute(sql, val)
+        con.commit()
+        if cursor.rowcount == 0:
+            ret['description'] = str(f"{cursor.rowcount} record inserted.")
             ret['status'] = False
         else:
-            ret['description'] = str(f"{db.rowcount} record inserted.")
+            ret['description'] = str(f"{cursor.rowcount} record inserted.")
             ret['status'] = True
 
     except Exception as e:
@@ -390,16 +389,16 @@ def insert_row(data):
     return ret
 
 update_dict = {
-     'chapter': "UPDATE  chapter SET  name_chapter=?, short_description=?, content=?, key_concepts=?, ressources=?, obserrvations=? WHERE id_chapter=?",
-     'course':  "UPDATE  course  SET  name=?, teacher=?, chapters=?, materials=?, description=?, externressources=?, email_teacher=? WHERE id_course=?",
-     'intent':  "UPDATE  intent  SET  intent_name=?, intent_list=?, response=? WHERE id_indent=?",
-     'task':    "UPDATE  task    SET  title=?, description=?, resources=?, deadline=?, active=? WHERE id_task=?",
-     'topic':   "UPDATE  topic   SET  topic=?, meaning=?, information=? WHERE id_topic=?",
+    'chapter': "UPDATE  chapter SET  name_chapter=?, short_description=?, content=?, key_concepts=?, ressources=?, obserrvations=? WHERE id_chapter=?",
+    'course' : "UPDATE  course  SET  name=?, teacher=?, chapters=?, materials=?, description=?, externressources=?, email_teacher=? WHERE id_course=?",
+    'intent' : "UPDATE  intent  SET  intent_name=?, intent_list=?, response=? WHERE id_indent=?",
+    'task'   : "UPDATE  task    SET  title=?, description=?, resources=?, deadline=?, active=? WHERE id_task=?",
+    'topic'  : "UPDATE  topic   SET  topic=?, meaning=?, information=? WHERE id_topic=?",
 }
 
 
 def update_row(data):
-    db = getDB(db_name)
+    getDB(db_name)
     ret = {}
     tbl = data['table']
     sql = update_dict[tbl]
@@ -407,10 +406,10 @@ def update_row(data):
     def tbl_values():
         D = {
             'chapter': [data.get('name_chapter'), data.get('short_description'), data.get('content'), data.get('key_concepts'), data.get('ressources'), data.get('obserrvations')],
-            'course':  [data.get('name'), data.get('teacher'), data.get('chapters'), data.get('materials'), data.get('description'), data.get('externressources'), data.get('email_teacher')],
-            'intent':  [data.get('intent_name'), data.get('intent_list'), data.get('response')],
-            'task':    [data.get('title'), data.get('description'), data.get('resources'), data.get('deadline'), data.get('active')],
-            'topic':   [data.get('topic'), data.get('meaning'), data.get('information')],
+            'course' : [data.get('name'), data.get('teacher'), data.get('chapters'), data.get('materials'), data.get('description'), data.get('externressources'), data.get('email_teacher')],
+            'intent' : [data.get('intent_name'), data.get('intent_list'), data.get('response')],
+            'task'   : [data.get('title'), data.get('description'), data.get('resources'), data.get('deadline'), data.get('active')],
+            'topic'  : [data.get('topic'), data.get('meaning'), data.get('information')],
         }
         return D[data['table']]
 
@@ -418,13 +417,13 @@ def update_row(data):
     val.append(data['id'])
     print(f"update_row: {sql}  {val}")
     try:
-        db.execute(sql, val)
-        client.commit()
-        if db.rowcount == 0:
-            ret['description'] = str(f"{db.rowcount} record updated.")
+        cursor.execute(sql, val)
+        con.commit()
+        if cursor.rowcount == 0:
+            ret['description'] = str(f"{cursor.rowcount} record updated.")
             ret['status'] = False
         else:
-            ret['description'] = str(f"{db.rowcount} record updated.")
+            ret['description'] = str(f"{cursor.rowcount} record updated.")
             ret['status'] = True
 
     except Exception as e:
@@ -435,27 +434,27 @@ def update_row(data):
 
 delete_dict = {
     'chapter': "DELETE FROM chapter WHERE id_chapter = ?",
-    'course': "DELETE FROM course  WHERE id_course = ?",
-    'intent': "DELETE FROM intent  WHERE id_intent = ?",
-    'task': "DELETE FROM task  WHERE id_task = ?",
-    'topic': "DELETE FROM topic  WHERE id_topic = ?",
+    'course' : "DELETE FROM course  WHERE id_course  = ?",
+    'intent' : "DELETE FROM intent  WHERE id_intent  = ?",
+    'task'   : "DELETE FROM task    WHERE id_task    = ?",
+    'topic'  : "DELETE FROM topic   WHERE id_topic   = ?",
 }
 
 
 def delete_row(data):
-    db = getDB(db_name)
+    getDB(db_name)
     sql = delete_dict[data['table']]
     id = data['id']
     print(f"delete_row : {sql} , {id}")
     ret = {}
     try:
-        db.execute(sql, [id])
-        client.commit()
-        if db.rowcount == 0:
-            ret['description'] = str(f"{db.rowcount} record delete.")
+        cursor.execute(sql, [id])
+        con.commit()
+        if cursor.rowcount == 0:
+            ret['description'] = str(f"{cursor.rowcount} record delete.")
             ret['status'] = False
         else:
-            ret['description'] = str(f"{db.rowcount} record delete.")
+            ret['description'] = str(f"{cursor.rowcount} record delete.")
             ret['status'] = True
 
     except Exception as e:
@@ -465,40 +464,40 @@ def delete_row(data):
 
 
 def get_table(**data):
-    db = getDB(db_name)
+    getDB(db_name)
     sql = f"SELECT * FROM {data['table']}"
     logger.info(f'{__file__} : Inside get_table :  sql = {sql}')
-    db.execute(sql)
-    return db.fetchall()
+    cursor.execute(sql)
+    return cursor.fetchall()
 
 def get_user(email):
+    getDB(db_name)
     sql = f"SELECT * FROM user WHERE email LIKE '{email}';"
     logger.info(f'{__file__} : get_user_id:  sql = {sql}')
-    db = getDB(db_name)
-    db.execute(sql)
-    entry = db.fetchone()
+    cursor.execute(sql)
+    entry = cursor.fetchone()
     return entry
 
 
 def create_user(email, name, public_id, password):
-    db = getDB(db_name)
+    getDB(db_name)
     sql = f"INSERT INTO user (name, email, public_id, password) VALUES (?,?,?,?);"
     logger.info(f'{__file__} : create_user:  sql = {sql}')
     val = [name, email, public_id, password]
     print(f"create_user : {sql} {val} ")
-    db.execute(sql, val)
-    client.commit()
-    return db.rowcount != 0
+    cursor.execute(sql, val)
+    con.commit()
+    return cursor.rowcount != 0
 
 def createSampleDB():
     #Creating a cursor object using the cursor() method
-    db = getDB(db_name)
+    getDB(db_name)
 
     #Doping EMPLOYEE table if already exists.
-    db.execute("DROP TABLE IF EXISTS course")
-    db.execute("DROP TABLE IF EXISTS module")
-    db.execute("DROP TABLE IF EXISTS assigment")
-    db.execute("DROP TABLE IF EXISTS exam")
+    cursor.execute("DROP TABLE IF EXISTS course")
+    cursor.execute("DROP TABLE IF EXISTS module")
+    cursor.execute("DROP TABLE IF EXISTS assigment")
+    cursor.execute("DROP TABLE IF EXISTS exam")
 
     #Creating table as per requirement
     sql ='''CREATE TABLE "course" (
@@ -510,7 +509,7 @@ def createSampleDB():
 	"description"	TEXT,
 	"externressources"	TEXT,
 	PRIMARY KEY("id_course" AUTOINCREMENT));'''
-    db.execute(sql)
+    cursor.execute(sql)
 
     sql = '''CREATE TABLE "module" (
 	"id_module"	INTEGER NOT NULL UNIQUE,
@@ -522,7 +521,7 @@ def createSampleDB():
 	"ressources"	TEXT,
 	PRIMARY KEY("id_module" AUTOINCREMENT),
 	FOREIGN KEY("id_course") REFERENCES course (id_course));'''
-    db.execute(sql)
+    cursor.execute(sql)
 
     sql='''CREATE TABLE "assigment" (
 	"id_assigment"	INTEGER NOT NULL UNIQUE,
@@ -534,7 +533,7 @@ def createSampleDB():
 	"deadline"	TEXT NOT NULL,
 	FOREIGN KEY("id_module") REFERENCES module (id_module),
 	PRIMARY KEY("id_Assigment" AUTOINCREMENT));'''
-    db.execute(sql)
+    cursor.execute(sql)
 
     sql='''CREATE TABLE "exam" (
 	"id_exam"	INTEGER NOT NULL UNIQUE,
@@ -547,47 +546,46 @@ def createSampleDB():
 	FOREIGN KEY("id_module") REFERENCES module (id_module),
 	PRIMARY KEY("id_exam" AUTOINCREMENT));'''
 
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into course (name, teacher, description, modules, materials, externressources) values ("Mathematics","Teo teacher","This course is a mathematics example course","Modul 1 - Sum","Book of basics mathematics","http://mathematics.org");'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into course (name, teacher, description, modules, materials, externressources) values ("Language","Language Teacher","This course is an example language course","module 1. Spanish","Book of language","http://language2.com");'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into module (id_course, name, description, key_concepts, feedback, ressources) values (1, "Module 1 Mathematics","Description example 1","Sum Rest","description module 1","http://sum.com https://www.youtube.com/watch?v=7iHJRc0RXP0");'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into module (id_course, name, description, key_concepts, feedback, ressources) values (2,"Module 2 Language","Descripcion exam","sum rest","description module 2","http://rest.com");'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into assigment (id_module, titel, description, materials, ressources, deadline) values (1,"Sum Exercise","Make the following sums","Material1, Material2, Material 3","",date("2022-03-11 00:00:00"));'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into assigment (id_module, titel, description, materials, ressources, deadline) values (2,"language Execerise","translate the following sentences","Lmaterial 1, Lmaterial2, Lmaterial3","",date("2022-03-25 00:00:00"));'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into exam (id_module, name, description, record, observations, date) values (1,"Exam about sum","exam","34","Observations exam 1", date ("2022-03-30 00:00:00"));'''
-    db.execute(sql)
+    cursor.execute(sql)
     sql='''insert into exam (id_module, name, description, record, observations, date) values (2,"exam about language","exam language","35","observations exam 2", date ("2022-03-23 00:00:00"));'''
-    db.execute(sql)
+    cursor.execute(sql)
     print("Sample DB created and populated successfully........")
     # Commit your changes in the database
-    client.commit()
+    con.commit()
     entry = count('course')
     print(entry)
     
 def current_course(tracker):
-    db = getDB(db_name)
     return tracker.get_slot("quiz_course")
 
 def current_course_id(tracker):
-    db = getDB(db_name)
+    getDB(db_name)
     name = tracker.get_slot("quiz_course")
     sql=f"""SELECT id_course from course where name = '{name}'"""
-    db.execute(sql)
-    entry = db.fetchone()
+    cursor.execute(sql)
+    entry = cursor.fetchone()
     logger.info(f'####### {__file__} : {name} {entry}')
     return entry[0]
 
 def current_chapter_id(tracker):
-    db = getDB(db_name)
+    getDB(db_name)
     name = tracker.get_slot("chapter")
     sql=f"""SELECT id_chapter from chapter where name = '{name}'"""
-    db.execute(sql)
-    entry = db.fetchone()
+    cursor.execute(sql)
+    entry = cursor.fetchone()
     logger.info(f'{__file__} : sql = {sql}')
     return entry[0]
