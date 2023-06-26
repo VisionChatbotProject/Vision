@@ -14,6 +14,7 @@ import utils.helper
 from collections import defaultdict
 
 client = None
+#db_name = "/home/chatbot/chatbot.db"
 db_name = os.environ.get('DATABASE')
 logger = getLogger()
 
@@ -190,11 +191,11 @@ def checkQuizAns(quiz_course, quiz_number, quiz_count, user_ans, original_quiz_q
     :param ans:
     :return:  result of comparison  and list of correct answers
     '''
-    sql = f'SELECT question_text, answer_text FROM quizs, questions, answers WHERE quizs.quiz_id == questions.quiz_id AND       quizs.quiz_id == {quiz_number}  AND  questions.question_id == answers.question_id AND is_correct == 1 '
+    sql = f'SELECT question_text, answer_text FROM quizs, questions, answers WHERE quizs.quiz_id == questions.quiz_id AND quizs.quiz_id == {quiz_number}  AND  questions.question_id == answers.question_id AND is_correct == 1 '
     logger.info(f'{__file__} : Inside checkQuizAns for course = {quiz_course} quizID = {quiz_number} quiz_count = {quiz_count}:  sql = {sql}')
     # user_ans = re.split("[\s,]+", ans.lower())
     try:
-        getDB(db_name)
+        db = getDB(db_name)
         df = pd.read_sql_query(sql, client)
         result = df.to_records(index=False)
         # records below is list of tuples
@@ -211,6 +212,7 @@ def checkQuizAns(quiz_course, quiz_number, quiz_count, user_ans, original_quiz_q
         L.sort()
 
         logger.info(f'{__file__} : Inside checkQuizAns answer from DB = "{L[quiz_count-1][1]}" Vs answer from User = "{user_ans}"')
+
         correct_ans = [x.lower() for x in L[quiz_count-1][1]]
         if set(user_ans) == set(correct_ans):
             return True, L[quiz_count-1][1]
@@ -274,13 +276,13 @@ def findOne(**data):
 def findUser(email):
     ' returns a single record if found else None'
     record = None
-    sql = f'SELECT * from users where username="{email}"'
+    sql = f'SELECT * FROM users WHERE username="{email}"'
     logger.info(f'{__file__} : Inside findUser :  sql = {sql}')
     try:
         db = getDB(db_name)
         df = pd.read_sql_query(sql, client)
         record = (df['username'].values[0])
-
+        
     except Exception as e:
         logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
         return None
@@ -291,12 +293,13 @@ def findUser(email):
 def findUserPwd(email):
     ' returns a single record if found else None'
     record = None
-    sql = f'SELECT * from users where username="{email}"'
+    sql = f'SELECT * FROM users WHERE username="{email}"'
     logger.info(f'{__file__} : Inside findUserPwd : sql = {sql}')
     try:
         db = getDB(db_name)
         df = pd.read_sql_query(sql, client)
         record = (df['password'].values[0])
+        
 
     except Exception as e:
         logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
