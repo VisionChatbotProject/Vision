@@ -12,7 +12,6 @@ import colorama
 from colorama import Fore
 import os
 
-#database = "chatbot.db"
 database = os.environ.get('DATABASE')
 
 class Query_Lecturer_Course(Action):
@@ -219,13 +218,13 @@ class Query_Titel_Task(Action):
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         conn = create_connection(database)
         cur = conn.cursor()
-        query="select title, description, deadline from task;"
+        query="select id_task, title, description, deadline from task where date(deadline)>=date('now') and active=1;"
         cur.execute (query)
         results=cur.fetchall()
         response = "Yes, you have following tasks \n"
         chapter_resp=""
         for chap in results:
-            chapter_resp+= "\n Task "+str(chap[0])+"\n Description: "+chap[1]+ "\n Deadline " +chap[2]
+            chapter_resp+= "\nId of task: "+str(chap[0])+"\n Task: "+chap[1]+ "\n Description: " +chap[2]+ "\n Deadline: "+datetime.strptime(chap[3], '%Y-%m-%d').date().strftime('%d %b %Y')
         final_response=response+chapter_resp
         dispatcher.utter_message(final_response)
         return []
@@ -233,24 +232,24 @@ class Query_Titel_Task(Action):
 
 
 
-class FinalExame(Action):
+class Query_Exam_Deadline(Action):
      def name(self) -> Text:
-         return "query_final_exam"
+         return "query_title_task"
      def run(self, dispatcher: CollectingDispatcher,
              tracker: Tracker,
              domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        conn = create_connection(database)
-        cur = conn.cursor()
-        query="SELECT name, final from exam;"
-        cur.execute (query)
-        results=cur.fetchall()
-        response = "Final exam \n"
-        exam_resp=""
-        for exa in results:
-            exam_resp+=str(exa[0])+"\t"+exa[1]+ "\n"
-        final_response=response+exam_resp
-        dispatcher.utter_message(final_response)
-        return []
+             conn = create_connection(database)
+             cur = conn.cursor()
+             query="select id_exam, name, description, date from exam where date(date)>=date('now') and active=1;"
+             cur.execute (query)
+             results=cur.fetchall()
+             response = "You have following exams \n"
+             exam_resp=""
+             for exa in results:
+                 exam_resp+= "\nId of exam: "+str(exa[0])+"\n Exam: "+exa[1]+ "\n Description: " +chap[2]+ "\n Deadline: "+datetime.strptime(chap[3], '%Y-%m-%d').date().strftime('%d %b %Y')
+             final_response=response+chapter_resp
+             dispatcher.utter_message(final_response)
+             return []
 
 
 
@@ -321,15 +320,15 @@ def buscar(mystring):
 
 
 
-#class Query_SetValue(Action):
-#    def name(self) -> Text:
-#        return "query_set_value"
-#    def run(self, dispatcher: CollectingDispatcher,
-#            tracker: Tracker,
-#            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#            user = tracker.get_slot("user")
-#            dispatcher.utter_message("Setting slot value user to " + str(user))
-#            return [SlotSet('user', user)]
+class Query_SetValue(Action):
+    def name(self) -> Text:
+        return "query_set_value"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+            user = tracker.get_slot("user")
+            dispatcher.utter_message("Setting slot value user to " + str(user))
+            return [SlotSet('user', user)]
 
 
 
