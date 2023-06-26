@@ -4,14 +4,14 @@ config:
   store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false
 
 intents:
 - start
 - out_of_scope
 - show_quiz_info
 - faq:
-    is_retrieval_intent: true
+    is_retrivel_intent: true  
 - greet
 - affirm
 - deny  
@@ -27,7 +27,6 @@ intents:
 - bot_challenge
 - thanks
 - help
-- no_make_quiz
 - teacher
 - course_chapters
 - course_description
@@ -92,32 +91,22 @@ intents:
 - find_task
 - how_to_help
 - what_to_do
-- asdasd
-- asdasd2
-- asdasdasdasdasd
+- final exam
 entities:
 - course
 - chapter
-- slide
 - topic
 - quiz_course
 - quiz_number
 - quiz_over
 - quiz_question_count
 - email
-- user
 - user_email
 - user_pwd
 - user_confirmation
 
 slots:
-  #  answer:
-  #    type: bool
-  #    influence_conversation: true
   chapter:
-    type: text
-    influence_conversation: false
-  slide:
     type: text
     influence_conversation: false
   course:
@@ -150,9 +139,6 @@ slots:
     type: any
   teacher_email:
     type: any
-  user:
-    type: any
-    auto_fill: true
   user_email:
     type: any
   user_pwd:
@@ -174,9 +160,6 @@ responses:
 
   utter_happy:
   - text: "Great, carry on!"
-
-    #  utter_quiz_answer_no:
-    #  - text: "Ok, thank you"
 
   utter_iamabot:
   - text: "I am Visionbot. I am your learning assistant"
@@ -381,17 +364,12 @@ responses:
   utter_what_to_do:
   - text: "I can help you study if you want  We can test your course knowledge and\
       \ I will try to answer all of your questions about the course"
-  utter_asdasd:
-  - text: "asdasd"
-  utter_asdasd2:
-  - text: "asdasd"
-  utter_asdasdasdasdasd:
-  - text: "asdasdasd"
+  
 actions:
 - action_ask_quiz_course
 - action_ask_quiz_number
 - action_ask_quiz_over
-- action_default_fallback
+- action_default_fallback  
 - action_quiz_info_submit
 - action_quiz_launch_form
 - action_quiz_launch_submit
@@ -418,7 +396,6 @@ actions:
 - query_course_extressources
 - query_list_chapter
 - query_description_chapter
-#- query_content_chapter
 - query_content_chapter_from_course
 - query_key_concepts_chapter
 - query_ressources_chapter
@@ -426,18 +403,14 @@ actions:
 - query_title_task
 - query_ressources_task
 - query_topic_meaning
+- query_final_exam  
 - action_login
-- query_set_value
-
+  
 forms:
   quiz_info_form:
     ignored_intents:
     - faq
     required_slots:
-      #      answer:
-      #      - type: from_intent
-      #        intent: affirm
-      #        value: true
       quiz_course:
       - type: from_text
       quiz_number:

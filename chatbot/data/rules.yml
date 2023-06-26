@@ -33,7 +33,7 @@ rules:
 - rule: Ask User email id
   steps:
   - intent: login
-  - action: user_details_form
+  - action: user_details_form  
   - active_loop: user_details_form
   - active_loop:
   - action: action_user_details_submit
@@ -43,8 +43,6 @@ rules:
   steps:
   - intent: show_quiz_info
   - action: quiz_info_form
-    #  - slot_was_set:
-    #    - answer: true
   - active_loop: quiz_info_form
   - active_loop:
   - action: action_quiz_info_submit
@@ -145,6 +143,11 @@ rules:
   - intent: observations_chapter
   - action: query_observations_chapter
 
+- rule: when is the final exam
+  steps:
+  - intent: final exam
+  - action: query_final_exam
+
 - rule: answer if there is homework / homework active
   steps:
   - intent: title_task
@@ -160,10 +163,10 @@ rules:
   - intent: topic_meaning
   - action: query_topic_meaning
 
-- rule: set value of slot
-  steps:
-  - intent: set_slot_value
-  - action: query_set_value
+#- rule: set value of slot
+#  steps:
+#  - intent: set_slot_value
+#  - action: query_set_value
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
@@ -342,15 +345,15 @@ rules:
   steps:
   - intent: what_to_do
   - action: utter_what_to_do
-- rule: rule for asdasd
-  steps:
-  - intent: asdasd
-  - action: utter_asdasd
-- rule: rule for asdasd2
-  steps:
-  - intent: asdasd2
-  - action: utter_asdasd2
-- rule: rule for asdasdasdasdasd
-  steps:
-  - intent: asdasdasdasdasd
-  - action: utter_asdasdasdasdasd
+#- rule: rule for asdasd
+#  steps:
+#  - intent: asdasd
+#  - action: utter_asdasd
+#- rule: rule for asdasd2
+#  steps:
+#  - intent: asdasd2
+#  - action: utter_asdasd2
+#- rule: rule for asdasdasdasdasd
+#  steps:
+#  - intent: asdasdasdasdasd
+#  - action: utter_asdasdasdasdasd

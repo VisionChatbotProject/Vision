@@ -1,5 +1,4 @@
 version: '2.0'
-  w can the teacher support self-reflection in students?
 nlu:
 - intent: start
   examples: |
@@ -26,6 +25,7 @@ nlu:
 - intent: affirm
   examples: |
     - yes
+    - y  
     - ok  
     - indeed
     - launch a quiz  
@@ -241,7 +241,12 @@ nlu:
     - I want to see courses
     - Please show me all courses
     - List of courses
-    
+
+- intent: final exam
+  examples: |
+    - When is the final exam
+    - final exam
+    - date of final exam  
 
 - intent: key_concepts_chapter
   examples: |
@@ -357,17 +362,17 @@ nlu:
     - share my performance
     - share my result
 
-- intent: set_slot_value
-  examples: |
-    - Slot user
-    - Slot user to [Hans](user)
-    - Set slot user
-    - Set slot value user
-    - Set slot value user to [Sebastian](user)
-    - Set slot value for user [Tom](user)
-- regex: user
-  examples: |
-    - [a-zA-Z0-9\\s]*
+#- intent: set_slot_value
+#  examples: |
+#    - Slot user
+#    - Slot user to [Hans](user)
+#    - Set slot user
+#    - Set slot value user
+#    - Set slot value user to [Sebastian](user)
+#    - Set slot value for user [Tom](user)
+#- regex: user
+#  examples: |
+#    - [a-zA-Z0-9\\s]*
 
 - intent: music_concept
   examples: |
