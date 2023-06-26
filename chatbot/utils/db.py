@@ -57,6 +57,7 @@ def current_course(tracker):
 
 def current_course_id(tracker):
     name = tracker.get_slot("quiz_course")
+    logger.info(f' -------- current_course_id {__file__} : course:{name}')
     sql=f"""SELECT id_course from course where name = '{name}'"""
     cursor.execute(sql)
     res = cursor.fetchone()

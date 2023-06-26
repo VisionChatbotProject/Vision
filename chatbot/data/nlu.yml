@@ -124,7 +124,7 @@ nlu:
     - 4
     - 5
 
-- intent: quiz_ans
+- intent: quiz_answer
   examples: |
     - answer a
     - answer b

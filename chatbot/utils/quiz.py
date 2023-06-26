@@ -68,14 +68,17 @@ def insertScore(score, quizID, email="abc@xyz.com"):
     
 # returns list of quiz ids for a given course
 def getListofQuiz(course_id):
-    try:
-        sql = f'select quiz_id from quizs where id_course = {course_id}'
-        logger.info(f"{__file__} : Exception = {e}, db_name={db_name}, sql = {sql} ")
-        df = pd.read_sql_query(sql, con)
-        record = (df['quiz_id'].to_list())
-    except Exception as e:
-        record = []
-    return record
+ 
+    sql = f'select quiz_id from quizs where id_course = {course_id}'
+
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+
+    ids = []
+    for row in rows:
+        ids.append(row[0])
+
+    return ids
 
 def getListofQuizQuestions(quiz_course, quiz_number):
 

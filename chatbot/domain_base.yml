@@ -18,6 +18,7 @@ intents:
 - user_login
 - quiz_number
 - quiz_over
+- quiz_answer
 - quiz_form_launch
 - quiz_show_score
 - course_teacher
