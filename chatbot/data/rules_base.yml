@@ -38,23 +38,21 @@ rules:
   - intent: nlu_fallback
   - action: action_my_default_fallback
 
-# - rule: Activate quiz form
-#   steps:
-#   - intent: quiz_form_launch
-#   - action: quiz_form
-#   - slot_was_set:
-#     - answer: true
-#   - active_loop: action_quiz_form
+- rule: Activate quiz form
+  steps:
+  - intent: quiz_form_launch
+  - action: quiz_form
+  - active_loop: quiz_form
 
-# - rule: Submit quiz form
-#   condition:
-#   - active_loop: action_quiz_form
-#   steps:
-#   - action: quiz_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   - action: action_quiz_form_submit
+- rule: Submit quiz form
+  condition:
+  - active_loop: quiz_form
+  steps:
+  - action: quiz_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_quiz_form_submit
 
 # - rule: Activate form to fetch info which quiz to launch
 #   steps:
@@ -77,10 +75,10 @@ rules:
     - intent: quiz_over
     - action: action_ask_quiz_over
 
-- rule: Activate the form
-  steps:
-    - intent: quiz_form_launch
-    - action: action_quiz_form
+# - rule: Activate the form
+#   steps:
+#     - intent: quiz_form_launch
+#     - action: action_quiz_form
 
 - rule: quiz_show_score
   steps:
