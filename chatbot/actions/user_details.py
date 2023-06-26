@@ -113,14 +113,17 @@ class ValidateQuizInfoForm(FormValidationAction):
     ) -> Dict[Text, Any]:
 
         logger.info(f"[{tracker.sender_id}] {__file__} :  Inside validate_user_email | user_email : {slot_value} ")
-        email = tracker.get_slot('email')
 
+#         email = tracker.get_slot('email')
+        email = tracker.get_slot('user_email')
+        logger.info(f"[{tracker.sender_id}] {__file__} :  show email slot | user_email : {email} ")
         entry = DB.findUser(email)
         if entry is not None:
-            # dispatcher.utter_message(text="Your user email is a registered email. Welcome !!! ")
+
+          #  dispatcher.utter_message(text="Your user email is a registered email. Welcome !!! ")
             return {"user_email": email}
         else:
-            # dispatcher.utter_message(text="Your user email is NOT a registered email. :)  ")
+          #  dispatcher.utter_message(text="Your user email is NOT a registered email. :)  ")
             return {"user_email": "", "user_pwd": ""}
 
     def validate_user_pwd(
@@ -135,10 +138,10 @@ class ValidateQuizInfoForm(FormValidationAction):
         user_email = tracker.get_slot('user_email')
         user_pwd = DB.findUserPwd(user_email)
         if slot_value == user_pwd:
-            # dispatcher.utter_message(text="Welcome !!! ")
+          #  dispatcher.utter_message(text="Welcome !!! ")
             return {"user_pwd": slot_value, "user_confirmation": ""}
         else:
-            # dispatcher.utter_message(text="Sorry !! Incorrect user name or password  ")
+          #  dispatcher.utter_message(text="Sorry !! Incorrect user name or password  ")
             return {"user_pwd": ""}
 
 
@@ -148,7 +151,7 @@ class ValidateQuizInfoForm(FormValidationAction):
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: DomainDict,
-    ) -> Dict[Text, Any]:
+        ) -> Dict[Text, Any]:
         intent = tracker.latest_message['intent'].get('name')
 
         logger.info(f"[{tracker.sender_id}] {__file__} :  Inside validate_user_confirmation | user_confirmation : {intent} ")
