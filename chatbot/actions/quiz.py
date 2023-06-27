@@ -22,11 +22,44 @@ class QuizNumber(Action):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
+        
+
+        username = tracker.slots.get("user")
+
+        def getListofQuiz(course_id, username):
+ 
+            sql = f"""select quiz_id, quiz_name from quizs 
+                      where id_course = {course_id} and 
+                            quiz_id not in 
+                                    (select quiz_id FROM scores where username = "{username}" and score > 99)"""
+
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+
+            quizs = []
+            for row in rows:
+                quizs.append({
+                    "id": row[0], 
+                    "name": row[1]
+                })
+
+            return quizs
+
+        def createQuizButtons(quizs):
+            buttons = []
+            for quiz in quizs:
+                buttons.append({ 
+                    "title"  : f'{quiz.get("name")}', 
+                    "payload": f'{quiz.get("id")}' 
+                })
+            return buttons
+
 
         course_id = current_course_id(tracker)
         logger.info(f"##### action_ask_quiz_number - course_id: {course_id}")
 
-        listofQuiz = getListofQuiz(course_id)
+
+        listofQuiz = getListofQuiz(course_id, username)
 
         logger.info(f"##### action_ask_quiz_number - listofQuiz: {listofQuiz}")
 
@@ -36,8 +69,7 @@ class QuizNumber(Action):
         else:
             ask = f"Please enter the quiz number from {listofQuiz}"
             ask = f"Please note that your answers must be separated by a coma"
-            buttons = quiz_buttons(listofQuiz)
-            buttons = button_it(buttons)
+            buttons = createQuizButtons(listofQuiz)
             dispatcher.utter_message(text=ask, buttons=buttons)
 
         return []
@@ -103,6 +135,11 @@ class QuizOver(Action):
             return buttons
 
         questions = getQuestions(tracker.get_slot('quiz_number'))
+
+        if len(questions) == 0:
+            dispatcher.utter_message(text=f'There are no questions.')
+            return []
+
         currentIndex = getCurrentQuestionIndex()
         questionId = getQuestionId(questions, currentIndex)
    
@@ -137,8 +174,6 @@ class QuizFormSubmit(Action):
             con.commit()
             return cursor.lastrowid 
         
-        #score = getScore(getUsername(), getQuizID())
-
         def getCount(quiz_id):
              
             quiz_id = tracker.get_slot('quiz_number')
@@ -162,7 +197,8 @@ class QuizFormSubmit(Action):
         username = getUsername()
         now = date.today()
 
-        storeScore(username, quizId, now, score)
+        lastId = storeScore(username, quizId, now, score)
+        logger.info(f"storeScore -  lastId: {lastId}")
 
         dispatcher.utter_message(text=f"Thanks for taking the quiz. You answered {score}% of the questions correctly!")
         
