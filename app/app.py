@@ -1313,15 +1313,15 @@ def delete_quiz(quiz_id):
 def api_edit_quiz():
     try:
         json_body = request.form
-        required_fields = ["id_quiz", "quiz_name"]
+        required_fields = ["id_quiz", "quiz_name", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("UPDATE quizs SET quiz_name=? WHERE quiz_id=?",
-                         (json_body["quiz_name"], json_body["id_quiz"]))
+            cursor.execute("UPDATE quizs SET quiz_name=?, id_course=?, id_chapter=? WHERE quiz_id=?",
+                         (json_body["quiz_name"], json_body["id_course"], json_body["id_chapter"], json_body["id_quiz"]))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
