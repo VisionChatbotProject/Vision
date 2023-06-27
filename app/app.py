@@ -120,7 +120,7 @@ def api_get_chapter():
         conn = get_db_connection()
         chapters = conn.execute('SELECT * FROM chapter' + where_clause).fetchall()
         for chapter in chapters:
-            result_chapters.append({"id_chapter":chapter["id_chapter"],"name_chapter":chapter["name_chapter"],"short_description":chapter["short_description"],"content":chapter["content"],"key_concepts":chapter["key_concepts"],"resources":chapter["ressources"],"observations":chapter["observations"]})
+            result_chapters.append({"id_chapter":chapter["id_chapter"],"name_chapter":chapter["name_chapter"],"short_description":chapter["short_description"],"content":chapter["content"]})
         conn.close()
         return jsonify({"success":True, "chapters": result_chapters})
     except Exception as e:
@@ -333,7 +333,7 @@ def add_course():
 def api_add_chapter():
     try:
         json_body = request.form
-        required_fields = ["name_chapter", "short_description", "content", "key_concepts", "resources", "observations", "id_course"]
+        required_fields = ["name_chapter", "short_description", "content", "resources", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success": False, "description": "Missing fields " + ", ".join(required_fields)})
@@ -341,9 +341,8 @@ def api_add_chapter():
             conn = get_db_connection()
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO chapter('name_chapter','short_description','content', 'key_concepts', 'ressources','observations', 'id_course') VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (json_body["name_chapter"], json_body["short_description"], json_body["content"],
-                 json_body["key_concepts"], json_body["resources"], json_body["observations"], json_body["id_course"]))
+                "INSERT INTO chapter('name_chapter','short_description','content', 'id_course') VALUES (?, ?, ?, ?)",
+                (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["id_course"]))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
@@ -359,13 +358,11 @@ def add_chapter():
         name_chapter = request.form["name_chapter"].strip()
         short_description = request.form["short_description"].strip()
         content = request.form["content"].strip()
-        key_concepts = request.form["key_concepts"].strip()
         resources = request.form["ressources"]
-        observations= request.form["observations"].strip() 
     
         conn = get_db_connection()
-        conn.execute("INSERT INTO chapter('name_chapter','short_description','content', 'key_concepts', 'ressources','observations') VALUES (?, ?, ?, ?, ?, ?)",
-                         (name_chapter, short_description, content, key_concepts, resources, observations))
+        conn.execute("INSERT INTO chapter('name_chapter','short_description','content') VALUES (?, ?, ?)",
+                         (name_chapter, short_description, content))
         conn.commit()
         conn.close()
 
@@ -488,15 +485,15 @@ def add_intent():
 def api_add_exam():
     try:
         json_body = request.form
-        required_fields = ["name","description","observation", "date", "active", "id_course", "id_chapter"]
+        required_fields = ["name","description" "date", "active", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO exam('name', 'description', 'observation', 'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
+            cursor.execute("INSERT INTO exam('name', 'description',  'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                           (json_body["name"], json_body["description"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
             new_id = cursor.lastrowid
             conn.commit()
             conn.close()
@@ -554,15 +551,15 @@ def edit_course(id):
 def api_edit_chapter():
     try:
         json_body = request.form
-        required_fields = ["id_chapter", "name_chapter","short_description","content","key_concepts","resources","observations", "id_course"]
+        required_fields = ["id_chapter", "name_chapter","short_description","content", "resources", "id_course"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else: 
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, key_concepts = ?, ressources = ?, observations = ?, id_course=? where id_chapter=?",
-                             (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["key_concepts"], json_body["resources"], json_body["observations"], json_body["id_course"], str(json_body["id_chapter"])))
+            cursor.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, id_course=? where id_chapter=?",
+                             (json_body["name_chapter"], json_body["short_description"], json_body["content"], json_body["id_course"], str(json_body["id_chapter"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
@@ -578,13 +575,10 @@ def edit_chapter(id):
         name_chapter = request.form["name_chapter"].strip()
         short_description = request.form["short_description"].strip()
         content = request.form["content"].strip()
-        key_concepts = request.form["key_concepts"].strip()
-        resources = request.form["ressources"]
-        observations= request.form["observations"].strip() 
     
         conn = get_db_connection()
-        conn.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, key_concepts = ?, ressources = ?, observations = ? where id_chapter=?",
-                         (name_chapter, short_description, content, key_concepts, resources, observations, str(id)))
+        conn.execute("update chapter set name_chapter = ?, short_description = ?, content = ?, where id_chapter=?",
+                         (name_chapter, short_description, content, str(id)))
         conn.commit()
         conn.close()
 
@@ -706,15 +700,15 @@ def edit_task(id):
 def api_edit_exam():
     try:
         json_body = request.form
-        required_fields = ["id_exam","name","description","observation", "date", "active", "id_course", "id_chapter"]
+        required_fields = ["id_exam","name","description", "date", "active", "id_course", "id_chapter"]
         [required_fields.remove(key) if key in required_fields else "" for key in json_body]
         if len(required_fields) > 0:
             return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("update exam set name=?, description=?, observation=?, date=?, active=?, id_course=?, id_chapter=? where id_exam=?",
-                           (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_exam"])))
+            cursor.execute("update exam set name=?, description=?, date=?, active=?, id_course=?, id_chapter=? where id_exam=?",
+                           (json_body["name"], json_body["description"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"], str(json_body["id_exam"])))
             num_affected = cursor.rowcount
             conn.commit()
             conn.close()
