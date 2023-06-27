@@ -18,6 +18,7 @@ rm -rf /app/models/*
 # Copy latest trained model into app/models
 #
 cp /config/contessa_$1.tar.gz /app/models/contessa.tar.gz
+cp /config/contessa_$1.tar.gz /config/contessa.tar.gz
 
 # Set end time after training finished
 #
