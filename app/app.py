@@ -157,30 +157,6 @@ def show_tasks():
     conn.close()
     return render_template('tasks.html', tasks=tasks)
 
-@app.route('/api/topic/get', methods=['GET'])
-def api_get_topic():
-    try:
-        json_body = request.form
-        where_clause = (' where ' + ' or '.join(map(lambda i: 'id_topic=' + str(i), json_body['ids']))) if 'ids' in json_body else ''
-        result_topics = []
-        conn = get_db_connection()
-        topics = conn.execute('select * from topic' + where_clause).fetchall()
-        for topic in topics:
-            result_topics.append({"id_topic":topic["id_topic"],"topic":topic["topic"],"meaning":topic["meaning"],"information":topic["information"]})
-        conn.close()
-        return jsonify({"success":True, "topics": result_topics})
-    except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
-
-@app.route('/topics')
-@login_required
-def show_topics():
-    conn = get_db_connection()
-    topics = conn.execute('select * from topic').fetchall()
-    conn.close()
-    return render_template('topics.html', topics=topics)
-
 @app.route('/api/intent/get', methods=['GET'])
 def api_get_intent():
     try:
@@ -445,44 +421,6 @@ def add_task():
     else:
         return render_template('add_task.html')
 
-@app.route('/api/topic/add', methods=['POST'])
-def api_add_topic():
-    try:
-        json_body = request.form
-        required_fields = ["topic","meaning","information"]
-        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
-        if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO topic('topic','meaning','information') VALUES (?, ?, ?)",
-                             (json_body["topic"], json_body["meaning"], json_body["information"]))
-            new_id = cursor.lastrowid
-            conn.commit()
-            conn.close()
-            return jsonify({"success":True, "id":new_id, "description":"New topic has been added"})
-    except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
-@app.route('/topic/add', methods=('GET', 'POST'))
-@login_required
-def add_topic(): 
-    if request.method == 'POST':
-        topic = request.form["topic"].strip()
-        meaning = request.form["meaning"].strip()
-        information = request.form["information"].strip()
-                   
-        conn = get_db_connection()
-        conn.execute("INSERT INTO topic('topic','meaning','information') VALUES (?, ?, ?)",
-                         (topic, meaning, information))
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for('show_topics'))
-    else:
-        return render_template('add_topic.html')
-
 @app.route('/api/intent/add', methods=['POST'])
 def api_add_intent():
     try:
@@ -522,7 +460,7 @@ def api_add_intent():
             conn.commit()
             conn.close()
 
-            return jsonify({"success": True, "id": intent_id, "description": "New topic has been added"})
+            return jsonify({"success": True, "id": intent_id, "description": "New intent has been added"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e), "traceback": str(traceback.format_exc())})
 
@@ -557,7 +495,7 @@ def api_add_exam():
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO topic('name', 'description', 'observation', 'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            cursor.execute("INSERT INTO exam('name', 'description', 'observation', 'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
                            (json_body["name"], json_body["description"], json_body["observation"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
             new_id = cursor.lastrowid
             conn.commit()
@@ -764,50 +702,6 @@ def edit_task(id):
         conn.close()
         return render_template('edit_task.html', task=task)
 
-@app.route('/api/topic/edit', methods=['PUT'])
-def api_edit_topic():
-    try:
-        json_body = request.form
-        required_fields = ["id_topic", "topic", "meaning", "information"]
-        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
-        if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute("update topic set topic=?, meaning=?, information=? where id_topic=?",
-                             (json_body["topic"], json_body["meaning"], json_body["information"], str(json_body["id_topic"])))
-            num_affected = cursor.rowcount
-            conn.commit()
-            conn.close()
-            return jsonify({"success":True, "description": str(num_affected) + " topic(s) has been updated"})
-    except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
-
-@app.route('/topic/edit/<int:id>', methods=('GET', 'POST'))
-@login_required
-def edit_topic(id):
-    if request.method == 'POST':
-
-        topic = request.form["topic"]
-        meaning = request.form["meaning"].strip()
-        information = request.form["information"].strip()
-
-        conn = get_db_connection()
-        conn.execute("update topic set topic=?, meaning=?, information=? where id_topic=?",
-                         (topic, meaning, information, str(id)))
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for('show_topics'))
-    else:
-        conn = get_db_connection()
-        topic = conn.execute('select * from topic where id_topic=?', [str(id)]).fetchone()
-        conn.close()
-        return render_template('edit_topic.html', topic=topic)
-
-
 @app.route('/api/exam/edit', methods=['PUT'])
 def api_edit_exam():
     try:
@@ -939,34 +833,6 @@ def delete_task(id):
     conn.commit()
     conn.close()
     return redirect(url_for('show_tasks'))
-
-@app.route('/api/topic/delete', methods=['DELETE'])
-def api_delete_topic():
-    try:
-        json_body = request.form
-        required_fields = ["id_topic"]
-        [required_fields.remove(key) if key in required_fields else "" for key in json_body]
-        if len(required_fields) > 0:
-            return jsonify({"success":False, "description": "Missing fields " + ", ".join(required_fields)})
-        else: 
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute("delete from topic where id_topic=?", (str(json_body["id_topic"])))
-            num_affected = cursor.rowcount
-            conn.commit()
-            conn.close()
-            return jsonify({"success":True, "description": str(num_affected) + " topic(s) has been deleted"})
-    except Exception as e:
-        return jsonify({"success":False, "error": str(e), "traceback": str(traceback.format_exc()) })
-
-@app.route('/topic/delete/<int:id>')
-@login_required
-def delete_topic(id):
-    conn = get_db_connection()
-    conn.execute('delete from topic where id_topic=?', [str(id)])
-    conn.commit()
-    conn.close()
-    return redirect(url_for('show_topics'))
 
 @app.route('/api/exam/delete', methods=['DELETE'])
 def api_delete_exam():
@@ -1546,7 +1412,6 @@ def clear_db():
     c.execute('''delete from quizs''')
     c.execute('''delete from scores''')
     c.execute('''delete from task''')
-    c.execute('''delete from topic''')
     c.execute('''delete from training''')
     # c.execute('''delete from users''')
     c.close()
