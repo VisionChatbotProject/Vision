@@ -8,6 +8,9 @@ from utils.db import *
 from utils.quiz import *
 
 
+# 1. Bug mit Index fixen
+# 2. Count of questions
+
 # This class will ask the user to select the quiz that he/she wants to take for form quiz_info_form
 class QuizNumber(Action):
 
@@ -54,16 +57,29 @@ class QuizOver(Action):
 
         def getQuestions(quiz_id):
         
-            sql = f'select question_text from questions where quiz_id = {quiz_id} order by question_id'
+            sql = f'select question_id, question_text from questions where quiz_id = {quiz_id} order by question_id'
 
             cursor.execute(sql)
             rows = cursor.fetchall()
 
-            response = []
+            qeustions = []
             for row in rows:
-                response.append(row[0])
+                qeustions.append({"id" : row[0], "text": row[1]})
 
-            return response
+            return qeustions
+        
+        def getAnswers(question_id):
+        
+            sql = f'select answer_id, answer_text, is_correct from answers where question_id = {question_id} order by answer_id'
+
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+
+            answers = []
+            for row in rows:
+                answers.append({"id" : row[0], "text": row[1], 'is_correct': row[2]})
+
+            return answers
 
         def getCurrentQuestionIndex():
             quiz_question_count = tracker.get_slot('quiz_question_count')
@@ -71,12 +87,26 @@ class QuizOver(Action):
                 quiz_question_count = 0
             return int(quiz_question_count)
         
-        def getCurrentQuestion(questions, currentIndex):
-            return questions[currentIndex]
+        def getQuestionText(questions, currentIndex):
+            return questions[currentIndex].get("text")
+        
+        def getQuestionId(questions, currentIndex):
+            return questions[currentIndex].get("id")
+        
+        def createButtons(questionId, answers):
+            buttons = []
+            for answer in answers:
+                buttons.append({ 
+                    "title": answer.get("text"), 
+                    "payload": f'{questionId};{answer.get("text")}' 
+                })
+            return buttons
 
         questions = getQuestions(tracker.get_slot('quiz_number'))
         currentIndex = getCurrentQuestionIndex()
-        dispatcher.utter_message(text=f"Question {currentIndex}: {getCurrentQuestion(questions, currentIndex)}")
+        questionId = getQuestionId(questions, currentIndex)
+   
+        dispatcher.utter_message(text=f'{getQuestionText(questions, currentIndex)}', buttons=createButtons(questionId, getAnswers(questionId)))
 
         return []
 
@@ -92,7 +122,49 @@ class QuizFormSubmit(Action):
         domain: DomainDict
     ) -> List[Dict[Text, Any]]:
         
-        dispatcher.utter_message(text="Thanks for taking the quiz. Please register yourself to see your score")
+        def getQuizID():
+            quizId = tracker.get_slot('quiz_number')
+            return quizId
+
+        def getUsername():
+            username = tracker.slots.get("user")
+            return username
+        
+        def storeScore(username, quiz_id, date, score):
+
+            sql = f'INSERT INTO scores (quiz_id, username, date_of_quiz, score) VALUES ({quiz_id}, "{username}", datetime("now"), {score});'
+            cursor.execute(sql)
+            con.commit()
+            return cursor.lastrowid 
+        
+        #score = getScore(getUsername(), getQuizID())
+
+        def getCount(quiz_id):
+             
+            quiz_id = tracker.get_slot('quiz_number')
+            sql = f'SELECT count(*) as count FROM questions where quiz_id = {quiz_id};'
+            cursor.execute(sql)
+            row = cursor.fetchone()
+
+            return row[0]
+    
+        def getCalcedScore(quizId):
+            count = getCount(quizId)
+            quiz_correct_ans = tracker.get_slot('quiz_correct_ans')
+            score = int((quiz_correct_ans / count) * 100)
+
+            logger.info(f"getCalcedScore -  quiz_correct_ans: {quiz_correct_ans}, count: {count}")
+            
+            return score
+        
+        quizId = getQuizID()
+        score = getCalcedScore(quizId)
+        username = getUsername()
+        now = date.today()
+
+        storeScore(username, quizId, now, score)
+
+        dispatcher.utter_message(text=f"Thanks for taking the quiz. You answered {score}% of the questions correctly!")
         
 
 class QuizShowScore(Action):
@@ -111,7 +183,6 @@ class QuizShowScore(Action):
             dispatcher.utter_message(text=s)
         else:
             dispatcher.utter_message(text="Please login to see your performance")
-
 
 
 # This class is to validates the user input given
@@ -141,9 +212,48 @@ class ValidateQuizForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         
-        def checkSlotAnswer(answer):
-            if answer == "a":
+        def getCount():
+             
+            quiz_id = tracker.get_slot('quiz_number')
+            sql = f'SELECT count(*) as count FROM questions where quiz_id = {quiz_id};'
+            cursor.execute(sql)
+            row = cursor.fetchone()
+
+            return row[0]
+        
+        def getCorrectAnswer(questionId):
+        
+            sql = f'select answer_id, answer_text from answers where question_id = {questionId} and is_correct = 1'
+
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+
+            #logger.info(f"validate_quiz_over -  getCorrectAnswer: {questionId}")
+
+            answers = []
+            for row in rows:
+                answers.append({"id" : row[0], "text": row[1]})
+            
+            if len(answers) > 0:
+                answer = answers[0]
+                return answer.get("text")
+            
+            return ""
+        
+        def checkSlotAnswer(given_answer):
+
+            xs = given_answer.split(";") # questionId;givenAnswer
+
+            question_id = xs[0]
+            givenAnswerText = xs[1]
+
+            correctAnswerText = getCorrectAnswer(int(question_id))
+
+            # logger.info(f"validate_quiz_over -  checkSlotAnswer: {givenAnswerText} == {correctAnswerText} id: {int(question_id)}")
+
+            if givenAnswerText == correctAnswerText:
                 return True
+            
             return False
         
         def getQuestionCount():
@@ -152,19 +262,30 @@ class ValidateQuizForm(FormValidationAction):
                 return 0    
             return int(quiz_question_count)
         
-        def isQuizOver():
-            # Get next question
-            if getQuestionCount() < 2:
-                return {"quiz_over": None, 'quiz_question_count': str(currentQuestionCount)}
+        def getCorrectAnswerCount():
+            quiz_correct_ans = tracker.get_slot('quiz_correct_ans')
+            if not quiz_correct_ans:
+                return 0
+            return quiz_correct_ans
         
-            # Quiz is over
-            return {"quiz_over": "finished", 'quiz_question_count': str(currentQuestionCount)}
+        def isQuizOver(quiz_correct_ans):
+            # Get next question
+            if getQuestionCount() < getCount() - 1:
+                # Quiz is not over, when slot "quiz_over" is None
+                return {"quiz_over": None, 'quiz_question_count': str(currentQuestionCount), "quiz_correct_ans": quiz_correct_ans}
+        
+            # Quiz is over, when slot "quiz_over" is filleds
+            return {"quiz_over": "finished", 'quiz_question_count': str(currentQuestionCount), "quiz_correct_ans": quiz_correct_ans}
             
-
         currentQuestionCount = getQuestionCount()
+        correctAnswerCount = getCorrectAnswerCount()
         if checkSlotAnswer(slot_value):
-            currentQuestionCount += 1
+            correctAnswerCount += 1
+    
+        # goto to next question
+        currentQuestionCount += 1
 
-        logger.info(f"validate_quiz_over -  slot_value: {slot_value} - currentQuestionCount: {currentQuestionCount}")
+        user = tracker.get_slot('user')
+        logger.info(f"validate_quiz_over - user: {user} - slot_value: {slot_value} - currentQuestionCount: {currentQuestionCount} - correctAnswerCount: {correctAnswerCount}")
 
-        return isQuizOver()
+        return isQuizOver(correctAnswerCount)
