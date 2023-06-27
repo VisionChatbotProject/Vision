@@ -38,12 +38,24 @@ class QuizNumber(Action):
 
             quizs = []
             for row in rows:
-                quizs.append({
-                    "id": row[0], 
-                    "name": row[1]
-                })
+
+                quizId = row[0]
+                if hasQuestions(quizId):
+                    quizs.append({
+                        "id": row[0], 
+                        "name": row[1]
+                    })
 
             return quizs
+        
+        
+        def hasQuestions(quizId):
+            sql = f"SELECT count(*) as count FROM questions WHERE quiz_id = {quizId};"
+            cursor.execute(sql)
+            row = cursor.fetchone()
+            if row[0] > 0:
+                return True
+            return False
 
         def createQuizButtons(quizs):
             buttons = []
@@ -58,10 +70,9 @@ class QuizNumber(Action):
         course_id = current_course_id(tracker)
         logger.info(f"##### action_ask_quiz_number - course_id: {course_id}")
 
-
         listofQuiz = getListofQuiz(course_id, username)
 
-        logger.info(f"##### action_ask_quiz_number - listofQuiz: {listofQuiz}")
+        # logger.info(f"##### action_ask_quiz_number - listofQuiz: {listofQuiz}")
 
         if len(listofQuiz) == 0:
             ask = f"There is no quiz for course {tracker.get_slot('quiz_course')}"
@@ -138,7 +149,7 @@ class QuizOver(Action):
 
         if len(questions) == 0:
             dispatcher.utter_message(text=f'There are no questions.')
-            return []
+            return [SlotSet('quiz_over','finished')]
 
         currentIndex = getCurrentQuestionIndex()
         questionId = getQuestionId(questions, currentIndex)
@@ -167,13 +178,12 @@ class QuizFormSubmit(Action):
             username = tracker.slots.get("user")
             return username
         
-        def storeScore(username, quiz_id, date, score):
-
+        def storeScore(username, quiz_id, score):
             sql = f'INSERT INTO scores (quiz_id, username, date_of_quiz, score) VALUES ({quiz_id}, "{username}", datetime("now"), {score});'
             cursor.execute(sql)
             con.commit()
-            return cursor.lastrowid 
-        
+
+
         def getCount(quiz_id):
              
             quiz_id = tracker.get_slot('quiz_number')
@@ -195,12 +205,17 @@ class QuizFormSubmit(Action):
         quizId = getQuizID()
         score = getCalcedScore(quizId)
         username = getUsername()
-        now = date.today()
-
-        lastId = storeScore(username, quizId, now, score)
-        logger.info(f"storeScore -  lastId: {lastId}")
+ 
+        storeScore(username, quizId, score)
 
         dispatcher.utter_message(text=f"Thanks for taking the quiz. You answered {score}% of the questions correctly!")
+
+        return [SlotSet("quiz_number", None),
+                SlotSet('quiz_question_list', None),
+                SlotSet('quiz_original_question_list', None),
+                SlotSet('quiz_over', None),
+                SlotSet('quiz_correct_ans', 0),
+                SlotSet('quiz_question_count', 0)]
         
 
 class QuizShowScore(Action):
@@ -264,8 +279,6 @@ class ValidateQuizForm(FormValidationAction):
             cursor.execute(sql)
             rows = cursor.fetchall()
 
-            #logger.info(f"validate_quiz_over -  getCorrectAnswer: {questionId}")
-
             answers = []
             for row in rows:
                 answers.append({"id" : row[0], "text": row[1]})
@@ -313,6 +326,10 @@ class ValidateQuizForm(FormValidationAction):
             # Quiz is over, when slot "quiz_over" is filleds
             return {"quiz_over": "finished", 'quiz_question_count': str(currentQuestionCount), "quiz_correct_ans": quiz_correct_ans}
             
+
+        if slot_value == 'finished':
+            return {"quiz_over": "finished"}
+
         currentQuestionCount = getQuestionCount()
         correctAnswerCount = getCorrectAnswerCount()
         if checkSlotAnswer(slot_value):
