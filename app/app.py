@@ -358,7 +358,6 @@ def add_chapter():
         name_chapter = request.form["name_chapter"].strip()
         short_description = request.form["short_description"].strip()
         content = request.form["content"].strip()
-        resources = request.form["ressources"]
     
         conn = get_db_connection()
         conn.execute("INSERT INTO chapter('name_chapter','short_description','content') VALUES (?, ?, ?)",
@@ -492,7 +491,7 @@ def api_add_exam():
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO exam('name', 'description',  'date', 'active', 'id_course', 'id_chapter',) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            cursor.execute("INSERT INTO exam('name', 'description',  'date', 'active', 'id_course', 'id_chapter') VALUES (?, ?, ?, ?, ?, ?)",
                            (json_body["name"], json_body["description"], json_body["date"], json_body["active"], json_body["id_course"], json_body["id_chapter"]))
             new_id = cursor.lastrowid
             conn.commit()
