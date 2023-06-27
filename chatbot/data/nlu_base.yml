@@ -5,8 +5,18 @@ nlu:
     - start
     - begin
 
+- intent: restart
+  examples: |
+    - restart
+    - begin again
+    - start new
+    - retry new session
+    - launch new session
+    - new session
+
 - intent: greet
   examples: |
+    - How are you?
     - hey
     - hello
     - hi
@@ -103,6 +113,14 @@ nlu:
     - I want to see the menu 
     - What can you do? 
     - Are you intelligent? 
+    - What can I ask you?
+
+- intent: actions_help
+  examples: |
+    - What can I ask you about anything else?
+    - What can I ask you also?
+    - Is there anything else I can ask you?
+    - What can I ask you about yourself?
 
 - intent: set_slot_value
   examples: |
@@ -112,6 +130,12 @@ nlu:
     - Set slot value user
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
+
+- intent: quiz_help
+  examples: |
+    - What can I ask you about quizs?
+    - Quizs help?
+    - What options do you have for quizs?
 
 - intent: quiz_number
   examples: |
@@ -174,6 +198,12 @@ nlu:
     - i want to signin
     - sign-in
 
+- intent: course_help
+  examples: |
+    - What can I ask you about courses?
+    - Course help?
+    - What options do you have for course?
+
 - intent: course_teacher
   examples: |
     - who is the teacher of the course?
@@ -182,7 +212,7 @@ nlu:
     - what is the name of the teacher
     - teacher
 
-- intent: action_course_list
+- intent: course_list
   examples: |
     - what courses are available
     - what is the list of the courses
@@ -221,28 +251,53 @@ nlu:
     - which extern ressources I need for the course
     - extern ressources for the course
 
+- intent: chapter_help
+  examples: |
+    - What can I ask you about chapters?
+    - Chapter help?
+    - What options do you have for chapters?
+
 - intent: chapter_description
   examples: |
-    - I want the description of chapter [1](chapter)
-    - Description of chapter [1](chapter)
-    - What is the chapter [1](chapter) about? 
-    - I need information of the chapter [1](chapter)
-    - [1](chapter)
-    - Chapter number [1](chapter)
-    - Chapter [1](chapter)
+    - I want the description of this chapter
+    - Description of the chapter
+    - What is the chapter?
+    - I need information of the chapter?
+    - Chapter number?
+    - Chapter
 
 - intent: chapter_content
   examples: |
-   - Show me the content of chapter [1](chapter)
-   - Content chapter [1](chapter)
-   - What is the content of the chapter [1](chapter)?
-   - Content of [1]chapter
+   - Show me the content of chapter
+   - Content chapter
+   - What is the content of the chapter?
+   - Content of chapter
 
-- intent: list_of_courses
+- intent: chapter_learn
   examples: |
-    - I want to see courses
-    - Please show me all courses
-    - List of courses
+   - What chapter should I learn?
+   - Where do I have something to learn?
+   - Learn what?
+   - Learn chapter?
+
+- intent: task_help
+  examples: |
+    - What can I ask you about tasks?
+    - Task help?
+    - What options do you have for tasks?
+
+- intent: task_list
+  examples: |
+    - Do we have homeworks? 
+    - Are there pending tasks?
+    - Do we have homework? 
+    - What do we have to do for next class? 
+
+- intent: task_deadlines
+  examples: |
+    - What are the task deadlines? 
+    - Are there deadlines?
+    - When should I finish the homework?  
 
 - intent: task_ressources
   examples: |
@@ -251,12 +306,26 @@ nlu:
     - Do we have some recommendations for task 
     - Ressources for task 
 
-- intent: task_list
+- intent: exam_help
   examples: |
-    - Do we have homeworks? 
-    - Are there pending tasks?
-    - Do we have homework? 
-    - What do we have to do for next class? 
+    - What can I ask you about exams?
+    - Exam help?
+    - Exam options?
+    - What options do you have for exams?
+
+- intent: exam_list
+  examples: |
+    - Do we have exams? 
+    - Are there pending exams?
+    - Do we have tests? 
+    - What exams do we have? 
+
+- intent: exam_next
+  examples: |
+    - When is the next exam? 
+    - Next exam?
+    - Is there a next exam? 
+    - When is the next test? 
 
 - intent: goodbye
   examples: |-

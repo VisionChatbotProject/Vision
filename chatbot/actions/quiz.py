@@ -8,8 +8,24 @@ from utils.db import *
 from utils.quiz import *
 
 
-# 1. Bug mit Index fixen
-# 2. Count of questions
+# get help for quiz
+class TaskHelp(Action):
+     def name(self) -> Text:
+         return "action_quiz_help"
+     
+     def run(self, 
+             dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+         
+        options = [
+            "take a quiz",
+            "show me my score",
+        ]
+        dispatcher.utter_message(text=f"Here are some things you could ask me about quizs:\n", buttons=createHelpButtons(options))
+        
+        return []
 
 # This class will ask the user to select the quiz that he/she wants to take for form quiz_info_form
 class QuizNumber(Action):
@@ -23,7 +39,6 @@ class QuizNumber(Action):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         
-
         username = tracker.slots.get("user")
 
         def getListofQuiz(course_id, username):
@@ -66,22 +81,10 @@ class QuizNumber(Action):
                 })
             return buttons
 
-
         course_id = current_course_id(tracker)
-        logger.info(f"##### action_ask_quiz_number - course_id: {course_id}")
-
         listofQuiz = getListofQuiz(course_id, username)
-
-        # logger.info(f"##### action_ask_quiz_number - listofQuiz: {listofQuiz}")
-
-        if len(listofQuiz) == 0:
-            ask = f"There is no quiz for course {tracker.get_slot('quiz_course')}"
-            dispatcher.utter_message(text=ask)
-        else:
-            ask = f"Please enter the quiz number from {listofQuiz}"
-            ask = f"Please note that your answers must be separated by a coma"
-            buttons = createQuizButtons(listofQuiz)
-            dispatcher.utter_message(text=ask, buttons=buttons)
+        buttons = createQuizButtons(listofQuiz)
+        dispatcher.utter_message(text=f"Please choose the quiz", buttons=buttons)
 
         return []
 

@@ -43,10 +43,9 @@ class UserEmail(Action):
         return []
 
 
+# This action class is to ask the user to input the course, this action is linked to user_details_form
 class UserPwd(Action):
-    """
-    This action class is to ask the user to input the course, this action is linked to user_details_form
-    """
+
     def name(self) -> Text:
         return "action_user_pwd"
 
@@ -59,10 +58,9 @@ class UserPwd(Action):
         return []
 
 
+# This action class is to ask the user to input the course, this action is linked to user_details_form
 class UserConfirmation(Action):
-    """
-    This action class is to ask the user to input the course, this action is linked to user_details_form
-    """
+
     def name(self) -> Text:
         return "action_user_confirmation"
 
@@ -94,7 +92,7 @@ class UserDetailsForm(FormValidationAction):
     ) -> Dict[Text, Any]:
 
         email = tracker.get_slot('email')
-        entry = getDB().findUser(email)
+        entry = cursor.findUser(email)
         if entry is not None:
             # dispatcher.utter_message(text="Your user email is a registered email. Welcome !!! ")
             return {"user_email": email}
@@ -111,7 +109,7 @@ class UserDetailsForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         
         user_email = tracker.get_slot('user_email')
-        user_pwd = getDB().findUserPwd(user_email)
+        user_pwd = cursor.findUserPwd(user_email)
         if slot_value == user_pwd:
             # dispatcher.utter_message(text="Welcome !!! ")
             return {"user_pwd": slot_value, "user_confirmation": ""}

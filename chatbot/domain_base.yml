@@ -8,31 +8,45 @@ session_config:
 
 intents:
 - start
+- restart
 - out_of_scope
 - greet
 - mood_great
 - mood_unhappy
+- bot_challenge
 - thanks
 - help
 - nlu_fallback
+- actions_help
 - user_login
+- quiz_help
 - quiz_number
 - quiz_over
 - quiz_answer
 - quiz_form_launch
 - quiz_show_score
+- course_help
+- course_list
 - course_teacher
 - course_chapters
 - course_description
 - course_materials
 - course_extressources
+- chapter_help
 - chapter_description
 - chapter_content
+- chapter_learn
+- task_help
 - task_list
 - task_ressources
 - task_deadlines
+- exam_help
+- exam_list
+- exam_next
 - set_slot_value
 - goodbye
+
+
 
 entities:
 - course
@@ -124,7 +138,7 @@ responses:
   utter_fallback:
   - text: Sorry, I didn't get you !!! Some one from the college wil get in touch with you. Your question is sent to them.
   utter_default:
-  - text: Sorry, I didn't get you, with hep I can provide you a list of things you can ask me !!!
+  - text: Sorry, I didn't get you, with help I can provide you a list of things you can ask me !!!
   utter_usr_email:
   - text: Hey ! Please provide your registered email ?
   utter_usr_pwd:
@@ -138,7 +152,9 @@ actions:
 - action_unlikely_intent
 - action_my_default_fallback
 - action_help
+- action_actions_help
 - action_set_value
+- action_quiz_help
 - action_quiz_form
 - action_quiz_form_submit
 - validate_quiz_form
@@ -151,17 +167,24 @@ actions:
 - action_user_details_form
 - action_user_details_submit
 - action_user_login
+- action_course_help
 - action_course_teacher
 - action_course_list
 - action_course_chapters
 - action_course_description
 - action_course_materials
 - action_course_extressources
+- action_chapter_help
 - action_chapter_description
 - action_chapter_content
+- action_chapter_learn
+- action_task_help
 - action_task_ressources
 - action_task_deadlines
 - action_task_list
+- action_exam_help
+- action_exam_list
+- action_exam_next
 - action_restart
 
 forms:

@@ -3,6 +3,8 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, Restarted, AllSlotsReset, UserUtteranceReverted
 from utils.utils import *
+from utils.db import *
+import re
 
 class ActionEndOfFlow(Action):
     def name(self) -> Text:
@@ -48,6 +50,13 @@ class ActionDefaultFallback(ActionMyFallback):
     def name(self) -> Text:
         return "action_default_fallback"
 
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(response="utter_default")
+        return []
 
 # Executes the fallback action and goes back to the previous state of the dialogue
 class MyUnlikelyIntent(ActionMyFallback):
@@ -64,7 +73,13 @@ class StartOfConversation(Action):
             tracker: Tracker,
             domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Welcome I am the Vision chatbot. How can I help you?")
+        
+        options = [
+            "What can I ask you?",
+            "I want to take a quiz"
+        ]
+        dispatcher.utter_message(text=f"Welcome I'm the Visionar. Here is how you could start:\n", buttons=createHelpButtons(options))
+        
         return []
     
 class Help(Action):
@@ -77,7 +92,51 @@ class Help(Action):
             tracker: Tracker,
             domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="I can help you with ...")
+                
+        options = [
+            "What can I ask you about courses?",
+            "What can I ask you about chapters?",
+            "What can I ask you about tasks?",
+            "What can I ask you about exams?",
+            "What can I ask you about anything else?",
+        ]
+        dispatcher.utter_message(text=f"Here are some things you could ask me:\n", buttons=createHelpButtons(options))
+        
+        return []
+    
+class ActionsHelp(Action):
+
+    def name(self) -> Text:
+        return "action_actions_help"
+    
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+                
+        def getIntents(courseId):
+            cursor.execute(f"select intent_list from intent where id_course = {courseId};")
+            rows = cursor.fetchall()
+            intents = []
+            for row in rows:
+                splitted = str(row).split(',-')
+                # splitted[0].replace("(?-", "")
+                result = re.sub(r"(\(.\-)", "", splitted[0])
+                intents.append(result)
+            
+            return intents
+        
+        options = [
+            "How are you?",
+            "Are you a bot?",
+            "Restart session",
+            "Goodbye"
+        ]
+        courseId = current_course_id(tracker)
+        intents = getIntents(courseId)
+        dispatcher.utter_message(text=f"Here are some things you could ask me:\n", buttons=createHelpButtons(options + intents))
+        
         return []
 
 # Empty action to set any slot value with REST request
@@ -88,10 +147,6 @@ class Query_SetValue(Action):
     def run(self, 
             dispatcher: CollectingDispatcher,
             tracker: Tracker,
-        domain: Dict[Text, Any],
+            domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        
-        # user = tracker.get_slot("user")
-        # dispatcher.utter_message("Setting slot value user to " + str(user))
-        # return [SlotSet('user', user)]
         return []

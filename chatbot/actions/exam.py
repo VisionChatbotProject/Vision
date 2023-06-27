@@ -5,10 +5,10 @@ from rasa_sdk.executor import CollectingDispatcher
 from utils.utils import *
 from utils.db import *
 
-# get help for tasks
-class TaskHelp(Action):
+# get help for exams
+class ExamHelp(Action):
      def name(self) -> Text:
-         return "action_task_help"
+         return "action_exam_help"
      
      def run(self, 
              dispatcher: CollectingDispatcher,
@@ -17,18 +17,17 @@ class TaskHelp(Action):
     ) -> List[Dict[Text, Any]]:
          
         options = [
-            "Ressources for task?",
-            "Are there deadlines?",
-            "What ressources are there for task?"
+            "Are there any exams?",
+            "When is the next exam?",
         ]
-        dispatcher.utter_message(text=f"Here are some things you could ask me about tasks:\n", buttons=createHelpButtons(options))
+        dispatcher.utter_message(text=f"Here are some things you could ask me about exams:\n", buttons=createHelpButtons(options))
         
         return []
 
-# get list of tasks for current course
+# get list of exams for current course
 class TaskList(Action):
      def name(self) -> Text:
-         return "action_task_list"
+         return "action_exam_list"
      
      def run(self, 
              dispatcher: CollectingDispatcher,
@@ -36,8 +35,8 @@ class TaskList(Action):
              domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
          
-        answer = "The task of this course are \n"
-        query = f"""SELECT title from task where id_course='{current_course_id(tracker)}' and id_chapter='{current_chapter_id(tracker)}'"""
+        answer = "The exams of this course are \n"
+        query = f"SELECT name from exam where id_course='{current_course_id(tracker)}'"
         get_query_results = select_from_database(query,answer)
         dispatcher.utter_message(text=get_query_results)
         return []
@@ -62,10 +61,10 @@ class TaskDeadlines(Action):
         dispatcher.utter_message("Yes, you have following tasks \n" + chapter_resp)
         return []
 
-# get list of ressources over all tasks that are open for this course
-class TaskRessources(Action):
+# get next exam
+class ExamNext(Action):
      def name(self) -> Text:
-         return "action_task_ressources"
+         return "action_exam_next"
      
      def run(self, 
              dispatcher: CollectingDispatcher,
@@ -73,11 +72,11 @@ class TaskRessources(Action):
              domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
         
-        query = f"select title, ressources, deadline from task where date(deadline)>=date('now') and active=1 and id_course='{current_course_id(tracker)}' and id_chapter='{current_chapter_id(tracker)}'"
-        cursor.execute(query)
+        # query = f"select title, ressources, deadline from task where date(deadline)>=date('now') and active=1 and id_course='{current_course_id(tracker)}' and id_chapter='{current_chapter_id(tracker)}'"
+        # cursor.execute(query)
         chapter_resp=""
-        for chap in cursor.fetchall():
-            chapter_resp+= "\nTask: "+str(chap[0])+"\n  Ressources: " +chap[1]+ "\n Deadline: "+datetime.strptime(chap[2], '%Y-%m-%d').date().strftime('%d %b %Y')
+        # for chap in cursor.fetchall():
+        #     chapter_resp+= "\nTask: "+str(chap[0])+"\n  Ressources: " +chap[1]+ "\n Deadline: "+datetime.strptime(chap[2], '%Y-%m-%d').date().strftime('%d %b %Y')
         
-        dispatcher.utter_message("Following ressources for the tasks: \n" + chapter_resp)
+        dispatcher.utter_message("The next exam is: \n" + chapter_resp)
         return []

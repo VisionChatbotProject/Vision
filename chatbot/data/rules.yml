@@ -5,20 +5,30 @@ rules:
   - intent: start
   - action: utter_start
 
+- rule: bot_challenge
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
 - rule: thanks
   steps:
   - intent: thanks
   - action: utter_thanks
 
-- rule: Show menu
-  steps:
-  - intent: help
-  - action: action_help
-
 - rule: Greet
   steps:
   - intent: greet
   - action: utter_greet
+
+- rule: help
+  steps:
+  - intent: help
+  - action: action_help
+
+- rule: actions_help
+  steps:
+  - intent: actions_help
+  - action: action_actions_help
 
 - rule: set_slot_value
   steps:
@@ -37,6 +47,11 @@ rules:
   - intent: nlu_fallback
   - action: action_my_default_fallback
 
+- rule: quiz_help
+  steps:
+  - intent: quiz_help
+  - action: action_quiz_help
+
 - rule: Activate quiz form
   steps:
   - intent: quiz_form_launch
@@ -53,17 +68,6 @@ rules:
     - requested_slot:
   - action: action_quiz_form_submit
 
-# - rule: Activate form to fetch info which quiz to launch
-#   steps:
-#   - intent: quiz_form_launch
-#   - action: action_quiz_form
-#   - slot_was_set:
-#     - answer: true
-#   - active_loop: action_quiz_form
-#   - active_loop: null
-#   - action: action_quiz_form_submit
-#   - action: action_deactivate_loop
-
 - rule: quiz_number
   steps:
   - intent: quiz_number
@@ -74,15 +78,20 @@ rules:
   - intent: quiz_over
   - action: action_ask_quiz_over
 
-# - rule: Activate the form
-#   steps:
-#     - intent: quiz_form_launch
-#     - action: action_quiz_form
-
 - rule: quiz_show_score
   steps:
   - intent: quiz_show_score
   - action: action_quiz_show_score
+
+- rule: course_help
+  steps:
+  - intent: course_help
+  - action: action_course_help
+
+- rule: course_list
+  steps:
+  - intent: course_list
+  - action: action_course_list
 
 - rule: course_teacher
   steps:
@@ -109,15 +118,10 @@ rules:
   - intent: course_extressources
   - action: action_course_extressources
 
-- rule: chapter_description
+- rule: chapter_help
   steps:
-  - intent: chapter_description
-  - action: action_chapter_description
-
-- rule: chapter_content
-  steps:
-  - intent: chapter_content
-  - action: action_chapter_content
+  - intent: chapter_help
+  - action: action_chapter_help
 
 - rule: chapter_description
   steps:
@@ -128,6 +132,26 @@ rules:
   steps:
   - intent: chapter_content
   - action: action_chapter_content
+
+- rule: chapter_description
+  steps:
+  - intent: chapter_description
+  - action: action_chapter_description
+
+- rule: chapter_content
+  steps:
+  - intent: chapter_content
+  - action: action_chapter_content
+
+- rule: chapter_learn
+  steps:
+  - intent: chapter_learn
+  - action: action_chapter_learn
+
+- rule: task_help
+  steps:
+  - intent: task_help
+  - action: action_task_help
 
 - rule: task_list
   steps:
@@ -144,11 +168,142 @@ rules:
   - intent: task_deadlines
   - action: action_task_deadlines
 
+- rule: exam_help
+  steps:
+  - intent: exam_help
+  - action: action_exam_help
+
+- rule: exam_list
+  steps:
+  - intent: exam_list
+  - action: action_exam_list
+
+- rule: exam_next
+  steps:
+  - intent: exam_next
+  - action: action_exam_next
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
   - action: utter_goodbye
   - action: action_restart
+- rule: rule for asdasd
+  steps:
+  - intent: asdasd
+  - action: utter_asdasd
+- rule: rule for Intent_1__
+  steps:
+  - intent: Intent_1__
+  - action: utter_Intent_1__
+- rule: rule for answer_what_is_the_description_of_the_course
+  steps:
+  - intent: answer_what_is_the_description_of_the_course
+  - action: utter_answer_what_is_the_description_of_the_course
+- rule: rule for Uva
+  steps:
+  - intent: Uva
+  - action: utter_Uva
+- rule: rule for SAT1
+  steps:
+  - intent: SAT1
+  - action: utter_SAT1
+- rule: rule for SAT2
+  steps:
+  - intent: SAT2
+  - action: utter_SAT2
+- rule: rule for SAT3
+  steps:
+  - intent: SAT3
+  - action: utter_SAT3
+- rule: rule for SAT4
+  steps:
+  - intent: SAT4
+  - action: utter_SAT4
+- rule: rule for SAT5
+  steps:
+  - intent: SAT5
+  - action: utter_SAT5
+- rule: rule for SAT6
+  steps:
+  - intent: SAT6
+  - action: utter_SAT6
+- rule: rule for SAT7
+  steps:
+  - intent: SAT7
+  - action: utter_SAT7
+- rule: rule for SAT8
+  steps:
+  - intent: SAT8
+  - action: utter_SAT8
+- rule: rule for SAT9
+  steps:
+  - intent: SAT9
+  - action: utter_SAT9
+- rule: rule for SAT10
+  steps:
+  - intent: SAT10
+  - action: utter_SAT10
+- rule: rule for SAT11
+  steps:
+  - intent: SAT11
+  - action: utter_SAT11
+- rule: rule for SAT12
+  steps:
+  - intent: SAT12
+  - action: utter_SAT12
+- rule: rule for SAT13
+  steps:
+  - intent: SAT13
+  - action: utter_SAT13
+- rule: rule for SAT14
+  steps:
+  - intent: SAT14
+  - action: utter_SAT14
+- rule: rule for SAT15
+  steps:
+  - intent: SAT15
+  - action: utter_SAT15
+- rule: rule for SAT15_1
+  steps:
+  - intent: SAT15_1
+  - action: utter_SAT15_1
+- rule: rule for SAT16
+  steps:
+  - intent: SAT16
+  - action: utter_SAT16
+- rule: rule for SAT17
+  steps:
+  - intent: SAT17
+  - action: utter_SAT17
+- rule: rule for SAT18
+  steps:
+  - intent: SAT18
+  - action: utter_SAT18
+- rule: rule for SAT19
+  steps:
+  - intent: SAT19
+  - action: utter_SAT19
+- rule: rule for SAT20
+  steps:
+  - intent: SAT20
+  - action: utter_SAT20
+- rule: rule for SAT21
+  steps:
+  - intent: SAT21
+  - action: utter_SAT21
+- rule: rule for SAT22
+  steps:
+  - intent: SAT22
+  - action: utter_SAT22
+- rule: rule for SAT23
+  steps:
+  - intent: SAT23
+  - action: utter_SAT23
+- rule: rule for SAT24
+  steps:
+  - intent: SAT24
+  - action: utter_SAT24
 - rule: rule for music_concept
   steps:
   - intent: music_concept
@@ -321,107 +476,3 @@ rules:
   steps:
   - intent: what_to_do
   - action: utter_what_to_do
-- rule: rule for answer_what_is_the_description_of_the_course
-  steps:
-  - intent: answer_what_is_the_description_of_the_course
-  - action: utter_answer_what_is_the_description_of_the_course
-- rule: rule for SAT1
-  steps:
-  - intent: SAT1
-  - action: utter_SAT1
-- rule: rule for SAT2
-  steps:
-  - intent: SAT2
-  - action: utter_SAT2
-- rule: rule for SAT3
-  steps:
-  - intent: SAT3
-  - action: utter_SAT3
-- rule: rule for SAT4
-  steps:
-  - intent: SAT4
-  - action: utter_SAT4
-- rule: rule for SAT5
-  steps:
-  - intent: SAT5
-  - action: utter_SAT5
-- rule: rule for SAT6
-  steps:
-  - intent: SAT6
-  - action: utter_SAT6
-- rule: rule for SAT7
-  steps:
-  - intent: SAT7
-  - action: utter_SAT7
-- rule: rule for SAT8
-  steps:
-  - intent: SAT8
-  - action: utter_SAT8
-- rule: rule for SAT9
-  steps:
-  - intent: SAT9
-  - action: utter_SAT9
-- rule: rule for SAT10
-  steps:
-  - intent: SAT10
-  - action: utter_SAT10
-- rule: rule for SAT11
-  steps:
-  - intent: SAT11
-  - action: utter_SAT11
-- rule: rule for SAT12
-  steps:
-  - intent: SAT12
-  - action: utter_SAT12
-- rule: rule for SAT13
-  steps:
-  - intent: SAT13
-  - action: utter_SAT13
-- rule: rule for SAT14
-  steps:
-  - intent: SAT14
-  - action: utter_SAT14
-- rule: rule for SAT15_1
-  steps:
-  - intent: SAT15_1
-  - action: utter_SAT15_1
-- rule: rule for SAT15
-  steps:
-  - intent: SAT15
-  - action: utter_SAT15
-- rule: rule for SAT16
-  steps:
-  - intent: SAT16
-  - action: utter_SAT16
-- rule: rule for SAT17
-  steps:
-  - intent: SAT17
-  - action: utter_SAT17
-- rule: rule for SAT18
-  steps:
-  - intent: SAT18
-  - action: utter_SAT18
-- rule: rule for SAT19
-  steps:
-  - intent: SAT19
-  - action: utter_SAT19
-- rule: rule for SAT20
-  steps:
-  - intent: SAT20
-  - action: utter_SAT20
-- rule: rule for SAT21
-  steps:
-  - intent: SAT21
-  - action: utter_SAT21
-- rule: rule for SAT22
-  steps:
-  - intent: SAT22
-  - action: utter_SAT22
-- rule: rule for SAT23
-  steps:
-  - intent: SAT23
-  - action: utter_SAT23
-- rule: rule for SAT24
-  steps:
-  - intent: SAT24
-  - action: utter_SAT24

@@ -4,6 +4,29 @@ from rasa_sdk.executor import CollectingDispatcher
 from utils.utils import *
 from utils.db import *
 
+# get help for course
+class ChapterHelp(Action):
+     def name(self) -> Text:
+         return "action_course_help"
+     
+     def run(self, 
+             dispatcher: CollectingDispatcher,
+             tracker: Tracker,
+             domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+         
+        options = [
+            "List of all courses?",
+            "Who is the teacher?",
+            "What are the course chapters?",
+            "What is the course content?",
+            "What are the course materials?",
+            "External ressources for the course?",
+        ]
+        dispatcher.utter_message(text=f"Here are some things you could ask me about courses:\n", buttons=createHelpButtons(options))
+        
+        return []
+
 # get list of courses
 class CourseList(Action):
      def name(self) -> Text:
@@ -16,8 +39,8 @@ class CourseList(Action):
     ) -> List[Dict[Text, Any]]:
 
         query="SELECT name FROM course"
-        getDB().execute(query)
-        results = getDB().fetchall()
+        cursor.execute(query)
+        results = cursor.fetchall()
         course_resp=""
         for cours in results:
             course_resp+= str(cours[0])+ "\n"

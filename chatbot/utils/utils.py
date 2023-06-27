@@ -3,6 +3,15 @@ from logging import getLogger
 
 logger = getLogger()
 
+def createHelpButtons(questions):
+    buttons = []
+    for question in questions:
+        buttons.append({ 
+            "title": f'{question}',
+            "payload": f'{question}'
+        })
+    return buttons
+
 def button_it(lists):
     buttons = []
     try:

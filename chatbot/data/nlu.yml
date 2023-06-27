@@ -5,8 +5,18 @@ nlu:
     - start
     - begin
 
+- intent: restart
+  examples: |
+    - restart
+    - begin again
+    - start new
+    - retry new session
+    - launch new session
+    - new session
+
 - intent: greet
   examples: |
+    - How are you?
     - hey
     - hello
     - hi
@@ -103,6 +113,14 @@ nlu:
     - I want to see the menu 
     - What can you do? 
     - Are you intelligent? 
+    - What can I ask you?
+
+- intent: actions_help
+  examples: |
+    - What can I ask you about anything else?
+    - What can I ask you also?
+    - Is there anything else I can ask you?
+    - What can I ask you about yourself?
 
 - intent: set_slot_value
   examples: |
@@ -112,6 +130,12 @@ nlu:
     - Set slot value user
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
+
+- intent: quiz_help
+  examples: |
+    - What can I ask you about quizs?
+    - Quizs help?
+    - What options do you have for quizs?
 
 - intent: quiz_number
   examples: |
@@ -174,6 +198,12 @@ nlu:
     - i want to signin
     - sign-in
 
+- intent: course_help
+  examples: |
+    - What can I ask you about courses?
+    - Course help?
+    - What options do you have for course?
+
 - intent: course_teacher
   examples: |
     - who is the teacher of the course?
@@ -182,7 +212,7 @@ nlu:
     - what is the name of the teacher
     - teacher
 
-- intent: action_course_list
+- intent: course_list
   examples: |
     - what courses are available
     - what is the list of the courses
@@ -221,28 +251,53 @@ nlu:
     - which extern ressources I need for the course
     - extern ressources for the course
 
+- intent: chapter_help
+  examples: |
+    - What can I ask you about chapters?
+    - Chapter help?
+    - What options do you have for chapters?
+
 - intent: chapter_description
   examples: |
-    - I want the description of chapter [1](chapter)
-    - Description of chapter [1](chapter)
-    - What is the chapter [1](chapter) about? 
-    - I need information of the chapter [1](chapter)
-    - [1](chapter)
-    - Chapter number [1](chapter)
-    - Chapter [1](chapter)
+    - I want the description of this chapter
+    - Description of the chapter
+    - What is the chapter?
+    - I need information of the chapter?
+    - Chapter number?
+    - Chapter
 
 - intent: chapter_content
   examples: |
-    - Show me the content of chapter [1](chapter)
-    - Content chapter [1](chapter)
-    - What is the content of the chapter [1](chapter)?
-    - Content of [1]chapter
+    - Show me the content of chapter
+    - Content chapter
+    - What is the content of the chapter?
+    - Content of chapter
 
-- intent: list_of_courses
+- intent: chapter_learn
   examples: |
-    - I want to see courses
-    - Please show me all courses
-    - List of courses
+    - What chapter should I learn?
+    - Where do I have something to learn?
+    - Learn what?
+    - Learn chapter?
+
+- intent: task_help
+  examples: |
+    - What can I ask you about tasks?
+    - Task help?
+    - What options do you have for tasks?
+
+- intent: task_list
+  examples: |
+    - Do we have homeworks? 
+    - Are there pending tasks?
+    - Do we have homework? 
+    - What do we have to do for next class? 
+
+- intent: task_deadlines
+  examples: |
+    - What are the task deadlines? 
+    - Are there deadlines?
+    - When should I finish the homework?  
 
 - intent: task_ressources
   examples: |
@@ -251,12 +306,25 @@ nlu:
     - Do we have some recommendations for task 
     - Ressources for task 
 
-- intent: task_list
+- intent: exam_help
   examples: |
-    - Do we have homeworks? 
-    - Are there pending tasks?
-    - Do we have homework? 
-    - What do we have to do for next class? 
+    - What can I ask you about exams?
+    - Exam help?
+    - What options do you have for exams?
+
+- intent: exam_list
+  examples: |
+    - Do we have exams? 
+    - Are there pending exams?
+    - Do we have tests? 
+    - What exams do we have? 
+
+- intent: exam_next
+  examples: |
+    - When is the next exam? 
+    - Next exam?
+    - Is there a next exam? 
+    - When is the next test? 
 
 - intent: goodbye
   examples: |-
@@ -271,6 +339,141 @@ nlu:
     - see you around
     - bye bye
     - see you later
+- intent: asdasd
+  examples: |
+    -asdasd
+- intent: Intent_1__
+  examples: |
+    -Intent Trigger _
+- intent: answer_what_is_the_description_of_the_course
+  examples: |
+    -description of the course
+    -please give me the description
+- intent: Uva
+  examples: |
+    -Test
+- intent: SAT1
+  examples: |
+    -How do I access the Smart Authoring Tool?
+    -Do I have to download the Smart Authoring Tool?
+    -Is there something to be installed for the Smart Authoring Tool?
+- intent: SAT2
+  examples: |
+    -How do I create a course with the Smart Authoring Tool?
+    -Can I create courses with the Smart Authoring Tool?
+    -What do I have to do to create a course with the Smart Authoring Tool?
+- intent: SAT3
+  examples: |
+    -Do I have to fill in all the course information?
+    -Why does the Smart Authoring Tool want me to fill in all the course information?
+- intent: SAT4
+  examples: |
+    -What are 'Course Materials'?
+    -What are 'Course Materials' and 'Course Resources'?
+    -What can I add in 'Course Materials' and 'Course Resources'?
+- intent: SAT5
+  examples: |
+    -How do I define a structure for my course?
+    -How can I structure the course?
+    -What levels can I choose from to strucutre my course?
+- intent: SAT6
+  examples: |
+    -Can I change the order of my section once I have already created them?
+    -How do I change the order of my section and unit?
+    -What options do I have for changing the order of my unit?
+- intent: SAT7
+  examples: |
+    -How do I add content (e.g.
+    - text
+    - media) to the course?
+    -How can I add videos to my course?
+    -What kind of content can I add to my course?
+- intent: SAT8
+  examples: |
+    -How can I add external sources to my course?
+    -Is it possible to add an external HTML source to my course?
+- intent: SAT9
+  examples: |
+    -Can I duplicate the content created with the Smart Authoring Tool?
+    -How can I copy my content?
+    -Can I reuse the content I ahve created?
+- intent: SAT10
+  examples: |
+    -How do I edit content?
+    -What do I need to do to edit my content?
+- intent: SAT11
+  examples: |
+    -How do I see if I have saved my changes?
+    -Do I know if changes have been saved or not?
+- intent: SAT12
+  examples: |
+    -How do I upload a video?
+    -What kind of videos can I upload?
+    -What do I have to do to upload a video?
+- intent: SAT13
+  examples: |
+    -How do I upload an image?
+    -How do I add an image to my unit?
+    -Where can I upload an image from?
+- intent: SAT14
+  examples: |
+    -How do I create quizzes?
+    -Can I add quizzes to my course?
+    -What do I have to do to create a quiz with the Smart Authoring Tool?
+- intent: SAT15
+  examples: |
+    -How do I make the course available to my students?
+    -How can students access the course I have creates with the Smart Authoring Tool?
+    -What do I need to do so students can access my course?
+- intent: SAT15_1
+  examples: |
+    -Can I copy/paste text from another document?
+    -Do I have to write everything new or can I use text I ahve already prepared?
+- intent: SAT16
+  examples: |
+    -What options do I have for editing text?
+    -What can I do with 'Dimension'?
+    -What does 'Typography' do?
+- intent: SAT17
+  examples: |
+    -What are the Smart Authoring Tool’s benefits for the teacher?
+    -Why should teachers use the Smart Authoring Tool?
+    -How can the Smart Authoring Tool support teachers?
+- intent: SAT18
+  examples: |
+    -What are the Smart Authoring Tool’s benefits for the student?
+    -Why should students use courses created with the Smart Authoring Tool?
+    -What are the advantages for students?
+- intent: SAT19
+  examples: |
+    -What are the Smart Authoring Tool’s limits?
+    -What can the Smart Authoring Tool not do?
+- intent: SAT20
+  examples: |
+    -How to create visually engaging content?
+    -How can I make my content visually engaging?
+    -What tips are there for creating visually engaging content?
+- intent: SAT21
+  examples: |
+    -How to create pedagogically-sound content?
+    -What do I have to do so that my content is pedagogically sound?
+    -What makes content pedagogically sound?
+- intent: SAT22
+  examples: |
+    -How to encourage active involvement?
+    -How can I encourage active involvement?
+    -How can I offer active involvement possibilities with the Smart Authoring Tool?
+- intent: SAT23
+  examples: |
+    -What kind of quizzes are useful for different learning outcomes?
+    -When should I use single-choice or multiple-choice quizzes?
+    -What is the difference between multiple-choice quizzes and open-end questions?
+    -What are the advantages of essay questions?
+- intent: SAT24
+  examples: |
+    -How to encourage self-reflection and self-assessment?
+    -How can I encourage self-reflection in students?
+    -What is self-assessment in the learning context?
 - intent: music_concept
   examples: |
     - What is music
@@ -528,129 +731,3 @@ nlu:
     - What do I need you for?
     - What should I do with a chatbot?
     - What are you good for?
-- intent: answer_what_is_the_description_of_the_course
-  examples: |
-    -description of the course
-    -please give me the description
-- intent: SAT1
-  examples: |
-    -How do I access the Smart Authoring Tool?
-    -Do I have to download the Smart Authoring Tool?
-    -Is there something to be installed for the Smart Authoring Tool?
-- intent: SAT2
-  examples: |
-    -How do I create a course with the Smart Authoring Tool?
-    -Can I create courses with the Smart Authoring Tool?
-    -What do I have to do to create a course with the Smart Authoring Tool?
-- intent: SAT3
-  examples: |
-    -Do I have to fill in all the course information?
-    -Why does the Smart Authoring Tool want me to fill in all the course information?
-- intent: SAT4
-  examples: |
-    -What are 'Course Materials'?
-    -What are 'Course Materials' and 'Course Resources'?
-    -What can I add in 'Course Materials' and 'Course Resources'?
-- intent: SAT5
-  examples: |
-    -How do I define a structure for my course?
-    -How can I structure the course?
-    -What levels can I choose from to strucutre my course?
-- intent: SAT6
-  examples: |
-    -Can I change the order of my section once I have already created them?
-    -How do I change the order of my section and unit?
-    -What options do I have for changing the order of my unit?
-- intent: SAT7
-  examples: |
-    -How do I add content (e.g.
-    - text
-    - media) to the course?
-    -How can I add videos to my course?
-    -What kind of content can I add to my course?
-- intent: SAT8
-  examples: |
-    -How can I add external sources to my course?
-    -Is it possible to add an external HTML source to my course?
-- intent: SAT9
-  examples: |
-    -Can I duplicate the content created with the Smart Authoring Tool?
-    -How can I copy my content?
-    -Can I reuse the content I ahve created?
-- intent: SAT10
-  examples: |
-    -How do I edit content?
-    -What do I need to do to edit my content?
-- intent: SAT11
-  examples: |
-    -How do I see if I have saved my changes?
-    -Do I know if changes have been saved or not?
-- intent: SAT12
-  examples: |
-    -How do I upload a video?
-    -What kind of videos can I upload?
-    -What do I have to do to upload a video?
-- intent: SAT13
-  examples: |
-    -How do I upload an image?
-    -How do I add an image to my unit?
-    -Where can I upload an image from?
-- intent: SAT14
-  examples: |
-    -How do I create quizzes?
-    -Can I add quizzes to my course?
-    -What do I have to do to create a quiz with the Smart Authoring Tool?
-- intent: SAT15_1
-  examples: |
-    -How do I make the course available to my students?
-    -How can students access the course I have creates with the Smart Authoring Tool?
-    -What do I need to do so students can access my course?
-- intent: SAT15
-  examples: |
-    -Can I copy/paste text from another document?
-    -Do I have to write everything new or can I use text I ahve already prepared?
-- intent: SAT16
-  examples: |
-    -What options do I have for editing text?
-    -What can I do with 'Dimension'?
-    -What does 'Typography' do?
-- intent: SAT17
-  examples: |
-    -What are the Smart Authoring Tool’s benefits for the teacher?
-    -Why should teachers use the Smart Authoring Tool?
-    -How can the Smart Authoring Tool support teachers?
-- intent: SAT18
-  examples: |
-    -What are the Smart Authoring Tool’s benefits for the student?
-    -Why should students use courses created with the Smart Authoring Tool?
-    -What are the advantages for students?
-- intent: SAT19
-  examples: |
-    -What are the Smart Authoring Tool’s limits?
-    -What can the Smart Authoring Tool not do?
-- intent: SAT20
-  examples: |
-    -How to create visually engaging content?
-    -How can I make my content visually engaging?
-    -What tips are there for creating visually engaging content?
-- intent: SAT21
-  examples: |
-    -How to create pedagogically-sound content?
-    -What do I have to do so that my content is pedagogically sound?
-    -What makes content pedagogically sound?
-- intent: SAT22
-  examples: |
-    -How to encourage active involvement?
-    -How can I encourage active involvement?
-    -How can I offer active involvement possibilities with the Smart Authoring Tool?
-- intent: SAT23
-  examples: |
-    -What kind of quizzes are useful for different learning outcomes?
-    -When should I use single-choice or multiple-choice quizzes?
-    -What is the difference between multiple-choice quizzes and open-end questions?
-    -What are the advantages of essay questions?
-- intent: SAT24
-  examples: |
-    -How to encourage self-reflection and self-assessment?
-    -How can I encourage self-reflection in students?
-    -What is self-assessment in the learning context?
