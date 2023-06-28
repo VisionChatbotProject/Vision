@@ -296,12 +296,16 @@ class ValidateQuizForm(FormValidationAction):
 
             xs = given_answer.split(";") # questionId;givenAnswer
 
+            if len(xs) < 2:
+                logger.info(f"validate_quiz_over - checkSlotAnswer: {givenAnswerText}")
+                return False
+        
             question_id = xs[0]
             givenAnswerText = xs[1]
 
             correctAnswerText = getCorrectAnswer(int(question_id))
 
-            # logger.info(f"validate_quiz_over -  checkSlotAnswer: {givenAnswerText} == {correctAnswerText} id: {int(question_id)}")
+            logger.info(f"validate_quiz_over -  checkSlotAnswer: givenAnswerText: {givenAnswerText} == correctAnswerText: {correctAnswerText} id: {int(question_id)}")
 
             if givenAnswerText == correctAnswerText:
                 return True
@@ -329,7 +333,6 @@ class ValidateQuizForm(FormValidationAction):
             # Quiz is over, when slot "quiz_over" is filleds
             return {"quiz_over": "finished", 'quiz_question_count': str(currentQuestionCount), "quiz_correct_ans": quiz_correct_ans}
             
-
         if slot_value == 'finished':
             return {"quiz_over": "finished"}
 
