@@ -24,3 +24,50 @@ stories:
   - action: utter_greet
   - intent: mood_great
   - action: utter_happy
+
+# Help categories
+#
+# quiz
+
+- story: set help category quiz
+  steps:
+  - intent: help_category
+  - slot_was_set:
+    - help_category: quizs
+  - action: action_quiz_help
+
+# courses
+
+- story: set help category courses
+  steps:
+  - intent: help_category
+  - slot_was_set:
+    - help_category: courses
+  - action: action_course_help
+
+# sections
+
+- story: set help category sections
+  steps:
+  - intent: help_category
+  - slot_was_set:
+    - help_category: sections
+  - action: action_chapter_help
+
+# task
+
+- story: set help category task
+  steps:
+  - intent: help_category
+  - slot_was_set:
+    - help_category: tasks
+  - action: action_task_help
+
+# exams
+
+- story: set help category task
+  steps:
+  - intent: help_category
+  - slot_was_set:
+    - help_category: exams
+  - action: action_exam_help

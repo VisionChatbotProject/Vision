@@ -31,10 +31,10 @@ rules:
   - intent: help
   - action: action_help
 
-- rule: actions_help
-  steps:
-  - intent: actions_help
-  - action: action_actions_help
+#- rule: actions_help
+#  steps:
+#  - intent: actions_help
+#  - action: action_actions_help
 
 - rule: set_slot_value
   steps:
@@ -53,10 +53,10 @@ rules:
   - intent: nlu_fallback
   - action: action_my_default_fallback
 
-- rule: quiz_help
-  steps:
-  - intent: quiz_help
-  - action: action_quiz_help
+#- rule: quiz_help
+#  steps:
+#  - intent: quiz_help
+#  - action: action_quiz_help
 
 - rule: Activate quiz form
   steps:
@@ -89,10 +89,10 @@ rules:
   - intent: quiz_show_score
   - action: action_quiz_show_score
 
-- rule: course_help
-  steps:
-  - intent: course_help
-  - action: action_course_help
+#- rule: course_help
+#  steps:
+#  - intent: course_help
+#  - action: action_course_help
 
 - rule: course_list
   steps:
@@ -124,10 +124,10 @@ rules:
   - intent: course_extressources
   - action: action_course_extressources
 
-- rule: chapter_help
-  steps:
-  - intent: chapter_help
-  - action: action_chapter_help
+#- rule: chapter_help
+#  steps:
+#  - intent: chapter_help
+#  - action: action_chapter_help
 
 - rule: chapter_description
   steps:
@@ -154,10 +154,10 @@ rules:
   - intent: chapter_learn
   - action: action_chapter_learn
 
-- rule: task_help
-  steps:
-  - intent: task_help
-  - action: action_task_help
+#- rule: task_help
+#  steps:
+#  - intent: task_help
+#  - action: action_task_help
 
 - rule: task_list
   steps:
@@ -174,10 +174,10 @@ rules:
   - intent: task_deadlines
   - action: action_task_deadlines
 
-- rule: exam_help
-  steps:
-  - intent: exam_help
-  - action: action_exam_help
+#- rule: exam_help
+#  steps:
+#  - intent: exam_help
+#  - action: action_exam_help
 
 - rule: exam_list
   steps:

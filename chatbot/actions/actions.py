@@ -95,7 +95,7 @@ class Help(Action):
                 
         options = [
             "What can I ask you about courses?",
-            "What can I ask you about chapters?",
+            "What can I ask you about sections?",
             "What can I ask you about tasks?",
             "What can I ask you about exams?",
             "What can I ask you about anything else?",

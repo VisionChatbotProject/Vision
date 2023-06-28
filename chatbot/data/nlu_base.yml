@@ -115,12 +115,12 @@ nlu:
     - Are you intelligent? 
     - What can I ask you?
 
-- intent: actions_help
-  examples: |
-    - What can I ask you about anything else?
-    - What can I ask you also?
-    - Is there anything else I can ask you?
-    - What can I ask you about yourself?
+#- intent: actions_help
+#  examples: |
+#    - What can I ask you about [anything else](help_category)?
+#    - What can I ask you also?
+#    - Is there [anything else](help_category) I can ask you?
+#    - What can I ask you about yourself?
 
 - intent: set_slot_value
   examples: |
@@ -131,11 +131,11 @@ nlu:
     - Set slot value user to [Sebastian](user)
     - Set slot value for user [Tom](user)
 
-- intent: quiz_help
-  examples: |
-    - What can I ask you about quizs?
-    - Quizs help?
-    - What options do you have for quizs?
+#- intent: quiz_help
+#  examples: |
+#    - What can I ask you about [quizs](help_category)?
+#    - [Quizs](help_category) help?
+#    - What options do you have for [quizs](help_category)?
 
 - intent: quiz_number
   examples: |
@@ -198,11 +198,12 @@ nlu:
     - i want to signin
     - sign-in
 
-- intent: course_help
-  examples: |
-    - What can I ask you about courses?
-    - Course help?
-    - What options do you have for course?
+#- intent: course_help
+#  examples: |
+#    - What can I ask you about [courses](help_category)?
+#    - [Course](help_category) help?
+#    - What options do you have for [course](help_category)?
+
 
 - intent: course_teacher
   examples: |
@@ -251,11 +252,11 @@ nlu:
     - which extern ressources I need for the course
     - extern ressources for the course
 
-- intent: chapter_help
-  examples: |
-    - What can I ask you about chapters?
-    - Chapter help?
-    - What options do you have for chapters?
+#- intent: chapter_help
+#  examples: |
+#    - What can I ask you about [chapters](help_category)?
+#    - [Chapter](help_category) help?
+#    - What options do you have for [chapters](help_category)?
 
 - intent: chapter_description
   examples: |
@@ -280,11 +281,11 @@ nlu:
    - Learn what?
    - Learn chapter?
 
-- intent: task_help
-  examples: |
-    - What can I ask you about tasks?
-    - Task help?
-    - What options do you have for tasks?
+#- intent: task_help
+#  examples: |
+#    - What can I ask you about [tasks](help_category)? 
+#    - [Task](help_category) help?
+#    - What options do you have for [tasks](help_category)?
 
 - intent: task_list
   examples: |
@@ -306,12 +307,11 @@ nlu:
     - Do we have some recommendations for task 
     - Ressources for task 
 
-- intent: exam_help
-  examples: |
-    - What can I ask you about exams?
-    - Exam help?
-    - Exam options?
-    - What options do you have for exams?
+#- intent: exam_help
+#  examples: |
+#    - What can I ask you about [exams](help_category)?
+#   - [Exam](help_category) help?
+#   - What options do you have for [exams](help_category)?
 
 - intent: exam_list
   examples: |
@@ -327,6 +327,17 @@ nlu:
     - Is there a next exam? 
     - When is the next test? 
 
+- intent: help_category
+  examples: |
+    - What can I ask you about [anything else](help_category)?
+    - What can I ask you about [quizs](help_category)?
+    - What can I ask you about [courses](help_category)?
+    - What can I ask you about [sections](help_category)?
+    - What can I ask you about [tasks](help_category)?
+    - What can I ask you about [exams](help_category)? 
+
+# ALL AFTER GOODBY WILL DELETED
+
 - intent: goodbye
   examples: |-
     - good afternoon
@@ -340,3 +351,4 @@ nlu:
     - see you around
     - bye bye
     - see you later
+
