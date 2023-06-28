@@ -92,17 +92,79 @@ class Help(Action):
             tracker: Tracker,
             domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-                
-        options = [
-            "What can I ask you about courses?",
-            "What can I ask you about sections?",
-            "What can I ask you about tasks?",
-            "What can I ask you about exams?",
-            "What can I ask you about anything else?",
-        ]
+        
+        def getIntents(courseId):
+            cursor.execute(f"select intent_list from intent where id_course = {courseId};")
+            rows = cursor.fetchall()
+            intents = []
+            for row in rows:
+                splitted = str(row).split(',-')
+                # splitted[0].replace("(?-", "")
+                result = re.sub(r"(\(.\-)", "", splitted[0])
+                intents.append(result)
+            
+            return intents
+        
+        category = tracker.get_slot('help_category')
+                    
+        if category == 'chapters':
+            options = [
+                "Show me the content of chapter",
+            ]
+            
+        elif category == 'courses':
+            options = [
+                "List of all courses?",
+                "Who is the teacher?",
+                "What are the course chapters?",
+                "What is the course content?",
+                "What are the course materials?",
+                "External ressources for the course?",
+            ]
+
+        elif category == 'exams':
+            options = [
+                "Are there any exams?",
+                "When is the next exam?",
+            ]
+            
+        elif category == 'tasks':
+            options = [
+                "Ressources for task?",
+                "Are there deadlines?",
+                "What ressources are there for task?"
+            ]
+            
+        elif category == 'quizs':
+            options = [
+                "take a quiz",
+                "show me my score",
+            ]
+
+        elif category == 'anything else':
+            options1 = [
+                "How are you?",
+                "Are you a bot?",
+                "Restart session",
+                "Goodbye"
+            ]
+            courseId = current_course_id(tracker)
+            options2 = getIntents(courseId)
+            options = options1 + options2
+        else:
+        
+            options = [
+                "What can I ask you about courses?",
+                "What can I ask you about chapters?",
+                "What can I ask you about tasks?",
+                "What can I ask you about exams?",
+                "What can I ask you about quizs?",
+                "What can I ask you about anything else?",
+            ]
+            
         dispatcher.utter_message(text=f"Here are some things you could ask me:\n", buttons=createHelpButtons(options))
         
-        return []
+        return [SlotSet('help_category', None)]
     
 class ActionsHelp(Action):
 

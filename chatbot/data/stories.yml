@@ -29,45 +29,45 @@ stories:
 #
 # quiz
 
-- story: set help category quiz
-  steps:
-  - intent: help_category
-  - slot_was_set:
-    - help_category: quizs
-  - action: action_quiz_help
+# - story: set help category quiz
+#   steps:
+#   - intent: help_category
+#   - slot_was_set:
+#     - help_category: quizs
+#   - action: action_quiz_help
 
-# courses
+# # courses
 
-- story: set help category courses
-  steps:
-  - intent: help_category
-  - slot_was_set:
-    - help_category: courses
-  - action: action_course_help
+# - story: set help category courses
+#   steps:
+#   - intent: help_category
+#   - slot_was_set:
+#     - help_category: courses
+#   - action: action_course_help
 
-# sections
+# # sections
 
-- story: set help category sections
-  steps:
-  - intent: help_category
-  - slot_was_set:
-    - help_category: sections
-  - action: action_chapter_help
+# - story: set help category sections
+#   steps:
+#   - intent: help_category
+#   - slot_was_set:
+#     - help_category: sections
+#   - action: action_chapter_help
 
-# task
+# # task
 
-- story: set help category task
-  steps:
-  - intent: help_category
-  - slot_was_set:
-    - help_category: tasks
-  - action: action_task_help
+# - story: set help category task
+#   steps:
+#   - intent: help_category
+#   - slot_was_set:
+#     - help_category: tasks
+#   - action: action_task_help
 
-# exams
+# # exams
 
-- story: set help category task
-  steps:
-  - intent: help_category
-  - slot_was_set:
-    - help_category: exams
-  - action: action_exam_help
+# - story: set help category task
+#   steps:
+#   - intent: help_category
+#   - slot_was_set:
+#     - help_category: exams
+#   - action: action_exam_help

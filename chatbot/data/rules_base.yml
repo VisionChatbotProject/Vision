@@ -31,6 +31,11 @@ rules:
   - intent: help
   - action: action_help
 
+- rule: help_category
+  steps:
+  - intent: help_category
+  - action: action_help
+
 #- rule: actions_help
 #  steps:
 #  - intent: actions_help

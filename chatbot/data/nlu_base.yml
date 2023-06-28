@@ -332,7 +332,7 @@ nlu:
     - What can I ask you about [anything else](help_category)?
     - What can I ask you about [quizs](help_category)?
     - What can I ask you about [courses](help_category)?
-    - What can I ask you about [sections](help_category)?
+    - What can I ask you about [chapters](help_category)?
     - What can I ask you about [tasks](help_category)?
     - What can I ask you about [exams](help_category)? 
 

@@ -16,10 +16,10 @@ intents:
 - bot_challenge
 - thanks
 - help
+- help_category
 - nlu_fallback
 - actions_help
 - user_login
-- quiz_help
 - quiz_number
 - quiz_over
 - quiz_answer
@@ -131,6 +131,7 @@ entities:
 - user_email
 - user_pwd
 - user_confirmation
+- help_category
 
 slots:
   answer:
@@ -181,6 +182,9 @@ slots:
     type: any
   user_confirmation:
     type: any
+  help_category:
+    type: text
+    auto_fill: true
 
 responses:
   utter_greet:

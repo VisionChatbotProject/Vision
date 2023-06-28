@@ -20,7 +20,7 @@ intents:
 - nlu_fallback
 - actions_help
 - user_login
-- quiz_help
+# - quiz_help
 - quiz_number
 - quiz_over
 - quiz_answer
