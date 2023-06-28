@@ -12,7 +12,7 @@ if [ -f "/config/contessa.tar.gz" ]; then
 else
    cp '/config/flask.db' '/config/bot.db'
    python3 webtorasa/main.py
-   rasa train --fixed-model-name /config/contessa # generate model in models/ folder
+   rasa train --force --fixed-model-name /config/contessa # generate model in models/ folder
    cp '/config/contessa.tar.gz' '/app/models/contessa.tar.gz'
 fi
 
