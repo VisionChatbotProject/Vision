@@ -1,0 +1,7 @@
+{
+  "name": "scormtest",
+  "version": "0.0.0",
+  "dependencies": {
+    "@tkelly42/scorm-server": "0.0.9"
+  }
+}

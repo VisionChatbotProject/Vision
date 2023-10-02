@@ -73,6 +73,20 @@ services:
     networks:
       - my-custom-network
 
+  scormviewer:
+    build:
+      context: ./
+      dockerfile: docker/chatbot_scormviewer_dockerfile
+    container_name: scormviewer
+    volumes:
+      - ./scormviewer/app:/app
+      - ./docker/scormviewer:/develop
+      - ./scormviewer/share:/share
+    ports:
+      - "5001:5001"
+    networks:
+      - my-custom-network
+
 networks:
   my-custom-network:
     driver: bridge
