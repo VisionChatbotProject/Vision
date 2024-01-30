@@ -1,0 +1,97 @@
+# syntax=docker/dockerfile:1
+
+# Start from using a plain python image:
+FROM python:3.10.0-alpine as builder
+ENV PYTHONDONTWRITEBYTECODE 1
+WORKDIR /
+
+# Copy everything in this directory into the image
+COPY docker/install.py install.py
+COPY requirements.txt requirements.txt
+
+
+# # consume the secret and modify requirements:
+RUN --mount=type=secret,id=github_token python install.py
+
+# Run add all missing dependencies
+RUN apk add --no-cache git \
+                      libffi-dev \
+                      gcc \
+                      musl-dev \
+                      zlib-dev \
+                      jpeg-dev
+
+RUN pip install --user --no-warn-script-location -r requirements.txt \
+    && rm requirements.txt \
+    && find /usr/local \
+        \( -type d -a -name test -o -name tests \) \
+        -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+        -exec rm -rf '{}' +
+
+FROM python:3.10.0-alpine
+WORKDIR /backend/
+
+RUN apk add gettext
+
+RUN apk add --no-cache python3 py3-pip && mkdir database && mkdir config && mkdir files
+
+COPY authoring_core authoring_core/
+COPY authoring_user authoring_user/
+COPY authoring_utils authoring_utils/
+COPY authoring_course authoring_course/
+COPY authoring_questionnaire authoring_questionnaire/
+COPY authoring_intent authoring_intent/
+COPY authoring_exam authoring_exam/
+COPY authoring_task authoring_task/
+COPY default_files default_files/
+COPY files files/
+COPY fixtures fixtures/
+COPY SmartAuthoring SmartAuthoring/
+COPY manage.py .
+
+COPY .github/config/sqlite_config.json config/config.json
+
+COPY --from=builder /root/.local /root/.local/
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+ENV PATH=/root/.local/bin:$PATH
+
+ENV SECRET_KEY=""
+ENV DEBUG="False"
+ENV USE_X_FORWARDED_HOST="True"
+
+ENV STATIC_DIRECTORY="files/static"
+ENV TEMP_DIRECTORY="files/temp"
+ENV ASSET_STORE_LOCATION="files/data"
+ENV MAIL_PATH="files/mails"
+ENV SCORM_RESOURCES="default_files/scorm_resources"
+ENV ASSET_STORE_DEFAULT_LOCATION="default_files/data"
+
+ENV DATABASE_BACKEND="SQLITE"
+ENV DATABASE_NAME="database/sqlite3.db"
+
+ENV MAIL_BACKEND="FILE"
+ENV MAIL_PATH="files/mail"
+ENV DEFAULT_FROM_EMAIL="admin@smartauthoring.com"
+
+ENV EMAIL_HOST=""
+ENV EMAIL_PORT=25
+ENV EMAIL_HOST_USER=""
+ENV EMAIL_HOST_PASSWORD=""
+ENV EMAIL_USE_TLS="True"
+
+ENV URL_BACKEND="api.visionapp.smart-study.net"
+ENV URL_FRONTEND="visionapp.smart-study.net"
+ENV URL_CHATBOT_AGENT="https://botagent.visionapp.smart-study.net"
+
+ENV ACTIVE_BOTAPI_URL="https://botapi.visionapp.smart-study.net/api"
+
+COPY docker/startup.sh /startup.sh
+COPY docker/replace_vars.sh /replace_vars.sh
+
+RUN chmod +x /replace_vars.sh && chmod +x /startup.sh
+
+CMD "/startup.sh"

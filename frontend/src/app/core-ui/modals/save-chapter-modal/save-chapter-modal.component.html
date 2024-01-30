@@ -1,0 +1,48 @@
+<form [formGroup]="saveChapterForm">
+  
+  <div class="modal-header">
+    <h4 *ngIf="chapter" class="modal-title" i18n="Edit Chapter|Modal header@@save-chapter-modal.header.editTitle">Edit Section</h4>
+    <h4 *ngIf="!chapter" class="modal-title" i18n="Create New Chapter|Modal header@@save-chapter-modal.header.createTitle">Create Section</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <!-- chapter title field -->
+    <div class="form-group mb-3">
+      <label for="title" class="form-label" i18n="Chapter Title Label|Modal body@@save-chapter-modal.body.label.chapterTitle">Section Title</label>
+      <input id="title" class="form-control" type="text" formControlName="title" i18n="Chapter Title Input|Modal Body@@save-chapter-modal.body.input.chapterTitle" required>
+      <div class="invalid-feedback" *ngIf="title.invalid">
+        <p *ngIf="title.getError('required')" i18n="Field Required|Chapter title invalid input@@save-chapter-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- short description field -->
+    <div class="form-group mb-3">
+      <label for="shortDescription" class="form-label" i18n="Short Description Label|Modal body@@save-chapter-modal.body.label.shortDescription">Short Description</label>
+      <input id="shortDescription" class="form-control" type="text" formControlName="shortDescription" i18n="Short description input|modal body@@save-chapter-modal.body.input.shortDescription" required>
+      <div class="invalid-feedback" *ngIf="shortDescription.invalid">
+        <p *ngIf="shortDescription.getError('required')" i18n="Field required|Short description invalid@@save-chapter-modal.body.errors.inputRequired">Field is required!</p>
+        <p *ngIf="shortDescription.getError('maxlength')" i18n="Field too long|Short description too long@@save-chapter-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- long description field -->
+    <div class="form-group mb-3">
+      <label for="longDescription" class="form-label" i18n="Long description label|Modal body@@save-chapter-modal.body.label.longDescription">Long Description</label>
+      <textarea  id="longDescription" class="form-control" type="text" formControlName="longDescription" i18n="Long description input|modal body@@save-chapter-modal.body.input.longDescription" required>
+      </textarea>
+      <div class="invalid-feedback" *ngIf="shortDescription.invalid">
+        <p *ngIf="longDescription.getError('required')" i18n="Field required|Long description invalid@@save-chapter-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveChapter()" [disabled]="saveChapterForm.invalid"
+      class="btn btn-primary" type="submit">
+      <span i18n="Save Chapter|Save Chapter Button@@save-chapter-modal.footer.button.saveChapter">Save Section</span>
+    </button>
+  </div>
+
+</form>

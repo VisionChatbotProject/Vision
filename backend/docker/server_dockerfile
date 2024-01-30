@@ -1,0 +1,10 @@
+# syntax=docker/dockerfile:1
+FROM nginx:1.21.3-alpine
+
+RUN mkdir files
+
+COPY default_files/ /default_files
+COPY docker/nginx.conf /etc/nginx/templates/user.conf.template
+
+ENV ASSET_STORE_LOCATION="files/data"
+ENV ASSET_DEFAULT_STORE_LOCATION="default_files/data"

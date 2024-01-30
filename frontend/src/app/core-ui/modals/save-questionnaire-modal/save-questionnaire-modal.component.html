@@ -1,0 +1,36 @@
+<form [formGroup]="saveQuestionnaireForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="questionnaire" class="modal-title" i18n="Edit Questionnaire|Modal header@@save-questionnaire-modal.header.editTitle">Edit Questionnaire</h4>
+    <h4 *ngIf="!questionnaire" class="modal-title" i18n="Create New Questionnaire|Modal header@@save-questionnaire-modal.header.createTitle">Create Questionnaire</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <!-- questionnaire title field -->
+    <div class="form-group mb-3">
+      <label for="title" class="form-label" i18n="Questionnaire Title Label|Modal body@@save-questionnaire-modal.body.label.questionnaireTitle">Questionnaire Title</label>
+      <input id="title" class="form-control" type="text" formControlName="title" i18n="Questionnaire Title Input|Modal Body@@save-questionnaire-modal.body.input.questionnaireTitle" required>
+      <div class="invalid-feedback" *ngIf="title.invalid">
+        <p *ngIf="title.getError('required')" i18n="Field Required|Questionnaire title invalid input@@save-questionnaire-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- chapter field -->
+    <div class="form-group">
+      <label for="role" class="form-label" i18n="Chapter label|Modal body@@save-questionnaire-modal.body.label.chapter">Section</label>
+      <select id="role" class="form-select" formControlName="chapter" i18n="Chapter chooser|Modal Body@@create-questionnaire-modal.body.select.chapter">
+        <option *ngFor="let c of chapters" [ngValue]="c.id">{{ c.title }}</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveQuestionnaire()" [disabled]="saveQuestionnaireForm.invalid"
+      class="btn btn-primary" type="submit">
+      <span i18n="Save Questionnaire|Save Questionnaire Button@@save-questionnaire-modal.footer.button.saveQuestionnaire">Save Questionnaire</span>
+    </button>
+  </div>
+
+</form>

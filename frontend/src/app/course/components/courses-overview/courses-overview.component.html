@@ -1,0 +1,25 @@
+<div class="container">
+
+  <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+    <ngb-panel id="recPanel">
+      <ng-template ngbPanelHeader let-opened="opened">
+        <div class="d-flex align-items-center justify-content-between card-header">
+            <h5 class="m-0" i18n="Courses|Courses Card Title@@coureses.cards.courses">Courses</h5>
+            <button id="addCourseButton" (click)="addCourse()" class="btn btn-link p-0 ms-auto me-2">
+              <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+            </button>
+            <button ngbPanelToggle class="btn btn-link p-0">
+              <sms-panel-toggle [opened]="opened"></sms-panel-toggle>
+            </button>
+        </div>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        
+        <sac-course-table></sac-course-table>
+
+      </ng-template>
+    </ngb-panel>
+    
+  </ngb-accordion>
+
+</div>

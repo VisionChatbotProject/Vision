@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="title; else defaultTitle">{{ title }}</h4>
+  <ng-template #defaultTitle>
+    <h4 class="modal-title" i18n="Are you sure?|Confirm dialog default header@@confirmModal.defaultTitle">Are you sure?</h4>
+  </ng-template>
+</div>
+<div class="modal-body">
+    <p id="customText" *ngIf="text; else defaultText">{{ text }}</p>
+    <ng-template #defaultText>
+      <p id="defaultText" i18n="Confirmation description|Confirm dialog default description@@confirmModal.defaultText">This is a potentially risky operation. Are you sure you want to continue?</p>
+    </ng-template>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-danger" (click)="activeModal.dismiss()" i18n="No|No@@confirmModal.No">No</button>  
+  <button class="btn btn-success" (click)="activeModal.close()" i18n="Yes|Yes@@confirmModal.Yes">Yes</button>
+</div>

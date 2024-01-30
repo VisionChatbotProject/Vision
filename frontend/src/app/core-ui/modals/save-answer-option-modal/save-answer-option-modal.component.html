@@ -1,0 +1,35 @@
+<form [formGroup]="saveAnswerOptionForm">
+  
+  <div class="modal-header">
+    <h4 *ngIf="answerOption" class="modal-title" i18n="Edit AnswerOption|Modal header@@save-answerOption-modal.header.editTitle">Edit Answer Option</h4>
+    <h4 *ngIf="!answerOption" class="modal-title" i18n="Create New AnswerOption|Modal header@@save-answerOption-modal.header.createTitle">Create Answer Option</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <!-- description field -->
+    <div class="form-group mb-3">
+      <label for="description" class="form-label" i18n="Text Label|Modal body@@save-answerOption-modal.body.label.text">Text</label>
+      <input id="description" class="form-control" type="text" formControlName="text">
+      <div class="invalid-feedback" *ngIf="text.invalid">
+        <p *ngIf="text.getError('required')" i18n="Field required|Description invalid@@save-answerOption-modal.body.errors.inputRequired">Field is required!</p>
+        <p *ngIf="text.getError('maxlength')" i18n="Field too long|Description too long@@save-answerOption-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <div class="form-check mb-3">
+      <input id="correctAnswer" class="form-check-input" type="checkbox" formControlName="correctAnswer">
+      <label for="correctAnswer" class="form-check-label" i18n="Correct answer Label|Modal body@@save-answerOption-modal.body.label.correctAnswer">Correct Answer</label>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveAnswerOption()" id="saveAnswerOption"
+      [disabled]="saveAnswerOptionForm.invalid"
+      class="btn btn-primary" type="submit">
+      <span i18n="Save AnswerOption|Save AnswerOption Button@@save-answerOption-modal.footer.button.saveAnswerOption">Save Answer Option</span>
+    </button>
+  </div>
+
+</form>

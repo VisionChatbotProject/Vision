@@ -1,0 +1,41 @@
+# syntax=docker/dockerfile:1
+
+# Frontend:
+FROM node:16-alpine3.13 as frontend_builder
+#RUN apk add --no-cache --upgrade bash
+WORKDIR /frontend
+
+COPY angular.json .
+COPY yarn.lock .
+COPY package.json .
+COPY tsconfig.app.json .
+COPY tsconfig.json .
+COPY grapesjs.d.ts .
+COPY docker/setup_node.sh .
+
+# Install NPM Cli login
+RUN npm install -g npm-cli-adduser \
+    && chmod +x setup_node.sh 
+RUN --mount=type=secret,id=github_token ./setup_node.sh "$(cat /run/secrets/github_token)"
+RUN yarn install
+
+COPY src/ src/
+RUN yarn run build
+
+FROM nginx:1.21.3-alpine
+COPY docker/nginx.conf.template /etc/nginx/templates/user.conf.template
+
+COPY --from=frontend_builder /frontend/dist/SmartStudyAuthoring /frontend/
+COPY docker/config.js.template /config/config.js.template
+COPY docker/startup.sh /startup.sh
+COPY docker/read_env.sh /read_env.sh
+
+RUN chmod +x /startup.sh \
+    && chmod +x /read_env.sh
+
+# DEFINE ENVIRONMENT DEFAULTS
+ENV PRODUCTION=true
+ENV API_URL=www.smartauthoring.com
+ENV NGINX_PORT=8080
+
+CMD "/startup.sh"

@@ -1,0 +1,19 @@
+<ngb-accordion #a="ngbAccordion" activeIds="orgPanel">
+
+  <ngb-panel id="orgPanel">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="d-flex align-items-center justify-content-between card-header">
+        <h5 class="m-0" i18n="Organization|Dashboard Card Title@@dashboard.org.organizationTitle">{{ activeOrganization.name }}</h5>
+        <button ngbPanelToggle class="btn btn-link p-0">
+          <sms-panel-toggle [opened]="opened"></sms-panel-toggle>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template ngbPanelContent>
+      <ng-container>
+        <dab-organization-preview></dab-organization-preview>
+      </ng-container>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

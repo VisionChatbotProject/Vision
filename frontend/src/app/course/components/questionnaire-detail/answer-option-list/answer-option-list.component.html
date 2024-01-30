@@ -1,0 +1,76 @@
+<div>
+  <ul class="list-group">
+    <li
+      class="list-group-item"
+      *ngFor="let answerOption of getAnswerOptions(question)"
+    >
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          {{ answerOption.text }}
+        </div>
+
+        <div>
+          <fa-icon *ngIf="answerOption.correctAnswer"
+            [icon]="['fas', 'check']" class="text-success me-4 my-auto">
+          </fa-icon>
+          <button
+            class="btn btn-link btn-sm"
+            (click)="editAnswerOptionProxy(answerOption)"
+            id="editAnswerOption"
+            i18n-ngbTooltip="
+              Answer option edit tooltip|Tooltip
+              text@@answerOptionList.tooltip.editAnswerOption"
+            ngbTooltip="Edit answer option (title, description...)"
+          >
+            <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
+          </button>
+
+          <button
+            class="btn btn-link btn-sm"
+            id="btn-deleteAnswerOption"
+            (confirm)="deleteAnswerOptionProxy(answerOption)"
+            i18n-ngbTooltip="
+              Answer option delete tooltip|Tooltip
+              text@@answerOptionList.tooltip.deleteAnswerOption"
+            ngbTooltip="Delete answer option"
+            i18n-confirmDescription="
+              Answer option delete tooltip|Tooltip
+              text@@answerOptionList.tooltip.deleteAnswerOption"
+            i18n-confirmTitle="
+              Answer option delete confirm title|Confirm modal
+              text@@answerOptionList.modal.deleteTitle"
+            confirmDescription="Are you sure you want to delete this answer option?"
+            confirmTitle="Delete Answer Option?"
+          >
+            <fa-icon
+              [icon]="['far', 'trash-alt']"
+              class="me-2 text-danger"
+              size="lg"
+            ></fa-icon>
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <br />
+  <div class="container">
+    <button
+      class="btn btn-secondary"
+      id="btn-addAnswerOption"
+      (click)="addAnswerOptionProxy(question!.id)"
+      i18n-ngbTooltip="
+        Answer option add tooltip|Tooltip
+        text@@answerOptionList.tooltip.addAnswerOption"
+      ngbTooltip="Add answer option"
+    >
+      <fa-icon [icon]="['fas', 'plus']" class="me-2" size="lg"></fa-icon>
+      <span
+        i18n="
+          Add Answer|Add Answer Button
+          Title@@answerOptionList.buttons.questionnaire"
+        >Add Answer</span
+      >
+    </button>
+  </div>
+</div>

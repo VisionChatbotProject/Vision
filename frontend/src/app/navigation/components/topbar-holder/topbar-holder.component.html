@@ -1,0 +1,35 @@
+<div class="topbar">
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <button class="btn d-md-none" id="btn-sidenav-collapse" type="button" (click)="toggleSidebar()">
+      &#9776;
+    </button>
+
+    <div class="ms-2">
+      <img src="/assets/img/vision-logo.png" height="50px" class="d-inline-block align-text-top" hspace="15">
+      <img src="/assets/img/erasmus+.png" height="50px" class="d-inline-block align-text-top" hspace="15">
+    </div>
+
+    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
+    <button class="btn d-md-none" id="btn-topnav-collapse" type="button" (click)="isTopbarCollapsed = !isTopbarCollapsed">
+      &#9776;
+    </button>
+
+    <!-- Step 2: Add the ngbCollapse directive to the element below. -->
+    <div [ngbCollapse]="isTopbarCollapsed" class="collapse navbar-collapse" id="collapsable-div" *ngIf="context$ | async;">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item active">
+          <!-- <a class="nav-link" [routerLink]="'.'" (click)="isTopBarCollapsed = true">Features</a> -->
+          <div ngbDropdown class="d-inline-block me-2">
+            <button class="btn btn-outline-primary" id="accountDropdown" ngbDropdownToggle>{{ name }}</button>
+            <div ngbDropdownMenu aria-labelledby="accountDropdown">
+              <!-- <button ngbDropdownItem 
+                i18n="Account Settings|Account Settings in the topbar@@topbar.holder.accountSettings">Account Settings</button> -->
+              <button ngbDropdownItem (click)="logout()" id="btn-logout"
+                i18n="Logout|User logout button in the topbar@@topbar.holder.logout">Logout</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,1 @@
+envsubst < /config/config.js.template > /frontend/config/config.js

@@ -1,0 +1,51 @@
+<p-table [value]="tableData" responsiveLayout="scroll" *ngIf="tableData.length > 0; else noSlides;" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="Title|Slide title@@chapter-detail.slideTable.title">Title</span></th>
+      <th><span i18n="Last modified|Last modified@@chapter-detail.slideTable.lastModified">Last Modified</span></th>
+      <th>
+        <!-- Column for button(s) -->
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-slide>
+    <tr>
+      <td>
+        <button class="btn btn-link" (click)="openSlide.emit(slide.id)" id="btn-openSlide-{{ slide.id }}" style="padding-left:0px">
+          {{ slide.title }}
+        </button>
+      </td>
+      <td>
+        {{ slide.lastModified | date:'short' }}
+      </td>
+
+      <td style="text-align: right">
+        <button class="btn btn-link" (click)="editSlide.emit(slide.id)" id="btn-editSlide-{{ slide.id }}">
+          <fa-icon [icon]="['far', 'edit']" class="me-2"></fa-icon>
+        </button>
+
+        <button class="btn btn-link" (confirm)="deleteSlide.emit(slide.id)" id="btn-deleteSlide-{{ slide.id }}"
+          i18n-confirmDescription="Slide delete confirm description|Confirm modal text@@slideTable.modal.deleteDescription"
+          i18n-confirmTitle="Slide delete confirm title|Confirm modal text@@slideTable.modal.deleteTitle"
+          confirmDescription="Are you sure you want to delete this unit?"
+          confirmTitle="Delete Unit?">
+          <fa-icon [icon]="['far', 'trash-alt']" class="me-2"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noSlides>
+  <div class="text-center">
+    <h3 i18n="No slides yet|Placeholder text if no slides have been added yet@@chapter-detail.slideTable.noSlidesYet"
+      id="noSlidesDescription">There are no units yet.</h3>
+    
+    <button id="createSlideButton" class="btn btn-success mt-4" (click)="addSlide.emit()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+      <span i18n="Create a slide|Button text for adding a slide@@chapter-detail.slideTable.createSlideBtn">Create a Unit</span>
+    </button>
+
+  </div>
+</ng-template>

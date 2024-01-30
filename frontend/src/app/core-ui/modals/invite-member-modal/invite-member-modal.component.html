@@ -1,0 +1,56 @@
+<form [formGroup]="createInviteMemberModalForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title" i18n="Create New Member Invite|Modal Header@@create-member-invite-modal.header.title">Invite Member</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <!-- firstName field -->
+        <div class="form-group mb-3">
+          <label for="firstName" class="form-label" i18n="First Name Label|Modal body@@create-member-invite-modal.body.label.firstName">First Name</label>
+          <input id="firstName" class="form-control" type="text" formControlName="firstName" i18n="First Name Input|Modal Body@@create-member-invite-modal.body.input.firstName" required>
+          <div class="invalid-feedback" *ngIf="firstName.invalid">
+            <p *ngIf="firstName.getError('required')" i18n="Field Required|First name invalid input@@create-member-invite-modal.body.errors.inputRequired">Field is required!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <!-- lastName field -->
+        <div class="form-group mb-3">
+          <label for="lastName" class="form-label" i18n="Last Name Label|Modal body@@create-member-invite-modal.body.label.lastName">Last Name</label>
+          <input id="lastName" class="form-control" type="text" formControlName="lastName" i18n="Last Name Input|Modal Body@@create-member-invite-modal.body.input.lastName" required>
+          <div class="invalid-feedback" *ngIf="lastName.invalid">
+            <p *ngIf="lastName.getError('required')" i18n="Field Required|Last name invalid input@@create-member-invite-modal.body.errors.inputRequired">Field is required!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- email field -->
+    <div class="form-group mb-3">
+      <label for="email" class="form-label" i18n="Email label|Modal body@@create-member-invite-modal.body.label.email">Email</label>
+      <input id="email" class="form-control" type="text" formControlName="email" i18n="Email Input|Modal Body@@create-member-invite-modal.body.input.email" required>
+      <div class="invalid-feedback" *ngIf="email.invalid">
+        <p *ngIf="email.getError('required')">Field is required!</p>
+        <p *ngIf="email.getError('email')">Invalid Email!</p>
+      </div>
+    </div>
+
+    <!-- organization role field -->
+    <div class="form-group">
+      <label for="role" class="form-label" i18n="Role label|Modal body@@create-member-invite-modal.body.label.role">Role</label>
+      <select id="role" class="form-select" formControlName="role" i18n="Organization Default Roles|Modal Body@@create-member-invite-modal.body.select.organizationDefaultRole" required>
+        <option *ngFor="let role of roles" [ngValue]="role.id">{{ role.name }}</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" id="inviteMemberButton" (click)="createInvite()" type="submit" [disabled]="createInviteMemberModalForm.invalid" i18n="Create New Member Invite|Create New Member Invite Button@@create-member-invite-modal.footer.button.createNewMemberInvite">Send Invitation</button>
+  </div>
+
+</form>

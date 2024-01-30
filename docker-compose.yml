@@ -87,6 +87,42 @@ services:
     networks:
       - my-custom-network
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: docker/django_dockerfile
+    container_name: backend
+    environment:
+      - URL_BACKEND=https://${BACKEND_URL}
+      - URL_FRONTEND=https://${FRONTEND_URL}
+      - URL_CHATBOT_AGENT=${URL_CHATBOT_AGENT}
+      - ACTIVE_BOTAPI_URL=${ACTIVE_BOTAPI_URL}
+      - USE_X_FORWARDED_HOST=${BACKEND_USE_X_FORWARD-True}
+      - DEBUG=${BACKEND_DEBUG-False}
+      - SECRET_KEY=AVERYUNSAFEKEY
+    volumes:
+      - ./config:/backend/config
+      - ./files:/backend/files
+      - ./db:/backend/database
+      - ../share:/backend/share
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - my-custom-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: docker/frontend_dockerfile
+    container_name: authoring-frontend
+    environment:
+      - PRODUCTION=${FRONTEND_PRODUCTION-true}
+      - API_URL=https://${BACKEND_URL:?FQDN (e.g. api.visionapp.smart-study.net)}/v1
+      - NGINX_PORT=${FRONTEND_NGINX_PORT-9000}
+    ports:
+      - "${FRONTEND_NGINX_PORT-9000}:${FRONTEND_NGINX_PORT-9000}"
+    networks:
+      - my-custom-network
+
 networks:
   my-custom-network:
     driver: bridge

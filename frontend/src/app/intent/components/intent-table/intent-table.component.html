@@ -1,0 +1,27 @@
+<p-table [value]="intents">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="Name|Intent name@@intent.intentTable.name">Name</span></th>
+      <th><span i18n="Intent count|Intent count@@intent.intentTable.intentCount">Intent count</span></th>
+      <th><!-- deliberatly empty --></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-intent>
+    <tr>
+      <td>
+        {{ intent.name }}
+      </td>
+      <td>
+        {{ intent.intents.length }}
+      </td>
+      <td class="text-end">
+        <button class="btn btn-link" (click)="onEditIntent(intent)" id="edit-{{ intent.id }}">
+          <fa-icon [icon]="['fas', 'edit']" class="me-2"></fa-icon>
+        </button>
+        <button class="ms-1 btn btn-link" (click)="onDeleteIntent(intent)" id="delete-{{ intent.id }}">
+          <fa-icon [icon]="['fas', 'trash']" class="me-2"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

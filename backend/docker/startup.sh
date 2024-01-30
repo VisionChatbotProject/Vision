@@ -1,0 +1,1 @@
+/replace_vars.sh && daphne -b 0.0.0.0 -p 8001 -v 3 --access-log - SmartAuthoring.asgi:application

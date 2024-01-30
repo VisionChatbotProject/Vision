@@ -1,0 +1,96 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <button type="button" id="chapter-details-button" (click)="openChapterDetails()" class="btn btn-light">
+        <fa-icon [icon]="['fas', 'angle-left']" class="me-2"></fa-icon>
+        <span i18n="Chapter Details|Chapter Details Button Title@@chapter-processing.buttons.chapter-details"></span>Section Details
+      </button>
+    </div>
+  </div> 
+
+  <ng-container *ngIf="editorState$ | async;"></ng-container>
+  <div *ngIf="slidesLoaded$ | async">
+
+    <div class="row mt-4">
+      <div class="col">
+        <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+          <ngb-panel id="recPanel">
+            <ng-template ngbPanelHeader let-opened="opened">
+              <div class="d-flex align-items-center justify-content-between card-header">
+                  <h5 class="m-0" i18n="Slide editor|Slide editor card header@@chapterProcessing.cards.header">Editor</h5>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+
+              <div class="d-flex flex-row justify-content-between">
+                <div class="d-flex flex-row justify-content-start">
+                  <p class="my-auto me-2" i18n="Selected Slide|Dropdown description text@@chapterProcessing.dropdown.description">Selected Unit:</p>
+                  
+                  <!-- slide selector -->
+                  <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-primary" id="slideSelectorToggle" ngbDropdownToggle>
+                      <span *ngIf="selectedSlide">{{ selectedSlide.title }}</span>
+                      <span *ngIf="selectedSlide && editorState == EEditorState.eDirty">*</span>
+                      <span *ngIf="!selectedSlide">Select Unit</span>
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <ng-container *ngFor="let slide of slides">
+                        <!-- attach a confirm directive if the slide is dirty -->
+                        <button *ngIf="editorState == EEditorState.eDirty"
+                          (confirm)="selectedSlide = slide"
+                          i18n-confirmDescription="Slide change confirm description|Confirm modal text@@chapterProcessing.dropdown.confirmDescription"
+                          i18n-confirmTitle="Slide change confirm title|Confirm modal text@@chapterProcessing.dropdown.confirmTitle"
+                          confirmDescription="Discard changes and switch units?"
+                          confirmTitle="You have unsaved changes in your unit!"
+                          ngbDropdownItem>
+                          <span>{{ slide.title }}</span>
+                        </button>
+                        
+                        <!-- allow confirm-less switching if slide is clean -->
+                        <button *ngIf="editorState == EEditorState.eClean"
+                          (click)="selectedSlide = slide"
+                          ngbDropdownItem>
+                          <span>{{ slide.title }}</span>
+                        </button>
+            
+                      </ng-container>
+            
+                      <div class="dropdown-divider"></div>
+                      <button ngbDropdownItem (click)="addSlide()" id="btn-addSlide">
+                        <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+                        <span i18n="Add Slide|Dropdown action@@chapterProcessing.dropdown.addSlide">Add Unit</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex flex-row justify-content-start">
+                  <button class="btn btn-success" (click)="saveSlide()" [disabled]="editorState == EEditorState.eClean" id="btn-saveSlide">
+                    <fa-icon [icon]="['far', 'save']" class="me-2"></fa-icon>
+                    <span i18n="Save Slide|Save Button@@chapterProcessing.dropdown.save">Save</span>
+                  </button>
+                  <button class="btn btn-danger ms-2" (confirm)="deleteSlide()" id="btn-deleteSlide"
+                    i18n-confirmDescription="Slide delete confirm description|Confirm modal text@@chapterProcessing.dropdown.deleteDescription"
+                    i18n-confirmTitle="Slide delete confirm title|Confirm modal text@@chapterProcessing.dropdown.deleteTitle"
+                    confirmDescription="Are you sure you want to delete this unit?"
+                    confirmTitle="Delete Unit?">
+                    <fa-icon [icon]="['far', 'trash-alt']" class="me-2"></fa-icon>
+                    <span i18n="Delete Slide|Delete Button@@chapterProcessing.dropdown.delete">Delete</span>
+                  </button>
+                </div>
+              </div>
+              
+            </ng-template>
+          </ngb-panel>
+          
+        </ngb-accordion>
+      </div>
+    </div> 
+
+    <!-- spacer item -->
+    <div class="mb-2"></div>
+    
+
+    <smg-grapes-js-holder></smg-grapes-js-holder>
+  </div>
+</div>

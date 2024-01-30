@@ -1,0 +1,13 @@
+<ng-container *ngIf="activeOrganization$ | async;"></ng-container>
+<sma-topbar></sma-topbar>
+<div class="">
+    <sma-sidebar></sma-sidebar>
+    <div class="content">
+      <div class="mt-4" *ngIf="organizationLoaded$ | async;">
+        <router-outlet></router-outlet>      
+      </div>
+    </div>
+</div>
+
+<!-- non view components -->
+<ssa-organization-check></ssa-organization-check>

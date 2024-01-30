@@ -1,0 +1,1 @@
+/read_env.sh && ./docker-entrypoint.sh nginx -g "daemon off;"

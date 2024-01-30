@@ -1,0 +1,48 @@
+<p-table [value]="tableData"
+         *ngIf="tableData.length > 0; else noMemberships;"
+         responsiveLayout="scroll" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="FirstName|First Name@@org.memberTable.firstName">First Name</span></th>
+      <th><span i18n="LastName|Last Name@@org.memberTable.lastName">Last Name</span></th>
+      <th><span i18n="Email|Email Address@@org.memberTable.email">Email Address</span></th>
+      <th><span i18n="Role|Membership Role@org.memberTable.role">Role</span></th>
+      <!-- <th>Column for button(s)</th> -->
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-membership>
+    <tr>
+      <td>
+        {{ membership.firstName }}
+      </td>
+      <td>
+        {{ membership.lastName }}
+      </td>
+      <td>
+        {{ membership.email }}
+      </td>
+      <td>
+        {{ membership.role | orgRole }}
+      </td>
+      <!-- <td>
+        <button (click)="editMember.emit(membership.id)" id="btn-editMembership-{{ membership.id }}" class="btn btn-link me-2">
+          <fa-icon [icon]="['far', 'edit']"></fa-icon>
+        </button>
+        <button (confirm)="deleteMember.emit(membership.id)" id="btn-deleteMembership-{{ membership.id }}" class="btn btn-link me-2"
+                i18n-confirmDescription="Member delete confirm description|Confirm modal text@@memberTable.modal.deleteDescription"
+                i18n-confirmTitle="Are you sure you want to delete this member?"
+                confirmTitle="Delete Member?">
+          <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+        </button>
+      </td> -->
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noMemberships>
+  <div class="text-center">
+    <h6 i18n="No memberships|Placeholder text in case there are no memberships@@org.memberTable.noMemberships"
+        id="noMembershipsDescription">There are no memberships.</h6>
+  </div>
+</ng-template>

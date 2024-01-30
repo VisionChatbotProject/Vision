@@ -1,0 +1,42 @@
+<div class="row mt-4">
+  <div class="col">
+    <ngb-accordion #a="ngbAccordion" activeIds="taskPanel">
+      <ngb-panel id="taskPanel">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex align-items-center justify-content-between card-header">
+            <h5 class="m-0" i18n="Tasks|Tasks card title@@task-detail.cards.tasks">Tasks</h5>
+  
+            <button id="addTaskButton" class="btn" (click)="createTask()"
+              i18n-ngbTooltip="Task add tooltip|Tooltip text@@task-detail.tooltip.addTask"
+              ngbTooltip="Add task"> 
+              <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+            </button>
+          </div>
+        </ng-template>
+  
+        <ng-template ngbPanelContent>
+          
+          <int-task-table *ngIf="tasks.length; else noTask"
+            [tasks]="tasks"
+            (editTask)="modifyTask($event)"
+            (deleteTask)="onDeleteTask($event)">
+          </int-task-table>
+
+        </ng-template>
+
+      </ngb-panel>
+    </ngb-accordion>  
+  </div>
+</div>
+
+
+
+<ng-template #noTask>
+  <div class="text-center" id="noTasksContainer">
+    <h3 i18n="No tasks yet|Placeholder text if no task has been added yet@@task.taskTable.noIntentsYet">There are no tasks yet.</h3>
+    <button class="btn btn-success mt-4" (click)="createTask()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+      <span i18n="Create an task|Button text for adding a task@@task.taskTable.createTaskBtn">Create an Task</span>
+    </button>
+  </div>
+</ng-template>

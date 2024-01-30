@@ -1,0 +1,1 @@
+envsubst < /backend/default_files/scorm_resources/navigation.js.template > /backend/default_files/scorm_resources/navigation.js

@@ -1,0 +1,395 @@
+[
+{
+	"table": "intent",
+	"rows":
+	[
+		{
+			"id_intent": 7,
+			"intent_name": "music_concept",
+			"intent_list": "- What is music\r\n- What is the concept of music\r\n- Music definition",
+			"response": "Music is a type of art",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 8,
+			"intent_name": "concept_of_programming",
+			"intent_list": "- What is programming?\r\n- What is the definition of programming? \r\n- What do you understand under programming?",
+			"response": "Porgramming is the process or activity of writing computer programs.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 14,
+			"intent_name": "pillars_of_learning",
+			"intent_list": "- What are the 4 pillars of learning?\n- How are the 4 pillars of learning called?",
+			"response": "The 4 pillars of learning are: learning to know, learning to be, learning to live together, learning to do.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 15,
+			"intent_name": "motivation",
+			"intent_list": "- How can you motivate learners?\n- What motivates learners?\n- What can I do to motivate my learners?\n- How can teachers motivate their learners?\n- How can you increase learners' motivation?",
+			"response": "It motivates when children can apply what they have learned in school and solve problems in real life. Feedback, the recognition of achievements and the strengthening of students' self-confidence are further examples how to motivate students.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 16,
+			"intent_name": "teacher_skills",
+			"intent_list": "- What kind of skills should a teacher have?\n- Which skills are important for effective teaching?\n- What are examples of effective teaching skills?",
+			"response": "Effective teaching includes the skill to plan",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 17,
+			"intent_name": "self_regulation",
+			"intent_list": "- How can the teacher support self-reflection in students?\n- How can you improve your students' self-regulation and being reflective?\n- How can you encourage self-regulation and self-reflection in students?",
+			"response": "Through discussion and collaboration with other students.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 18,
+			"intent_name": "importance_of_self_regulation",
+			"intent_list": "- What does self-regulation and being reflective mean in the teaching and learning context?\n- Why is self-regulation and being reflective important?",
+			"response": "It means being able to comprehend one’s abilities, to understand one’s mistakes and being able to correct them.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 19,
+			"intent_name": "tree_model",
+			"intent_list": "- What can the tree model be used for?\n- What does the tree model look like?\n- Explain the tree model.\n- What is the tree model?",
+			"response": "The tree model provides a guide to planning an effective learning and teaching experience. Both the teacher side as well as the learner side are represented and considered in the tree model. The tree model is divided into 4 categories: roots, growth, blossoming, and renewal.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 20,
+			"intent_name": "situated_learning",
+			"intent_list": "- What is situated learning?\n- What does situated learning mean?\n- What are the main aspects of social participation?\n- What does the term 'situated learning' entail?",
+			"response": "Humans are socially curious beings and learn mainly through social interaction with others. Therefore, a learning environment should promote cooperation, discussions and group work and provide opportunities for feedback.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 21,
+			"intent_name": "social_participation",
+			"intent_list": "- How can social participation be implemented?\n- Which teaching methods are useful to improve social participation in class?",
+			"response": "Groupwork, social interaction in the learning environment as well as collaborative work related to studying and learning foster social participation. Providing students with opportunities to give/receive feedback and express their opinion also supports social participation.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 22,
+			"intent_name": "learning_environment",
+			"intent_list": "- How do I create a motivating learning environment?\n- What is the point in creating a positive learning environment?\n- Why is a positive learning environment important?\n- What does a positive learning environment look like?\n- What do you understand by a positive learning environment and which characteristics does it have?\n- How can teachers create a positive learning environment?\n- What needs to be considered when creating a motivating learning environment?\n- What aspects are important for creating a positive learning environment?\n- Which factors must be taken into account when creating a motivating learning environment?\n- Which factors are important when creating a positive learning environment?\n- Name and describe the characteristics of a motivating learning environment.\n- What kind of learning environment should be provided in school?\n- Which aspects should be considered when creating a positive learning environment?\n- How does a positive learning environment affect students?",
+			"response": "Through social interactions, room design, wall decoration, layout, available resources and strategies, learners are encouraged to actively participate in the learning process.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 23,
+			"intent_name": "Maria_Montessori_approach",
+			"intent_list": "- Explain Maria Montessori's approach to teaching and learning.\n- What is the teaching and learning approach of Maria Montessori based on?\n- What is the intention of Maria Montessori's approach to teaching and learning?\n- What is Maria Montessori's approach to teaching and learning  about?\n- How can the desire for learning be encouraged?\n- What does Maria Montessori's approach to teaching and learning describe?\n- Considering Maria Montessori's approach to teaching and learning, how can students' learning be encouraged?\n- Which aspect is specially valued in Maria Montessori's approach to teaching and learning?",
+			"response": "Maria Montessori’s approach is based on the idea that children are naturally eager for knowledge and capable of learning and by creating positive learning environments with well-designed teaching materials, the desire to learn is enhanced. ",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 24,
+			"intent_name": "focus_of_Maria_Montessori_approach",
+			"intent_list": "- What areas of development are focused on in Maria Montessori's approach to teaching and learning?\n- What does Maria Montessori's approach to teaching and learning focus on in the development of a child?\n- Unlike most teaching methods that focus on academic success, Montessori focuses on which aspects of a child's development?",
+			"response": "The focus of the Montessori approach lies in a combination of the psychological, emotional and intellectual development of a child.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 25,
+			"intent_name": "cooperative_learning",
+			"intent_list": "- What is cooperative learning?\n- What is the intention of cooperative learning?\n- How can you encourage students' team work in class?",
+			"response": "Cooperative learning is a pedagogical practice that promotes children's socialization and learning by working together to complete tasks.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 26,
+			"intent_name": "behaviorism",
+			"intent_list": "- How does learning work according to behaviorism?\n- What is behaviorism?\n- What defines behaviorism?\n- Describe the learning theory of behaviorism.\n- Which one out of the five learning theories focuses on consequences and rewards?",
+			"response": "In behaviorism, students learn through reinforcement: constant positive or negative feedback from their teacher tells them what they are doing is either right or wrong.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 27,
+			"intent_name": "learning_theories",
+			"intent_list": "- Describe different learning theories.\n- What are learning theories?\n- Which kinds of learning theories exist?\n- Which learning theories influence 21st century teaching the most?\n- What are learning theories and what are they used for?\n- Which learning theories are currently the most relevant ones?",
+			"response": "Learning theories describe the way knowledge is taught and learned. The thus developed models determine the application of teachers' instructional designs. The most relevant learning theories are constructivism, behaviorism, cognitivism, connectivism and subject-orientation.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 28,
+			"intent_name": "constructivism",
+			"intent_list": "- What is the focus of teaching in constructivism?\n- What is the role of teachers in constructivism?\n- What is the difference between the teachers' and the students' role in constructivism?\n- What is constructivism?",
+			"response": "The emphasis in constructivism is on providing students with experiences that should help them develop their own knowledge. This knowledge is linked to each learner's lifeworld. The teacher takes on the role of a learning companion who provides the necessary space for self-directed learning. Learning thus becomes a collaborative process where teachers and students develop knowledge together. ",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 29,
+			"intent_name": "problem_based_learning",
+			"intent_list": "- How does problem-based learning work?\n- What is problem-based learning?\n- What does problem-based learning mean?\n- What is the use of problem-based learning for students?\n- What is the intention of problem-based learning?",
+			"response": "Problem-based learning lets students work on real-life problems with the goal of identifying possible solutions to the problem. This way",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 30,
+			"intent_name": "subject_oriented",
+			"intent_list": "- What are the characteristics of the subject-oriented classroom?\n- What does \"subject-oriented\" mean?\n- What is the most important aspect of subject-oriented teaching and learning?\n- What does \"subject-oriented classroom\" mean?\n- What advantage does the subject-oriented classroom have?\n- Unlike frontal teaching, what is the advantage of subject-oriented learning?\n- Why change from a teacher-centered teaching/learning approach to a subject-oriented one?\n- What is subject-oriented teaching and learning?\n- What is the subject-oriented understanding of learning?\n- Why is a subject-oriented learning environment more efficient for learners?",
+			"response": "The term \"subject-oriented\" refers to forms of teaching that provide learners with the possibilities to lead learning activities and shape their own learning progress. The subject-oriented understanding of learning defines learning as personal development process that is based on individual reasons for learning rather than outside forces. Therefore, instead of viewing learning as an activity that occurs when someone is being taught, subject-oriented learning argues that learning only takes place when the subject (the student) has a reason to learn. Learners are thus intrinsically motivated.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 31,
+			"intent_name": "premack_principle",
+			"intent_list": "- What is the Premack-Principle?\n- What does the Premack-Principle state?\n- How can you describe the Premack-Principle?",
+			"response": "The Premack principle states that students are more willing to participate in an activity they do not enjoy if they know that an activity they enjoy will follow.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 32,
+			"intent_name": "teacher_centered",
+			"intent_list": "- What does the term \"teacher-centered\" mean?\n- What characterizes a traditional teacher-centered way of teaching?\n- What methods does a teacher-centered approach to teaching and learning include?\n- What is the difference between teacher-centered and subject-oriented classes?\n- What characterizes a teacher-centred classroom?",
+			"response": "Teacher-centered refers to learning situations where the teacher guides the learning process. He/she has control over what and how students learn. The teacher takes on the active part by presenting knowledge",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 33,
+			"intent_name": "difference_between_teacher_centered_and_subject_based",
+			"intent_list": "- What are the differences between teacher-centred and subject-based classes, considering the learner's perspective?\n- Why is subject-oriented teaching nowadays the preferred way of teaching?\n- What are the disadvantages of a teacher-centred class?",
+			"response": "In the teacher-centred approach, learners are extrinsically motivated because they have no say in their learning process. Also, learners who are not as fast in grasping concepts are more likely to miss and/or misunderstand information. As a result, their individual abilities are given less consideration since attention is primarily paid to what learners cannot do.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 34,
+			"intent_name": "think_pair_share",
+			"intent_list": "- What is the \"Think-Pair-Share\" activity?\n- How can you describe the \"Think-Pair-Share\" activity?\n- What are the benefits of the \"Think-Pair-Share\" activity?",
+			"response": "The think-pair-share method gives all students the opportunity to interact with other students and takes the pressure off of students who may have difficulty engaging in class",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 35,
+			"intent_name": "microsystem",
+			"intent_list": "- What is the microsystem in Bronfenbrenner's Ecological Systems Theory?\n- What does the microsystem level of Bronfenbrenner's concept of the Ecological System include?\n- How can the microsystem according to Bronfenbrenner be defined?",
+			"response": "The Microsystem is the most immediate environment in which children live. The Microsystem includes the home, school or daycare, the child's peer group and his/her community. In the Microsystem, the child interacts with family members, classmates, teachers and caregivers.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 36,
+			"intent_name": "Bronfenbrenner_theory",
+			"intent_list": "- Explain Bronfenbrenner's theory.\n- What is Bronfenbrenner's theory about?\n- What does Bronfenbrenner's Ecological Systems Theory state?\n- What are the four levels of Bronfenbrenner's Ecological Systems Theory?\n- Who introduced the concept of multiple environments related to child development and what are the four levels in the Theory of Ecological Systems?\n- Who developed the Theory of Ecological Systems?\n- Explain Bronfenbrenner's Ecological Systems Theory.\n- What relevance does Bronfenbrenner's Ecological Systems Theory have for teachers?",
+			"response": "In his Ecological Systems Theory, Bronfenbrenner introduces the concept of multiple environments in correlation to child development. It consists of layers; namely the Microsystem (home, school, family, classmates), the Mesosystem (relationships between microsystems), the Exosystem (external factors such as the educational or political system) and the Macrosystem (values, beliefs and norms). Teachers can only directly influence the learning environment at school, but by providing enough positive learning experiences, they can help counteract negative experiences the student may have had in other parts of their microsystem.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 37,
+			"intent_name": "socialization",
+			"intent_list": "- What is meant by socialization?\n- What does the term \"socialization\" mean?",
+			"response": "Socialization is the process in which the individual develops relationships with other individuals and adopts certain behaviors towards them. Socialization is important for a successful social participation in the teaching/learning setting.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 38,
+			"intent_name": "meaningful_activities",
+			"intent_list": "- When is an activity considered meaningful for students?\n- What characterizes meaningful activities for students?\n- When is an activity considered meaningful by learners?\n- Why is the students' motivation promoted through meaningful activities?",
+			"response": "An activity is considered meaningful in the teaching/learning context when the learner views it as useful or beneficial to their individual learning process. This promotes intrinsic motivation.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 39,
+			"intent_name": "learning_new_information",
+			"intent_list": "- What role does prior knowledge play in learning new information?\n- What should be considered when learning new information?",
+			"response": "Successful learning is only possible when new information can be connected to previously acquired knowledge and by activating said knowledge.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 40,
+			"intent_name": "direct_instruction",
+			"intent_list": "- Which form of teaching is most likely to be chosen by educators when teaching a large class with more than 30 students?\n- What methods can be chosen for direct instruction?\n- Why is direct instruction considered to be insufficient for contemporary learning needs?\n- What are the disadvantages and advantages of direct instruction?",
+			"response": "Nowadays, direct instruction is considered insufficient for contemporary learning needs because learners are mainly passive and do not actively engage with the learning content. Nevertheless, it can, at times, prove to be a useful teaching strategy when introducing new content. Methods of direct teaching are, for example, the lecture, didatic questioning or the demonstration.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 41,
+			"intent_name": "interactive_instruction",
+			"intent_list": "- What distinguishes interactive instruction from other forms of instruction?\n- What are the learning objectives of interactive instruction?\n- What is interactive instruction?",
+			"response": "In interactive instruction, students learn from both their peers and their teacher through discussion and sharing. Methods of interactive instruction are, for example, discussions, debates, brainstorming. All these methods enable multi-perspective learning.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 42,
+			"intent_name": "support_student",
+			"intent_list": "- How can teachers support students' active involvement in the learning process?\n- To what extent does students' active involvement in school contribute to better learning success?\n- Why is it important that students are actively involved in the learning process?",
+			"response": "Active involvement in the learning process helps learners to internalize what they have learned. This can be promoted by involving students in the learning process and in the design of the lessons. The students can determine part of the learning content themselves and learning goals can be formulated together.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 43,
+			"intent_name": "large_group_teaching",
+			"intent_list": "- What is the difference between large group teaching and small group teaching?\n- What is a disadvantage of large group teaching?",
+			"response": "The larger the class, the more difficult it is for teachers to respond to the individual needs of each student.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 44,
+			"intent_name": "experiential_learning",
+			"intent_list": "- What kind of learning emphasizes the importance between the connection of school and real life?\n- Name ways in which learners can be supported in transferring theory into practice.\n- Why should experiential learning be used in primary school?\n- What is experiential learning?\n- Why is it important that learners are able to relate their learning content to their lifeworld?\n- What can experiential learning achieve?",
+			"response": "Experiential learning states that students learn best when they are directly engaged or in touch with the material being studied, in other words, when they experience the knowledge first hand rather than just reading, hearing or talking about it. This type of learning is very subject-oriented and action-oriented which allows creating a direct link between theory and practice.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 45,
+			"intent_name": "simulation",
+			"intent_list": "- What is a simulation for?\n- What does simulation mean?",
+			"response": "Students are presented with an artificial problem or situation based on reality and put into a simulated environment. Play and reality are essentially combined to encourage communication and promote critical thinking.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 46,
+			"intent_name": "research_project",
+			"intent_list": "- What is a research project?\n- What is the purpose of a research project?",
+			"response": "Students research topics and present their results in the form of a report, a presentation, an artwork or in another creative way.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 47,
+			"intent_name": "greeting",
+			"intent_list": "- Hello \n- Hey\n- Hi",
+			"response": "I'm glad to read from you.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 48,
+			"intent_name": "how_are_you",
+			"intent_list": "- how are you?\n- Are you fine?",
+			"response": "I'm fine, thank you! And you?",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 49,
+			"intent_name": "who_are_you",
+			"intent_list": "- who are you?\n- Whats your name?",
+			"response": "My name is Bitbot. I'm your digital learning assistant.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 50,
+			"intent_name": "thank_you",
+			"intent_list": "- Dumb\n- shit\n- Fuck\n- crap",
+			"response": "It's a pity I can't help you. I'm still in the trial phase and would like to develop further.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 51,
+			"intent_name": "bye",
+			"intent_list": "- Goodbye\n- Bye\n- Ciao",
+			"response": "Bye! Come back soon! You can reach me at any time of the day or night.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 52,
+			"intent_name": "find_task",
+			"intent_list": "- Where can I find the assignment\n- Are there any tasks?",
+			"response": "Here you can find the homework.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 54,
+			"intent_name": "how_to_help",
+			"intent_list": "- How can you help me?\n- What can you do?\n- What are your functions?\n- What can I do with you?",
+			"response": "I have five different main functions. I can answer your questions about the course, we can do a quiz, I can give you feedback on your learning status, recommend additional material and remind you of deadlines.",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		},
+		{
+			"id_intent": 55,
+			"intent_name": "what_to_do",
+			"intent_list": "- What do I need you for?\n- What should I do with a chatbot?\n- What are you good for?",
+			"response": "I can help you study if you want. We can test your course knowledge and I will try to answer all of your questions about the course. ",
+			"id_course": 0,
+			"id_chapter": 0,
+			"is_quiz": 0
+		}
+	]
+}
+]

@@ -1,0 +1,4 @@
+var config = {
+  production: ${PRODUCTION},
+  apiUrl: '${API_URL}',
+}

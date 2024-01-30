@@ -1,0 +1,27 @@
+<p-table [value]="exams">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="Name|Exam name@@exam.examTable.name">Name</span></th>
+      <th><span i18n="Exam count|Exam count@@exam.examTable.examCount">Exam count</span></th>
+      <th><!-- deliberatly empty --></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-exam>
+    <tr>
+      <td>
+        {{ exam.name }}
+      </td>
+      <td>
+        {{ exam.description }}
+      </td>
+      <td class="text-end">
+        <button class="btn btn-link" (click)="onEditExam(exam)" id="edit-{{ exam.id }}">
+          <fa-icon [icon]="['fas', 'edit']" class="me-2"></fa-icon>
+        </button>
+        <button class="ms-1 btn btn-link" (click)="onDeleteExam(exam)" id="delete-{{ exam.id }}">
+          <fa-icon [icon]="['fas', 'trash']" class="me-2"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

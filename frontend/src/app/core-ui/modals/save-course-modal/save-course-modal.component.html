@@ -1,0 +1,119 @@
+<form [formGroup]="saveCourseForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="course" class="modal-title" i18n="Edit Course|Modal header@@save-course-modal.header.editTitle">Edit Course</h4>
+    <h4 *ngIf="!course" class="modal-title" i18n="Create New Course|Modal header@@save-course-modal.header.createTitle">Create Course</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <!-- course name field -->
+        <div class="form-group mb-3">
+          <label for="name" class="form-label" i18n="Course Name Label|Modal body@@save-course-modal.body.label.courseName">Course Name</label>
+          <input id="name" class="form-control" type="text" formControlName="name" placeholder="Course Name"
+            i18n="Course Name Input|Modal Body@@save-course-modal.body.input.courseName" required>
+          <div class="invalid-feedback" *ngIf="name.invalid">
+            <p *ngIf="name.getError('required')" i18n="Field Required|Course name invalid input@@save-course-modal.body.errors.inputRequired">Field is required!</p>
+          </div>
+        </div>
+
+        <!-- short description field -->
+        <div class="form-group mb-3">
+          <label for="shortDescription" class="form-label" i18n="Short Description Label|Modal body@@save-course-modal.body.label.shortDescription">Short Description</label>
+          <input id="shortDescription" class="form-control" type="text" formControlName="shortDescription" placeholder="Course Short Description"
+            i18n="Short description input|modal body@@save-course-modal.body.input.shortDescription" required>
+          <div class="invalid-feedback" *ngIf="shortDescription.invalid">
+            <p *ngIf="shortDescription.getError('required')" i18n="Field required|Short description invalid@@save-course-modal.body.errors.inputRequired">Field is required!</p>
+            <p *ngIf="shortDescription.getError('maxlength')" i18n="Field too long|Short description too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-5">
+        <sms-image-chooser [(image)]="image"></sms-image-chooser>
+      </div>
+    
+
+    <!-- long description field -->
+    <div class="form-group mb-3">
+      <label for="longDescription" class="form-label" i18n="Long description label|Modal body@@save-course-modal.body.label.longDescription">Long Description</label>
+      <textarea  id="longDescription" class="form-control" type="text" formControlName="longDescription" placeholder="Long Course Description"
+        i18n="Long description input|modal body@@save-course-modal.body.input.longDescription" required>
+      </textarea>
+      <div class="invalid-feedback" *ngIf="shortDescription.invalid">
+        <p *ngIf="longDescription.getError('required')" i18n="Field required|Long description invalid@@save-course-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- Teacher Name field -->
+    <div class="form-group col-md-6">
+      <label for="teacherName" class="form-label" i18n="Teacher Name Label|Modal body@@save-course-modal.body.label.teacherName">Teacher Name</label>
+      <input id="teacherName" class="form-control" type="text" formControlName="teacherName" placeholder="Teacher Name"
+        i18n="Teacher Name input|modal body@@save-course-modal.body.input.shortDescription" required>
+      <div class="invalid-feedback" *ngIf="teacherName.invalid">
+        <p *ngIf="teacherName.getError('maxlength')" i18n="Field too long|Teacher Name too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- Teacher Email field -->
+    <div class="form-group col-md-6">
+      <label for="teacherEmail" class="form-label" i18n="Teacher Email Label|Modal body@@save-course-modal.body.label.teacherEmail">Teacher Email</label>
+      <input id="teacherEmail" class="form-control" type="email" formControlName="teacherEmail" placeholder="Teacher Email"
+        i18n="Teacher Email input|modal body@@save-course-modal.body.input.shortDescription" required>
+      <div class="invalid-feedback" *ngIf="teacherEmail.invalid">
+        <p *ngIf="teacherEmail.getError('maxlength')" i18n="Field too long|Teacher Email too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- Course Begin field -->
+    <div class="form-group col-md-6">
+      <label for="courseBeginDate" class="form-label" i18n="Course Begin Label|Modal body@@save-course-modal.body.label.courseStart">Course Begin Date</label>
+      <input id="courseBeginDate" class="form-control" type="datetime-local" formControlName="courseBeginDate" placeholder="Course Begin Date"
+        i18n="Course Begin Date input|modal body@@save-course-modal.body.input.courseStart" required>
+      <div class="invalid-feedback" *ngIf="courseBeginDate.invalid">
+        <p *ngIf="courseBeginDate.getError('maxlength')" i18n="Field too long|Course Begin too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- Course End field -->
+    <div class="form-group col-md-6">
+      <label for="courseEndDate" class="form-label" i18n="Course End Label|Modal body@@save-course-modal.body.label.courseEnd">Course End Date</label>
+      <input id="courseEndDate" class="form-control" type="datetime-local" formControlName="courseEndDate" placeholder="Course End Date" value="2018-06-12T19:30"
+        i18n="Teacher Email input|modal body@@save-course-modal.body.input.courseEnd" required>
+      <div class="invalid-feedback" *ngIf="courseEndDate.invalid">
+        <p *ngIf="courseEndDate.getError('maxlength')" i18n="Field too long|Course End too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- Course Materials field -->
+    <div class="form-group col-md-6">
+      <label for="materials" class="form-label" i18n="Course Materials Label|Modal body@@save-course-modal.body.label.courseMaterials">Course Materials</label>
+      <textarea id="materials" class="form-control" type="text" formControlName="materials" placeholder="Document Title"
+        i18n="Course Materials input|modal body@@save-course-modal.body.input.materials" ></textarea>
+      <div class="invalid-feedback" *ngIf="materials.invalid">
+        <p *ngIf="materials.getError('maxlength')" i18n="Field too long|Course Materials too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+
+    <!-- Course Ressources field -->
+    <div class="form-group col-md-6">
+      <label for="ressources" class="form-label" i18n="Course Ressources Label|Modal body@@save-course-modal.body.label.courseRessources">Course Ressources</label>
+      <textarea id="ressources" class="form-control" type="text" formControlName="ressources" placeholder="https://link.pdf"
+        i18n="Course Ressources input|modal body@@save-course-modal.body.input.ressources" ></textarea>
+      <div class="invalid-feedback" *ngIf="ressources.invalid">
+        <p *ngIf="ressources.getError('maxlength')" i18n="Field too long|Course Ressources too long@@save-course-modal.body.errors.inputMaxLength">Text is too long!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="modal-footer">
+    <button [disabled]="saveCourseForm.invalid" (click)="saveCourse()" 
+      class="btn btn-primary" type="submit">
+      <span i18n="Save Course|Save Course Button@@save-course-modal.footer.button.saveCourse">Save Course</span>
+    </button>
+  </div>
+
+</form>

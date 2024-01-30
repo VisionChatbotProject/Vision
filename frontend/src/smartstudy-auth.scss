@@ -1,0 +1,49 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+@import "~bootstrap/scss/forms";
+
+.ng-invalid.ng-touched {
+  @extend .is-invalid;
+}
+
+.ng-valid.ng-touched {
+  @extend .is-valid;
+}
+
+.default-bg {
+    background-color: white;
+}
+
+.ssa-bg-login {
+  @extend.default-bg;
+}
+
+.ssa-header {
+  background-image: url("/assets/img/vision-logo-erasmus.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 150px;
+}
+
+.ssa-header-login {
+  @extend .ssa-header;
+}
+
+.ssa-header-signup {
+  @extend .ssa-header;
+}
+
+.ssa-header-request-password-reset {
+  @extend .ssa-header;
+}
+
+.ssa-header-password-reset {
+  @extend .ssa-header;
+}
+
+.ssa-header-container {
+  height: auto;
+}

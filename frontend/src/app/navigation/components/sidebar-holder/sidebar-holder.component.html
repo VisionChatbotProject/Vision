@@ -1,0 +1,14 @@
+<span *ngIf="sidebarVisibilityChange$ | async;"></span>
+  <div class="navbar-expand-md">
+    <div class="bg-light sidebar navbar navbar-collapse p-0" id="sticky-sidebar" [(ngbCollapse)]="isSidebarCollapsed">
+      <div class="nav flex-column flex-nowrap vh-100 overflow-auto text-white w-100">
+        <div class="spacer"></div>
+          <a [routerLink]="['dashboard/']" class="nav-link" i18n="Dashboard|Menu Item Sidebar@@sidebar.menuitem.dashboard">Dashboard</a>
+          <a [routerLink]="['courses/']" class="nav-link" i18n="MyCourses|Menu Item Sidebar@@sidebar.menuitem.mycourses">My Courses</a>
+          <a [routerLink]="['organization/']" class="nav-link" i18n="MyOrganization|Menu Item Sidebar@@sidebar.menuitem.myOrganization">My Organization</a>
+          <!-- items below this one will be placed at the bottom of the nav -->
+          <div class="mt-auto"></div>
+      </div>
+    </div>
+  </div>
+

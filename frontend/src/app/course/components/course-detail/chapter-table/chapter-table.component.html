@@ -1,0 +1,64 @@
+<p-table [value]="tableData" responsiveLayout="scroll" *ngIf="tableData.length > 0; else noChapters;" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="Title|Chapter title@@course-processing.chapterTable.title">Title</span></th>
+      <th><span i18n="Description|Chapter description@@course-processing.chapterTable.description">Description</span></th>
+      <th><span i18n="Last modified|Last modified@@course-processing.chapterTable.lastModified">Last Modified</span></th>
+      <th>
+        <!-- Column for button(s) -->
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-chapter let-index="rowIndex">
+    <tr [pReorderableRow]="index">
+      <td>
+        <button class="btn btn-link" style="padding-left: 0;" (click)="openChapter.emit(chapter.id)" id="btn-openChapter-{{ chapter.id }}">
+        {{ chapter.title }}
+        </button>
+      </td>
+      <td>
+        {{ chapter.shortDescription }}
+      </td>
+      
+      <td>
+        {{ chapter.lastModified | date:'short' }}
+      </td>
+
+      <td class="text-end">
+
+        <!--
+        <button class="btn btn-link" (click)="openChapter.emit(chapter.id)" id="btn-openChapter-{{ chapter.id }}">
+          <fa-icon [icon]="['far', 'folder']" class="me-2"></fa-icon>
+        </button>
+        -->
+
+        <button class="btn btn-link" (click)="editChapter.emit(chapter.id)" id="btn-editChapter-{{ chapter.id }}">
+          <fa-icon [icon]="['far', 'edit']" class="me-2"></fa-icon>
+        </button>
+
+        <button class="btn btn-link" (confirm)="deleteChapter.emit(chapter.id)" id="btn-deleteChapter-{{ chapter.id }}"
+          i18n-confirmDescription="Chapter delete confirm description|Confirm modal text@@chapterTable.modal.deleteDescription"
+          i18n-confirmTitle="Chapter delete confirm title|Confirm modal text@@chapterTable.modal.deleteTitle"
+          confirmDescription="Are you sure you want to delete this section? This will also delete all sub-sections and units."
+          confirmTitle="Delete Section?">
+          <fa-icon [icon]="['far', 'trash-alt']" class="me-2"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noChapters>
+  <div class="text-center">
+    <h3 i18n="No chapters yet|Placeholder text if no chapters have been added yet@@course-processing.chapterTable.noChaptersYet"
+      id="noChaptersDescription">There are no sections yet.</h3>
+    
+    <button id="createChapterButton" class="btn btn-success mt-4" (click)="addChapter.emit()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+
+      <span i18n="Create a chapter|Button text for adding a chapter@@course-processing.chapterTable.createChapterBtn">Create a section</span>
+    </button>
+
+  </div>
+</ng-template>

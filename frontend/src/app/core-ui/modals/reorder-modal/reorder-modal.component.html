@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <!-- <h4 *ngIf="question" class="modal-title" i18n="Edit Question|Modal header@@save-question-modal.header.editTitle">Edit Question</h4> -->
+  <h4 class="modal-title" i18n="Reorder|Modal header@@reorderModal.header.title">Reorder</h4>
+  <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+</div>
+
+<div class="modal-body">
+  <div cdkDropList [cdkDropListData]="orderables" class="item-list" (cdkDropListDropped)="drop($event)">
+  <div class="item-box" [cdkDragData]="orderable" *ngFor="let orderable of orderables" cdkDrag>
+    <div>
+      <fa-icon [icon]="['fas', 'bars']" class="me-1"></fa-icon>
+      <span id="item-{{ orderable.id }}">{{ getLabel(orderable) }}</span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button (click)="saveOrder()" id="saveOrder"
+    class="btn btn-primary">
+    <span i18n="Close|Button text@@reorderModal.header.close">Close</span>
+  </button>
+</div>
+

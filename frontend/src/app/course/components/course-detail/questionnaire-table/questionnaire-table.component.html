@@ -1,0 +1,59 @@
+<p-table [value]="tableData" responsiveLayout="scroll" *ngIf="tableData.length > 0; else noQuestionnaires;" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="Title|Questionnaire title@@course-processing.questionnaireTable.title">Title</span></th>
+      <th><span i18n="Last modified|Last modified@@course-processing.questionnaireTable.lastModified">Last Modified</span></th>
+      <th>
+        <!-- Column for button(s) -->
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-questionnaire>
+    <tr>
+      <td>
+        <button class="btn btn-link" style="padding-left: 0;" (click)="openQuestionnaire.emit(questionnaire.id)" id="btn-openQuestionnaire-{{ questionnaire.id }}">
+          {{ questionnaire.title }}
+        </button>
+      </td>
+
+      <td>
+        {{ questionnaire.lastModified | date:'short' }}
+      </td>
+
+      <td class="text-end">
+        <!--
+        <button class="btn btn-link" (click)="openQuestionnaire.emit(questionnaire.id)" id="btn-openQuestionnaire-{{ questionnaire.id }}">
+          <fa-icon [icon]="['far', 'folder']" class="me-2"></fa-icon>
+        </button>
+        -->
+
+        <button class="btn btn-link" (click)="editQuestionnaire.emit(questionnaire.id)" id="btn-editQuestionnaire-{{ questionnaire.id }}">
+          <fa-icon [icon]="['far', 'edit']" class="me-2"></fa-icon>
+        </button>
+
+        <button class="btn btn-link" (confirm)="deleteQuestionnaire.emit(questionnaire.id)" id="btn-deleteQuestionnaire-{{ questionnaire.id }}"
+          i18n-confirmDescription="Questionnaire delete confirm description|Confirm modal text@@questionnaireTable.modal.deleteDescription"
+          i18n-confirmTitle="Questionnaire delete confirm title|Confirm modal text@@questionnaireTable.modal.deleteTitle"
+          confirmDescription="Are you sure you want to delete this questionnaire?"
+          confirmTitle="Delete questionnaire?">
+          <fa-icon [icon]="['far', 'trash-alt']" class="me-2"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noQuestionnaires>
+  <div class="text-center">
+    <h3 i18n="No questionnaires yet|Placeholder text if no questionnaires have been added yet@@course-processing.questionnaireTable.noQuestionnairesYet"
+      id="noQuestionnairesDescription">There are no questionnaires yet.</h3>
+    
+    <button id="createQuestionnaireButton" class="btn btn-success mt-4" (click)="addQuestionnaire.emit()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+
+      <span i18n="Create an questionnaire|Button text for adding an questionnaire@@course-processing.questionnaireTable.createQuestionnaireBtn">Create an questionnaire</span>
+    </button>
+
+  </div>
+</ng-template>

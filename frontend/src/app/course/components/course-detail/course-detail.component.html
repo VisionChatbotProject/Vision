@@ -1,0 +1,204 @@
+<div class="container" *ngIf="course else unknownCourse">
+
+  <div class="row">
+    <div class="col mb-4">
+      <button type="button" id="courses-button" (click)="openCourses()" class="btn btn-light">
+        <fa-icon [icon]="['fas', 'angle-left']" class="me-2"></fa-icon>
+        <span i18n="Courses|Courses Button Title@@course-detail.buttons.courses">Courses</span>
+      </button>
+    </div>
+  </div>
+
+  <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+    <ngb-panel id="recPanel">
+      <ng-template ngbPanelHeader let-opened="opened">
+        <div class="d-flex align-items-center justify-content-between card-header">
+          <h2 id="name">{{course!.name}}</h2>
+
+          <div>
+           
+            <button class="btn btn-link" (click)="trainCourse()" *ngIf="canEdit"
+              i18n-ngbTooltip="Course training tooltip|Tooltip text@@courseDetail.tooltip.trainCourse"
+              ngbTooltip="Train bot with course">
+              <ng-container *ngIf="trainingRequest">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              </ng-container>
+              <fa-icon [icon]="['fas', 'fill']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" (click)="previewCourse()" *ngIf="canEdit" id="previewCourse" 
+              i18n-ngbTooltip="Course preview tooltip|Tooltip text@@courseDetail.tooltip.previewCourse"
+              ngbTooltip="Preview course (SCORM 1.2)">
+              <fa-icon [icon]="['fas', 'eye']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" (click)="exportCourse()" id="exportCourse" 
+              i18n-ngbTooltip="Course export tooltip|Tooltip text@@courseDetail.tooltip.exportCourse"
+              ngbTooltip="Export course (SCORM 1.2)">
+              <fa-icon [icon]="['fas', 'file-export']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" (click)="editCourse()" id="editCourse" 
+              i18n-ngbTooltip="Course edit tooltip|Tooltip text@@courseDetail.tooltip.editCourse"
+              ngbTooltip="Edit course (name, description...)">
+              <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" id="btn-deleteCourse" (confirm)="deleteCourse()" 
+              i18n-ngbTooltip="Course delete tooltip|Tooltip text@@courseDetail.tooltip.deleteCourse"
+              ngbTooltip="Delete course"
+              i18n-confirmDescription="Course delete tooltip|Tooltip text@@courseDetail.tooltip.deleteCourse"
+              i18n-confirmTitle="Course delete confirm title|Confirm modal text@@courseDetail.modal.deleteTitle"
+              confirmDescription="Are you sure you want to delete this course? This will also delete all associated assets, sections, and units."
+              confirmTitle="Delete Course?">
+              <fa-icon [icon]="['far', 'trash-alt']" class="me-2 text-danger" size="lg"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template ngbPanelContent>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="recPanel" *ngIf="chaptersLoaded$ | async;">
+              <ngb-panel id="recPanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Course Details|Course Details Title@@course-detail.cards.chapters">Course Overview</h5>
+                  </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <p><strong>Course Name: </strong> {{ course.name }} </p>
+                  <p><strong>Teacher Name: </strong> {{ course.teacherName }}</p> 
+                  <p><strong>Teacher Email: </strong> {{ course.teacherEmail }}</p> 
+                  <p><strong>Course Begin Date: </strong> {{ course.courseBeginDate | date:'medium' }}</p> 
+                  <p><strong>Course End Date: </strong> {{ course.courseEndDate | date:'medium'}}</p> 
+                  <p><strong>Course Materials: </strong> {{ course.materials }}</p> 
+                  <p><strong>Course Ressources: </strong> {{ course.ressources }}</p> 
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+              <ngb-panel id="recPanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Course Statistics|Course Statistics Title@@course-detail.cards.courseStatistics">Course Statistics</h5>
+                  </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <p><strong i18n="Course Performance|Course Performance Title@@course-detail.cards.performance">Performance: </strong> {{ performance }} </p>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="recPanel" *ngIf="chaptersLoaded$ | async;">
+              <ngb-panel id="recPanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Chapters|Chapters Card Title@@course-detail.cards.chapters">Sections</h5>
+                    <div>
+                      <button id="addChapterButton" class="btn" (click)="addChapter()" 
+                        i18n-ngbTooltip="Chapter add tooltip|Tooltip text@@courseDetail.tooltip.addChapter"
+                        ngbTooltip="Add section">
+                        <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+                      </button>
+
+                      <button id="reorderChaptersButton" class="btn" (click)="onOpenReorderModal()" 
+                        i18n-ngbTooltip="Chapter reorder tooltip|Tooltip text@@courseDetail.tooltip.reorderChapters"
+                        ngbTooltip="Reorder sections">
+                        <fa-icon [icon]="['fas', 'sort']" class="me-2"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+          
+                <ng-template ngbPanelContent>
+                  <sac-chapter-table [chapters]="chapters" id="chapter-table"
+                                    (addChapter)="addChapter()"
+                                    (openChapter)="openChapter($event)"
+                                    (editChapter)="editChapter($event)"
+                                    (deleteChapter)="deleteChapter($event)">
+                  </sac-chapter-table>
+                </ng-template>
+          
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="questionnairePanel" *ngIf="questionnairesLoaded$ | async;">
+              <ngb-panel id="questionnairePanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Questionnaires|Questionnaires Card Title@@course-detail.cards.questionnaires">Questionnaires</h5>
+          
+                    <button id="addQuestionnairesButton" class="btn" (click)="addQuestionnaire()"
+                      i18n-ngbTooltip="Questionnaire add tooltip|Tooltip text@@courseDetail.tooltip.addQuestionnaire"
+                      ngbTooltip="Add questionnaire"> 
+                      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+                    </button>
+                  </div>
+                </ng-template>
+          
+                <ng-template ngbPanelContent>
+                  <sac-questionnaire-table [questionnaires]="questionnaires" id="questionnaire-table"
+                    (addQuestionnaire)="addQuestionnaire()"
+                    (openQuestionnaire)="openQuestionnaire($event)"
+                    (editQuestionnaire)="editQuestionnaire($event)"
+                    (deleteQuestionnaire)="deleteQuestionnaire($event)">
+                  </sac-questionnaire-table>
+                </ng-template>
+        
+              </ngb-panel>
+            </ngb-accordion>  
+          </div>
+        </div>
+
+        <int-intent-container *ngIf="(intents$ | async) as intents;"
+          [intents]="intents"
+          [chapters]="chapters"
+          (addIntent)="addIntent($event)"
+          (editIntent)="editIntent($event)"
+          (deleteIntent)="deleteIntent($event)">
+        </int-intent-container>
+
+        <int-exam-container *ngIf="(exams$ | async) as exams;"
+          [exams]="exams"
+          (addExam)="addExam($event)"
+          (editExam)="editExam($event)"
+          (deleteExam)="deleteExam($event)">
+        </int-exam-container>
+ 
+        <int-task-container *ngIf="(tasks$ | async) as tasks;"
+          [tasks]="tasks"
+          (addTask)="addTask($event)"
+          (editTask)="editTask($event)"
+          (deleteTask)="deleteTask($event)">
+        </int-task-container> 
+
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+</div>
+
+<ng-template #unknownCourse>
+  <div class="container row">
+    <div class="col">
+      <h4 class="text-warning" id="noCourses"
+        i18n="Course does not exist|Error Message for unknown course@@course-detail.errors.courseNotFound"
+        >This course does not exist.</h4>
+    </div>
+  </div>
+</ng-template>

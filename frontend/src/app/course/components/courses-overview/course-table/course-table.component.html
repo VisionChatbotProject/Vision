@@ -1,0 +1,39 @@
+
+<p-table [value]="tableData" responsiveLayout="scroll" *ngIf="tableData.length > 0; else noCourses;" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+        <th><!-- deliberatly empty --></th>
+        <th><span i18n="Name|Course name@@coureses.courseTable.name">Name</span></th>
+        <th><span i18n="Description|Course description@@coureses.courseTable.description">Description</span></th>
+        <th><span i18n="Last modified|Last modified date@@coureses.courseTable.lastModified">Last Modified</span></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-course>
+      <tr>
+          <td>
+            <img [imgSrc]="course.image" class="table-img" alt="Card Image">
+          </td>
+          <td>
+            <button class="btn btn-link" (click)="openCourse(course.id)" id="openCourse-{{ course.id }}" style="padding-left:0px">
+                {{ course.name }}
+            </button>
+          </td>
+          <td>
+            {{ course.shortDescription }}
+          </td>
+          <td>
+            {{ course.lastModified | date:'short'}}
+          </td>
+      </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noCourses>
+  <div class="text-center">
+    <h3 id="noCoursesDescription" i18n="No courses yet|Placeholder text if no course has been added yet@@courses.courseTable.noCoursesYet">There are no courses yet.</h3>
+    <button id="addCourseButton" class="btn btn-success mt-4" (click)="addCourse()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+      <span i18n="Create a course|Button text for adding a course@@courses.courseTable.createCourseBtn">Create a course</span>
+    </button>
+  </div>
+</ng-template>

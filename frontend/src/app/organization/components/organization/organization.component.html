@@ -1,0 +1,86 @@
+<div class="container">
+  <ngb-accordion activeIds="recPanel">
+    <ngb-panel id="recPanel">
+      <ng-template ngbPanelHeader let-opened="opened">
+        <div class="d-flex align-items-center justify-content-between card-header">
+          <h5 class="m-0">
+            
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ activeOrganization.name }}
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let organization of organizations()">
+                  <a class="dropdown-item" *ngIf="organization.id != activeOrganization.id" (click)="selectOrganization(organization)">{{organization.name}}</a>
+                </li>           
+              </ul>
+            </div>
+          </h5>
+          
+          <div>
+            <button id="addMemberButton" (click)="addMember()" class="btn btn-link p-0 ms-auto me-2"
+              i18n-ngbTooltip="Add member tooltip|Tooltip text for 'addMemberButton'@@org.tooltip.addMember"
+              ngbTooltip="Add member">
+              <fa-icon [icon]="['fas', 'user-plus']" class="me-2"></fa-icon>
+            </button>
+            <button id="editOrganizationButton" (click)="editOrganization()" class="btn btn-link p-0 ms-auto" *ngIf="canEdit"
+              i18n-ngbTooltip="Edit organization tooltip|Tooltip text for the 'editOrganizationButton'@org.tooltip.editOrganization"
+              ngbTooltip="Edit organization">
+              <fa-icon [icon]="['fas', 'edit']"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template ngbPanelContent>
+        <div class="col-xs-15 col-md-10" id="organizationUrl">
+          URL: <a href="{{ activeOrganization.url }}" target="_blank" rel="noopener noreferrer">{{
+            activeOrganization.url }}</a>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+          <div i18n="Default Language|Organization Default Language@@org.defaultLanguage" id="defaultLanguageLabel">
+            Default Language</div>
+          <div class="my-auto me-2">:</div>
+          <div>{{ activeOrganization.language }}</div>
+        </div>
+        <br>
+
+        <ngb-accordion activeIds="invites, members">
+          <ngb-panel id="invites">
+            <ng-template ngbPanelHeader let-opened="opened">
+              <div class="d-flex align-items-center justify-content-between card-header">
+                <h6 i18n="Pending Invites|Table heading for the invite table@@org.pendingInviteTableHeading" class="m-0"
+                  id="pendingInviteHeading">Pending Invites</h6>
+                <button ngbPanelToggle class="btn btn-link p-0">
+                  <sms-panel-toggle [opened]="opened"></sms-panel-toggle>
+                </button>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent *ngIf="invites$ | async as invites">
+              <sao-invite-table [invites]="invites" (editInvite)="editInvite($event)"
+                (deleteInvite)="deleteInvite($event)">
+              </sao-invite-table>
+            </ng-template>
+          </ngb-panel>
+
+          <ngb-panel id="members">
+            <ng-template ngbPanelHeader let-opened="opened">
+              <div class="d-flex align-items-center justify-content-between card-header">
+                <h6 i18n="Memberships|Table heading for the membership table@@org.membershipTableHeading" class="m-0"
+                  id="membershipHeading">Members</h6>
+                <button ngbPanelToggle class="btn btn-link p-0">
+                  <sms-panel-toggle [opened]="opened"></sms-panel-toggle>
+                </button>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent *ngIf="memberships$ | async as memberships">
+              <sao-member-table [memberships]="memberships" (editMember)="editMember($event)"
+                (deleteMember)="deleteMember($event)">
+              </sao-member-table>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>

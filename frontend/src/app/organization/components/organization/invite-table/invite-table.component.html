@@ -1,0 +1,40 @@
+<p-table [value]="tableData"
+         *ngIf="tableData.length > 0; else noOpenInvites"
+         responsiveLayout="scroll" class="p-datatable-striped">
+  <ng-template pTemplate="header">
+    <tr>
+      <th><span i18n="First Name|First name@@org.inviteTable.firstName">First Name</span></th>
+      <th><span i18n="First Last|Last name@@org.inviteTable.lastName">Last Name</span></th>
+      <th><span i18n="Email|Email address@@org.inviteTable.email">Email</span></th>
+      <th><span i18n="Code|Invite code@@org.inviteTable.invite code">Invite Code</span></th>
+      <th colspan="2"><span i18n="Validity|Validity of invite code@@org.inviteTable.validityPeriod">Validity Period</span></th>
+      <!-- <th>Column for buttons</th> -->
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-invite>
+    <tr>
+      <td>{{ invite.firstName }}</td>
+      <td>{{ invite.lastName }}</td>
+      <td>{{ invite.email }}</td>
+      <td>{{ invite.code }}</td>
+      <td>{{ invite.dateCreated | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+      <td>{{ invite.expirationDate | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+      <!-- <td>
+        <button (click)="editInvite.emit(invite.id)" id="btn-editInvite-{{ invite.id }}" class="btn btn-link me-2">
+          <fa-icon [icon]="['far', 'edit']"></fa-icon>
+        </button>
+        <button (click)="deleteInvite.emit(invite.id)" id="btn-deleteInvite-{{ invite.id }}" class="btn btn-link me-2">
+          <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+        </button>
+      </td> -->
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template #noOpenInvites>
+  <div class="text-center">
+    <h6 i18n="No pending invites|Placeholder text in case there are no pending invites@@org.inviteTable.noOpenInvites"
+        id="noOpenInvitesDescription">There are no pending invites.</h6>
+  </div>
+</ng-template>

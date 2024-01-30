@@ -1,0 +1,65 @@
+<form [formGroup]="taskForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="idIsValid" class="modal-title" i18n="Edit task|Modal header@@save-task-modal.header.editTitle">Edit Task</h4>
+    <h4 *ngIf="!idIsValid" class="modal-title" i18n="Create New Task|Modal header@@save-task-modal.header.createTitle">Create Task</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link" id="dismissModal"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <!-- task title field -->
+        <div class="form-group mb-3">
+          <label for="title" class="form-label" i18n="Task Title Label|Modal body@@save-task-modal.body.label.taskTitle">Task Title</label>
+          <input id="title" class="form-control" type="text" formControlName="title" placeholder="Task Title"
+            i18n="Task Title Input|Modal Body@@save-task-modal.body.input.taskTitle" required>
+          <div class="invalid-feedback" *ngIf="title.invalid">
+            <p *ngIf="title.getError('required')" i18n="Field Required|Task title invalid input@@save-title-modal.body.errors.inputRequired">Field is required!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- task description field -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label" i18n="Task Description Label|Modal body@@save-task-modal.body.label.description">Description</label>
+        <textarea  id="description" class="form-control" type="text" formControlName="description" placeholder="Task Description"
+          i18n="Task description input|modal body@@save-task-modal.body.input.description" required>
+        </textarea>
+      </div>
+
+      <!-- task resources field -->
+      <div class="form-group mb-3">
+        <label for="resources" class="form-label" i18n="Task Resources Label|Modal body@@save-task-modal.body.label.resources">Resources</label>
+        <textarea  id="resources" class="form-control" type="text" formControlName="resources" placeholder="Task Resources"
+          i18n="Task resources input|modal body@@save-task-modal.body.input.resources" required>
+        </textarea>
+      </div>
+
+      <!-- task deadline field -->
+      <div class="form-group mb-3">
+        <label for="deadline" class="form-label" i18n="Task Deadline Label|Modal body@@save-task-modal.body.label.deadline">Deadline</label>
+        <input id="deadline" class="form-control" type="date" formControlName="deadline" placeholder="Task Deadline" value="2018-06-12"
+          i18n="Task deadline input|modal body@@save-task-modal.body.input.deadline">
+      </div>
+
+      <!-- task isActive field -->
+      <div class="form-group mb-3">
+        <div class="form-check">
+          <input id="isActive" class="form-check-input" type="checkbox" formControlName="isActive">
+          <label for="isActive" class="form-check-label" i18n="Is active Label|Modal body@@save-task-modal.body.label.isActive">Is active</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button [disabled]="taskForm.invalid" (click)="saveTask()" 
+        class="btn btn-primary" type="submit" id="submitForm">
+        <span i18n="Save Task|Save Task Button@@save-task-modal.footer.button.saveTask">Save Task</span>
+      </button>
+    </div>
+
+  </div>
+
+</form>

@@ -1,0 +1,42 @@
+<div class="row mt-4">
+  <div class="col">
+    <ngb-accordion #a="ngbAccordion" activeIds="intentPanel">
+      <ngb-panel id="intentPanel">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex align-items-center justify-content-between card-header">
+            <h5 class="m-0" i18n="Intents|Intents card title@@course-detail.cards.intents">Intents</h5>
+  
+            <button id="addIntentButton" class="btn" (click)="createIntent()"
+              i18n-ngbTooltip="Questionnaire add tooltip|Tooltip text@@courseDetail.tooltip.addQuestionnaire"
+              ngbTooltip="Add questionnaire"> 
+              <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+            </button>
+          </div>
+        </ng-template>
+  
+        <ng-template ngbPanelContent>
+          
+          <int-intent-table *ngIf="intents.length; else noIntent"
+            [intents]="intents"
+            (editIntent)="modifyIntent($event)"
+            (deleteIntent)="onDeleteIntent($event)">
+          </int-intent-table>
+
+        </ng-template>
+
+      </ngb-panel>
+    </ngb-accordion>  
+  </div>
+</div>
+
+
+
+<ng-template #noIntent>
+  <div class="text-center" id="noIntentsContainer">
+    <h3 i18n="No intents yet|Placeholder text if no intent has been added yet@@intent.intentTable.noIntentsYet">There are no intents yet.</h3>
+    <button class="btn btn-success mt-4" (click)="createIntent()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+      <span i18n="Create an intent|Button text for adding a intent@@intent.intentTable.createIntentBtn">Create an intent</span>
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,74 @@
+<form [formGroup]="intentForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="idIsValid" class="modal-title" i18n="Edit intent|Modal header@@save-intent-modal.header.editTitle">Edit Intent</h4>
+    <h4 *ngIf="!idIsValid" class="modal-title" i18n="Create New Intent|Modal header@@save-intent-modal.header.createTitle">Create Intent</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link" id="dismissModal"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+
+    <!-- intent name field -->
+    <div class="form-group mb-3">
+      <label for="name" class="form-label" i18n="Intent Name Label|Modal body@@save-intent-modal.body.label.intentName">Intent Name</label>
+      <input id="name" class="form-control" type="text" formControlName="name" placeholder="Intent Name"
+        i18n="Intent Name Input|Modal Body@@save-intent-modal.body.input.intentName" required>
+      <div class="invalid-feedback" *ngIf="name.invalid">
+        <p *ngIf="name.getError('required')" i18n="Field Required|Intent name invalid input@@save-intent-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- response description field -->
+    <div class="form-group mb-3">
+      <label for="response" class="form-label" i18n="Response label|Modal body@@save-intent-modal.body.label.response">Response</label>
+      <textarea  id="response" class="form-control" type="text" formControlName="response" placeholder="Long Intent Description"
+        i18n="Long description input|modal body@@save-intent-modal.body.input.longDescription" required>
+      </textarea>
+      <div class="invalid-feedback" *ngIf="response.invalid">
+        <p *ngIf="response.getError('required')" i18n="Field required|Response invalid@@save-intent-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- intents fields -->
+    <div formArrayName="intents" class="form-group mb-3">
+      <label for="response" class="form-label" i18n="Trigger label|Modal body@@save-intent-modal.body.label.triggers">Triggers</label>
+      <div *ngFor="let control of intents.controls;let i=index" >
+        <div class="input-group mb-3">
+          <input class="form-control" type="text" [formControlName]="i" placeholder="Intent"
+              i18n="Intent Input|Modal Body@@save-intent-modal.body.input.intent" required>
+            <span class="input-group-text" id="remove-intent-{{ i }}" (click)="removeIntentItem(i)"><fa-icon [icon]="['fas', 'times']" class="text-danger"></fa-icon></span>
+        </div>
+      </div>
+      <div class="d-flex flex-row justify-content-end">
+        <button class="btn btn-success ml-auto" (click)="addIntentItem()" id="addIntentRow">
+          <fa-icon [icon]="['fas', 'plus']" class="mr-1"></fa-icon>
+        </button>
+      </div>
+    </div>
+  
+    <!-- is question fields -->
+    <div class="form-group mb-3">
+      <div class="form-check">
+        <input id="isQuestion" class="form-check-input" type="checkbox" formControlName="isQuestion">
+        <label for="isQuestion" class="form-check-label" i18n="Is question Label|Modal body@@save-exam-modal.body.label.isQuestion">Is question</label>
+      </div>
+    </div>
+
+    <!-- chapter field -->
+    <div class="form-group">
+      <label for="role" class="form-label" i18n="Chapter label|Modal body@@save-questionnaire-modal.body.label.chapter">Section</label>
+      <select id="role" class="form-select" formControlName="chapter" i18n="Chapter chooser|Modal Body@@create-questionnaire-modal.body.select.chapter">
+        <option *ngFor="let c of chapters" [ngValue]="c.id">{{ c.title }}</option>
+      </select>
+    </div>
+ 
+  </div>
+
+  <div class="modal-footer">
+    <button [disabled]="intentForm.invalid" (click)="saveIntent()" 
+      class="btn btn-primary" type="submit" id="submitForm">
+      <span i18n="Save Intent|Save Intent Button@@save-intent-modal.footer.button.saveIntent">Save Intent</span>
+    </button>
+  </div>
+
+</form>

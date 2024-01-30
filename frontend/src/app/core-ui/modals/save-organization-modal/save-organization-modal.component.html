@@ -1,0 +1,53 @@
+<form [formGroup]="createOrganizationModalForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title" i18n="Create New Organization|Modal Header@@save-organization-modal.header.createTitle" *ngIf="!organization">Create New Organization</h4>
+    <h4 class="modal-title" i18n="Create New Organization|Modal Header@@save-organization-modal.header.editTitle" *ngIf="organization">Edit Organization</h4>
+  </div>
+
+  <div class="modal-body">
+    <!-- organization name field -->
+    <div class="form-group mb-3">
+      <label for="name" class="form-label" i18n="Organization Name Label|Modal Body@@save-organization-modal.body.label.organizationName">Organization Name</label>
+      <input id="name" class="form-control" type="text" formControlName="name" i18n="Organization Name Input|Modal Body@@save-organization-modal.body.input.organizationName" required>
+      <div class="invalid-feedback" *ngIf="name.invalid">
+        <p *ngIf="name.getError('required')" i18n="Field Required|Organization Name Invalid Input@@save-organization-modal.body.input.required.organizationName">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- organization url field -->
+    <div class="form-group mb-3">
+      <label for="url" class="form-label" i18n="Organization URL Label|Modal Body@@save-organization-modal.body.label.organizationUrl">Organization URL</label>
+      <input id="url" class="form-control" type="text" formControlName="url" i18n="Organization URL Input|Modal Body@@save-organization-modal.body.input.organizationUrl" required>
+      <div class="invalid-feedback" *ngIf="url.invalid">
+        <p *ngIf="url.getError('required')" i18n="Field Required|Organization URL Invalid Input@@save-organization-modal.body.input.required.organizationUrl">Field is required!</p>
+        <p *ngIf="url.getError('pattern')" i18n="Invalid Input|Organization URL Invalid Input@@save-organization-modal.body.input.invalid.organizationUrl">Organization URL is invalid!</p>
+      </div>
+    </div>
+
+    <!-- organization default language field -->
+    <div class="form-group">
+      <label for="language" class="form-label" i18n="Organization Default Language Label|Modal Body@@save-organization-modal.body.label.organizationDefaultLanguage">Organization Default Language</label>
+      <select id="language" class="form-control" formControlName="language" i18n="Organization Default Language Select|Modal Body@@save-organization-modal.body.select.organizationDefaultLanguage" required>
+        <option *ngFor="let language of languages" [ngValue]="language">{{ language }}</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" id="createOrganizationButton"
+      (click)="saveOrganization()" type="submit"
+      [disabled]="createOrganizationModalForm.invalid">
+      <span *ngIf="!organization"
+        i18n="Create New Organization|Create New Organization Button@@save-organization-modal.footer.button.createNewOrganization">
+        Create New Organization
+      </span>
+      <span *ngIf="organization"
+        i18n="Save Organization|Save Button@@save-organization-modal.footer.button.saveOrganization">
+        Save Organization
+      </span>
+    </button>
+  </div>
+
+</form>

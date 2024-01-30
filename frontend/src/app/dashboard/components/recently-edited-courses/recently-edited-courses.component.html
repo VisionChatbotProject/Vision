@@ -1,0 +1,30 @@
+<ngb-accordion #a="ngbAccordion" activeIds="recPanel" *ngIf="courses.length > 0">
+    
+  <ngb-panel id="recPanel">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="d-flex align-items-center justify-content-between card-header">
+          <h5 class="m-0" i18n="Recently Edited Courses|Dashboard Card Title@@dashboard.rec.recentlyEditedCoursesTitle">Recently Edited Courses</h5>
+          <button ngbPanelToggle class="btn btn-link p-0">
+            <sms-panel-toggle [opened]="opened"></sms-panel-toggle>
+          </button>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <ng-container>
+        
+        <ng-container>
+          <div class="row">  
+            <div *ngFor="let course of courses | slice:0:3" class="col-lg-4 mb-3 d-flex align-items-stretch">
+              <div class="w-100">
+                <dab-course-preview [course]="course"></dab-course-preview>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+      
+    </ng-template>
+  </ngb-panel>
+  
+</ngb-accordion>

@@ -1,0 +1,42 @@
+<div class="row mt-4">
+  <div class="col">
+    <ngb-accordion #a="ngbAccordion" activeIds="examPanel">
+      <ngb-panel id="examPanel">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex align-items-center justify-content-between card-header">
+            <h5 class="m-0" i18n="Exams|Exams card title@@exam-detail.cards.exams">Exams</h5>
+  
+            <button id="addExamButton" class="btn" (click)="createExam()"
+              i18n-ngbTooltip="Exam add tooltip|Tooltip text@@exam-detail.tooltip.addExam"
+              ngbTooltip="Add exam"> 
+              <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+            </button>
+          </div>
+        </ng-template>
+  
+        <ng-template ngbPanelContent>
+          
+          <int-exam-table *ngIf="exams.length; else noExam"
+            [exams]="exams"
+            (editExam)="modifyExam($event)"
+            (deleteExam)="onDeleteExam($event)">
+          </int-exam-table>
+
+        </ng-template>
+
+      </ngb-panel>
+    </ngb-accordion>  
+  </div>
+</div>
+
+
+
+<ng-template #noExam>
+  <div class="text-center" id="noExamsContainer">
+    <h3 i18n="No exams yet|Placeholder text if no exam has been added yet@@exam.examTable.noIntentsYet">There are no exams yet.</h3>
+    <button class="btn btn-success mt-4" (click)="createExam()">
+      <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+      <span i18n="Create an exam|Button text for adding a exam@@exam.examTable.createExamBtn">Create an Exam</span>
+    </button>
+  </div>
+</ng-template>

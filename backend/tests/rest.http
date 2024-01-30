@@ -1,0 +1,76 @@
+
+# see course.service.spec.ts in Front end
+
+
+@hostname = localhost
+@port = 8000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+@session = sessionid=l3upj1jdwjzw5bdo1tt90cuqjwf3lqfc; Expires=Tue, 19 Jan 2038 03:14:07 GMT; Domain=localhost; Path=/
+
+
+
+
+### Organizations -------------------------------------------------------------
+
+GET http://{{host}}/v1/organizations/
+Cookie: {{session}}
+Accept: {{contentType}}
+
+### Organizations Roles -------------------------------------------------------
+
+# should retrieve all organization roles
+
+# see SmartAuthoringFrontend\src\app\core\services\organization-role\organization-role.service.ts
+
+GET http://{{host}}/v1/organizations/1/roles
+Cookie: {{session}}
+
+
+### Courses -------------------------------------------------------------------
+
+# see \SmartAuthoringFrontend\src\app\core\services\course\course.service.ts
+
+# should retrieve all courses
+
+GET http://{{host}}/v1/organizations/1/courses
+Cookie: {{session}}
+
+###
+
+# should retrieve a course by Id
+
+GET http://{{host}}/v1/courses/2
+Cookie: {{session}}
+Accept: {{contentType}}
+
+###
+
+# should add courses
+POST http://{{host}}/v1/organizations/1/courses
+Cookie: {{session}}
+
+{
+    "longDescription": "test",
+    "shortDescription": "test short",
+    "name": "course name",
+    "image": "",
+    "teacherName": "test teacher",
+    "teacherEmail": "teach@smartauthoring.com",
+    "courseBeginDate": "2023-02-05T09:00:00",
+    "courseEndDate": "2023-02-05T09:00:00",
+    "materials": "some materials",
+    "ressources": "https://smartauthoring.com/test.pdf",
+}
+
+
+
+
+### Tasks ---------------------------------------------------------------------
+
+GET http://localhost:8000/v1/courses/2/tasks
+Cookie: {{session}}
+Accept: {{contentType}}

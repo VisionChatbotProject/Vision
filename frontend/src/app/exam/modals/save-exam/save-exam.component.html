@@ -1,0 +1,64 @@
+<form [formGroup]="examForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="idIsValid" class="modal-title" i18n="Edit exam|Modal header@@save-exam-modal.header.editTitle">Edit Exam</h4>
+    <h4 *ngIf="!idIsValid" class="modal-title" i18n="Create New Exam|Modal header@@save-exam-modal.header.createTitle">Create Exam</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link" id="dismissModal"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <!-- exam name field -->
+        <div class="form-group mb-3">
+          <label for="name" class="form-label" i18n="Exam Name Label|Modal body@@save-exam-modal.body.label.examName">Exam Name</label>
+          <input id="name" class="form-control" type="text" formControlName="name" placeholder="Exam Name"
+            i18n="Exam Name Input|Modal Body@@save-exam-modal.body.input.examName" required>
+          <div class="invalid-feedback" *ngIf="name.invalid">
+            <p *ngIf="name.getError('required')" i18n="Field Required|Exam name invalid input@@save-exam-modal.body.errors.inputRequired">Field is required!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- exam description field -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label" i18n="Exam Description Label|Modal body@@save-exam-modal.body.label.description">Description</label>
+        <textarea  id="description" class="form-control" type="text" formControlName="description" placeholder="Exam Description"
+          i18n="Exam description input|modal body@@save-exam-modal.body.input.description" required>
+        </textarea>
+      </div>
+
+      <!-- exam observation field -->
+      <div class="form-group mb-3">
+        <label for="observation" class="form-label" i18n="Exam Observation Label|Modal body@@save-exam-modal.body.label.observation">Observation</label>
+        <textarea  id="observation" class="form-control" type="text" formControlName="observation" placeholder="Exam Observation"
+          i18n="Exam observation input|modal body@@save-exam-modal.body.input.observation" required>
+        </textarea>
+      </div>
+
+      <!-- exam date field -->
+      <div class="form-group mb-3">
+        <label for="date" class="form-label" i18n="Exam Date Label|Modal body@@save-exam-modal.body.label.date">Date</label>
+        <input id="date" class="form-control" type="datetime-local" formControlName="date" placeholder="Exam Date" value="2018-06-12T19:30"
+          i18n="Exam date input|modal body@@save-exam-modal.body.input.date">
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="form-check">
+          <input id="isActive" class="form-check-input" type="checkbox" formControlName="isActive">
+          <label for="isActive" class="form-check-label" i18n="Is active Label|Modal body@@save-exam-modal.body.label.isActive">Is active</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button [disabled]="examForm.invalid" (click)="saveExam()" 
+        class="btn btn-primary" type="submit" id="submitForm">
+        <span i18n="Save Exam|Save Exam Button@@save-exam-modal.footer.button.saveExam">Save Exam</span>
+      </button>
+    </div>
+
+  </div>
+
+</form>

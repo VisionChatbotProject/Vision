@@ -1,0 +1,37 @@
+<form [formGroup]="saveQuestionForm">
+
+  <div class="modal-header">
+    <h4 *ngIf="question" class="modal-title" i18n="Edit Question|Modal header@@save-question-modal.header.editTitle">Edit Question</h4>
+    <h4 *ngIf="!question" class="modal-title" i18n="Create New Question|Modal header@@save-question-modal.header.createTitle">Create Question</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <!-- question title field -->
+    <div class="form-group mb-3">
+      <label for="title" class="form-label" i18n="Question Title Label|Modal body@@save-question-modal.body.label.questionTitle">Question Title</label>
+      <input id="title" class="form-control" type="text" formControlName="title">
+      <div class="invalid-feedback" *ngIf="title.invalid">
+        <p *ngIf="title.getError('required')" i18n="Field Required|Question title invalid input@@save-question-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+    <!-- question description field -->
+    <div class="form-group mb-3">
+      <label for="description" class="form-label" i18n="Question text label|Modal body@@save-question-modal.body.label.questionText">Question Text</label>
+      <input id="description" class="form-control" type="text" formControlName="text">
+      <div class="invalid-feedback" *ngIf="text.invalid">
+        <p *ngIf="text.getError('required')" i18n="Field Required|Question text invalid input@@save-question-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveQuestion()" id="createQuestionButton"
+      [disabled]="saveQuestionForm.invalid"
+      class="btn btn-primary" type="submit">
+      <span i18n="Save Question|Save Question Button@@save-question-modal.footer.button.saveQuestion">Save Question</span>
+    </button>
+  </div>
+
+</form>

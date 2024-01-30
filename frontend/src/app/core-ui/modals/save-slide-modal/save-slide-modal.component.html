@@ -1,0 +1,28 @@
+<form [formGroup]="saveSlideForm">
+  
+  <div class="modal-header">
+    <h4 *ngIf="slide" class="modal-title" i18n="Edit Sub-Chapter|Modal header@@save-slide-modal.header.editTitle">Edit Unit</h4>
+    <h4 *ngIf="!slide" class="modal-title" i18n="Create New Sub-Chapter|Modal header@@save-slide-modal.header.createTitle">Create Unit</h4>
+    <fa-icon [icon]="['fas', 'times']" (click)="activeModal.dismiss()" class="btn btn-link"></fa-icon>
+  </div>
+
+  <div class="modal-body">
+    <!-- slide title field -->
+    <div class="form-group mb-3">
+      <label for="title" class="form-label" i18n="Slide Title Label|Modal body@@save-slide-modal.body.label.slideTitle">Unit Title</label>
+      <input id="title" class="form-control" type="text" formControlName="title" i18n="Slide Title Input|Modal Body@@save-slide-modal.body.input.slideTitle" required>
+      <div class="invalid-feedback" *ngIf="title.invalid">
+        <p *ngIf="title.getError('required')" i18n="Field Required|Slide title invalid input@@save-slide-modal.body.errors.inputRequired">Field is required!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="saveSlide()" [disabled]="saveSlideForm.invalid"
+      class="btn btn-primary" type="submit">
+      <span i18n="Save Slide|Save Slide Button@@save-slide-modal.footer.button.saveSlide">Save Unit</span>
+    </button>
+  </div>
+
+</form>

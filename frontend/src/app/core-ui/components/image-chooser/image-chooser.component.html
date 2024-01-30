@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col img-container">
+    <!-- <img [src]="image.url" (click)="changeImage()" class="round-img"> -->
+    <img [imgSrc]="image.url" (click)="changeImage()">
+    <input #uploadHandle type="file" accept="image/*" name="image" (change)="onChange($event)" class="upload-handle" />
+    <div class="overlay">
+      <div class="text" i18n="Click to Change|Overlay text@@imageChooser.overlay.clickToChange">Click to change</div>
+    </div>
+ </div>
+</div>
+

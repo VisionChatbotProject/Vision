@@ -1,0 +1,13 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.content {
+    
+    margin-left: 15%;
+    height : 100%;
+
+    @include media-breakpoint-down(md) {
+        margin-left: 0%
+      }
+}

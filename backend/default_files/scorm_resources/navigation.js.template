@@ -1,0 +1,227 @@
+var iframes = [];
+var prevButton = null;
+var nextButton = null;
+var index = 0;
+
+
+function init() {
+    iframes = Array.prototype.slice.call(document.getElementsByClassName('slide'))
+    prevButton = document.getElementById('btn-prev');
+    nextButton = document.getElementById('btn-next');
+
+    ScormInitialize();
+    initLocation();
+    initChat();
+    // initSomeMagic();
+    // initLocation();
+    setButtonState(index); // init Button States
+
+    ScormSetValue(SCORM_SCORE_MAX, getProgressMax());
+    ScormSetValue(SCORM_SCORE_MIN, getProgressMin());
+}
+
+function next() {
+    var lastIndex = iframes.length - 1;
+    if (index < lastIndex) {
+        var nextIndex = index + 1;
+        setActiveSlide(index, nextIndex);
+        setButtonState(nextIndex);
+        index += 1;
+
+        if (index == lastIndex) {
+            ScormSetValue(SCORM_LESSON_STATUS, SCORM_LESSON_STATUS_CHOICES.passed);
+            ScormCommit();
+        }
+    }
+    console.log("Progress:" + getProgress());
+    ScormSetValue(SCORM_SCORE, getProgress());
+    setLocation(index);
+}
+
+function previous() {
+    var firstIndex = 0;
+    if (index > firstIndex) {
+        var nextIndex = index - 1;
+        setActiveSlide(index, nextIndex);
+        setButtonState(nextIndex);
+        index -= 1;
+    }
+
+    setLocation(index);
+}
+
+function setButtonState(index) {
+    nextButton.disabled = false;
+    prevButton.disabled = false;
+
+    // Begin of slides
+    var firstIndex = 0;
+    if (index == firstIndex) {
+        prevButton.disabled = true;
+    }
+
+    // End of slides
+    var lastIndex = iframes.length - 1;
+    if (index == lastIndex) {
+        nextButton.disabled = true;
+    }
+}
+
+function setActiveSlide(currentIndex, newIndex) {
+    if (currentIndex != null) {
+        iframes[currentIndex].classList.remove('active');
+    }
+    iframes[newIndex].classList.add('active');
+}
+
+function getProgressMin() {
+    return 0;
+}
+
+function getProgressMax() {
+    return 100;
+}
+
+function getProgress() {
+    var currentframeNr = index + 1;
+    var frameCount = iframes.length;
+    const progress = (currentframeNr / frameCount) * 100;
+    if (progress == undefined) { return 0; }
+    return progress;
+}
+
+function setLocation(index) {
+    ScormSetValue('cmi.core.lesson_location', index);
+    setChatSlot("slide", index);
+    console.log("Set location to ", index);
+}
+
+function getJSON(path) {
+    return fetch(path).then(response => response.json());
+}
+
+function loadCourse() {
+    return getJSON('./course.json').then(data => {
+        return data;
+    });
+}
+
+function initChat() {
+    var location = ScormGetValue('cmi.core.lesson_location');
+    loadCourse().then(data => {
+        // console.log(data);
+        let chapter = data.slides.filter(val => val.order == index ? true : false)[0].chapter_external_id;
+        let course = data.course.name;
+        let username = ScormGetValue('cmi.core.student_name');
+        let payload = "/set_slot_value{\"user\":\"" + username + "\", \"slide\":\"" + location + "\", \"chapter\":\"" + chapter + "\", \"email\":\"" + username + "\", \"user_email\":\"" + username + "\", \"quiz_course\":\"" + course + "\"}";
+
+        window.WebChat.default(
+            {
+                // customData: { quiz_course: "en", name: window.parent.API.LMSGetValue('cmi.core.student_name') },
+                initPayload: payload,
+                showFullScreenButton: true,
+                showMessageDate: true,
+                title: 'Vision Chatbot',
+                socketUrl: "${URL_CHATBOT_AGENT}",
+                // add other props here
+                // customComponent: asd(),
+                // embedded: true,
+                params: {
+                    storage: "session",
+                },
+                onSocketEvent: {
+                    // 'bot_uttered': () => console.log('the bot said something'),
+                    // 'session_confirm': (session) => doTheMagic(),
+                    // 'session_confirm': (session) => console.log('Session:', session),
+                    // 'connect': () => console.log('connection established'),
+                    // 'disconnect': () => doSomeCleanup(),
+                },
+                // onWidgetEvent: {
+                //   'onChatOpen': () => console.log('chat open'),
+                // }
+            },
+            null
+        );
+    })
+}
+
+function getChatSession() {
+    let session = localStorage.getItem('chat_session');
+    if (session != null) {
+        return JSON.parse(session)['session_id'];
+    }
+    return null;
+}
+
+function getScormSession() {
+    if (typeof window.parent.API !== 'undefined' && window.parent.API !== null) {
+        return window.parent.API;
+    }
+    return undefined;
+}
+
+function setChatSlot(name, value) {
+    session = getChatSession();
+    fetch("${URL_CHATBOT_AGENT}/conversations/" + session + "/messages", {
+        method: "POST",
+        body: JSON.stringify({
+            "text": "/set_slot_value{\"" + name + "\":\"" + value + "\"}",
+            "sender": "user"
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((response) => response.json())
+        .then((json) => {
+            // console.log(json)
+            // console.log("Course:" + json['slots']['course']);
+        });
+}
+
+function setChatMessage(value) {
+    session = getChatSession();
+    fetch("${URL_CHATBOT_AGENT}/conversations/" + session + "/messages", {
+        method: "POST",
+        body: JSON.stringify({
+            "text": value,
+            "sender": "user"
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((response) => response.json())
+        .then((json) => {
+            // console.log(json)
+            // console.log("Course:" + json['slots']['course']);
+        });
+}
+
+function initLocation() {
+    var location = ScormGetValue('cmi.core.lesson_location');
+    if (typeof location == 'undefined' || location == null || location.length == 0) {
+        location = index;
+    }
+    ScormSetValue('cmi.core.lesson_location', location);
+    setActiveSlide(null, location);
+}
+
+function validSessions() {
+    scormSession = getScormSession();
+    chatSession = getChatSession();
+    if (typeof scormSession !== 'undefined' && scormSession !== null
+        && typeof chatSession !== 'undefined' && chatSession !== null) {
+        return true;
+    }
+    return false;
+}
+
+function initSomeMagic() {
+    if (!validSessions()) {
+        setTimeout(initSomeMagic, 500);
+    } else {
+        // doTheSomeMagic();
+        // initLocation();
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "DEBUG": true,
+    "SECRET_KEY": "AN UNSAFE SECRET KEY",
+    "URL_BACKEND": "http://localhost:8000",
+    "URL_FRONTEND": "http://localhost:4200",
+    "ALLOWED_HOSTS": ["*"],
+    "USE_X_FORWARDED_HOST": false,
+    "ASSET_STORE_LOCATION": "files/data",
+    "ASSET_DEFAULT_STORE_LOCATION": "default_files/data",
+    "STATIC_DIRECTORY": "files/static",
+    "TEMP_DIRECTORY": "files/temp",
+    "SCORM_RESOURCES": "default_files/scorm_resources",
+    "MAIL_BACKEND": "FILE",
+    "MAIL_PATH": "files/mail",
+    "DATABASE_BACKEND": "SQLITE",
+    "DATABASE_NAME": "database/sqlite3.db",
+    "DOCKER_SCORMVIEWER": "authoring-scormviewer"
+}

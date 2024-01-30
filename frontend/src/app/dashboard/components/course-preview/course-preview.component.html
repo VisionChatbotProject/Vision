@@ -1,0 +1,14 @@
+<div class="card h-100" *ngIf="course">
+  <img [imgSrc]="course.image" class="card-img-top h-50" alt="Card Image">
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title" id="courseTitle">{{ course.name }}</h5>
+    <p class="card-text mb-4">{{ course.shortDescription }}</p>
+    <div class="text-center mt-auto">
+      <button (click)="openCourse()" id="btn-openCourse"
+        class="btn btn-primary">
+        <fa-icon [icon]="['fas', 'edit']" class="me-2"></fa-icon>
+        <span i18n="EditCourse|Course Preview Card Button@@courespreview.card.edit">Edit Course</span>
+      </button>
+    </div>
+  </div>
+</div>

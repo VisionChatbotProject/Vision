@@ -1,0 +1,99 @@
+<div class="container" *ngIf="chapterLoaded$ | async;">
+  
+  <div class="row">
+    <div class="col mb-4">
+      <button type="button" id="course-button" (click)="openCourse()" class="btn btn-light">
+        <fa-icon [icon]="['fas', 'angle-left']" class="me-2"></fa-icon>
+        <span i18n="Course|Course Button Title@@chapter-detail.buttons.course">Course</span>
+      </button>
+    </div>
+  </div>
+
+  <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+    <ngb-panel id="recPanel">
+      <ng-template ngbPanelHeader let-opened="opened">
+        <div class="d-flex align-items-center justify-content-between card-header">
+          <h2 id="name">{{chapter!.title}}</h2>
+          <div>
+
+            <button class="btn btn-link" (click)="editChapter()" id="editChapter" 
+              i18n-ngbTooltip="Chapter edit tooltip|Tooltip text@@chapterDetail.tooltip.editChapter"
+              ngbTooltip="Edit section (title, description...)">
+              <fa-icon [icon]="['far', 'edit']" size="lg"></fa-icon>
+            </button>
+
+            <button class="btn btn-link" id="btn-deleteChapter" (confirm)="deleteChapter()" 
+              i18n-ngbTooltip="Chapter delete tooltip|Tooltip text@@chapterDetail.tooltip.deleteChapter"
+              ngbTooltip="Delete section"
+              i18n-confirmDescription="Chapter delete tooltip|Tooltip text@@chapterDetail.tooltip.deleteChapter"
+              i18n-confirmTitle="Chapter delete confirm title|Confirm modal text@@chapterDetail.modal.deleteTitle"
+              confirmDescription="Are you sure you want to delete this section? This will also delete all associated assets and units"
+              confirmTitle="Delete Section?">
+              <fa-icon [icon]="['far', 'trash-alt']" class="me-2 text-danger" size="lg"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template ngbPanelContent>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+              <ngb-panel id="recPanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Chapter Statistics|Chapter Statistics Title@@chapter-detail.cards.chapterStatistics">Section Statistics</h5>
+                  </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <p><strong i18n="Chapter Performance|Chapter Performance Title@@chapter-detail.cards.performance">Performance: </strong> {{ performance }} </p>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <ngb-accordion #a="ngbAccordion" activeIds="recPanel">
+              <ngb-panel id="recPanel">
+                <ng-template ngbPanelHeader let-opened="opened">
+                  <div class="d-flex align-items-center justify-content-between card-header">
+                    <h5 class="m-0" i18n="Slides|Slides Card Title@@course-detail.cards.slides">Units</h5>
+                    <div>
+                      <button id="addSlideButton" class="btn" (click)="addSlide()" *ngIf="chapterLoaded$ | async;">
+                        <fa-icon [icon]="['fas', 'plus']" class="me-2"></fa-icon>
+                      </button>
+
+                      <button id="reorderSlidesButton" class="btn" (click)="onOpenReorderModal()"
+                        i18n-ngbTooltip="Slide reorder tooltip|Tooltip text@chapterDetail.tooltip.reorderSlides"
+                        ngbTooltip="Reorder units">
+                        <fa-icon [icon]="['fas', 'sort']" class="me-2"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+          
+                <ng-template ngbPanelContent *ngIf="chapterLoaded$ | async else loading;">
+                  <sac-slide-table [slides]="slides" id="slide-table"
+                    (addSlide)="addSlide()"
+                    (openSlide)="openSlide($event)"
+                    (editSlide)="editSlide($event)"
+                    (deleteSlide)="deleteSlide($event)">
+                  </sac-slide-table>
+                </ng-template>
+          
+                <ng-template #loading>
+                  <sms-loading></sms-loading>
+                </ng-template>
+
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+</div>
